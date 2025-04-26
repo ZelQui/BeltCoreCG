@@ -1,13 +1,13 @@
 package development.team.Models;
 
-public class Categorias {
+public class Categoria {
 
     private int idCategoria;
     private String nombre;
 
-    public Categorias() {}
+    public Categoria() {}
 
-    public Categorias(int idCategoria, String nombre) {
+    public Categoria(int idCategoria, String nombre) {
         this.idCategoria = idCategoria;
         this.nombre = nombre;
     }

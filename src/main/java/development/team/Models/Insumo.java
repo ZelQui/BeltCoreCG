@@ -1,6 +1,6 @@
 package development.team.Models;
 
-public class Insumos {
+public class Insumo {
     private int idInsumo;
     private String nombre;
     private String descripcion;
@@ -8,7 +8,7 @@ public class Insumos {
     private double precioUnitario;
     private String unidadMedida;
 
-    public Insumos() {}
+    public Insumo() {}
 
     public int getIdInsumo() {
         return idInsumo;

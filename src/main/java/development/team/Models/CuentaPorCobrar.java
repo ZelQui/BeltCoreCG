@@ -3,30 +3,30 @@ package development.team.Models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class CuentasPorCobrar {
+public class CuentaPorCobrar {
     private int idCuenta;
-    private int idVenta;
-    private int idCliente;
+    private Venta venta;
+    private Cliente cliente;
     private double montoTotal;
     private double montoPagado;
     private double saldoPendiente;
     private LocalDateTime fechaVencimiento;
-    private int idEstadoCuenta;
+    private EstadoCuenta estadoCuenta;
     private LocalDate fechaCreacion;
     private int cuotas;
 
-    public CuentasPorCobrar() {
+    public CuentaPorCobrar() {
     }
 
-    public CuentasPorCobrar(int idCuenta, int idVenta, int idCliente, double montoTotal, double montoPagado, double saldoPendiente, LocalDateTime fechaVencimiento, int idEstadoCuenta, LocalDate fechaCreacion, int cuotas) {
+    public CuentaPorCobrar(int idCuenta, Venta venta, Cliente cliente, double montoTotal, double montoPagado, double saldoPendiente, LocalDateTime fechaVencimiento, EstadoCuenta estadoCuenta, LocalDate fechaCreacion, int cuotas) {
         this.idCuenta = idCuenta;
-        this.idVenta = idVenta;
-        this.idCliente = idCliente;
+        this.venta = venta;
+        this.cliente = cliente;
         this.montoTotal = montoTotal;
         this.montoPagado = montoPagado;
         this.saldoPendiente = saldoPendiente;
         this.fechaVencimiento = fechaVencimiento;
-        this.idEstadoCuenta = idEstadoCuenta;
+        this.estadoCuenta = estadoCuenta;
         this.fechaCreacion = fechaCreacion;
         this.cuotas = cuotas;
     }
@@ -39,20 +39,20 @@ public class CuentasPorCobrar {
         this.idCuenta = idCuenta;
     }
 
-    public int getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public double getMontoTotal() {
@@ -87,12 +87,12 @@ public class CuentasPorCobrar {
         this.fechaVencimiento = fechaVencimiento;
     }
 
-    public int getIdEstadoCuenta() {
-        return idEstadoCuenta;
+    public EstadoCuenta getEstadoCuenta() {
+        return estadoCuenta;
     }
 
-    public void setIdEstadoCuenta(int idEstadoCuenta) {
-        this.idEstadoCuenta = idEstadoCuenta;
+    public void setEstadoCuenta(EstadoCuenta estadoCuenta) {
+        this.estadoCuenta = estadoCuenta;
     }
 
     public LocalDate getFechaCreacion() {
@@ -113,15 +113,15 @@ public class CuentasPorCobrar {
 
     @Override
     public String toString() {
-        return "CuentasPorCobrar{" +
+        return "CuentaPorCobrar{" +
                 "idCuenta=" + idCuenta +
-                ", idVenta=" + idVenta +
-                ", idCliente=" + idCliente +
+                ", venta=" + venta +
+                ", cliente=" + cliente +
                 ", montoTotal=" + montoTotal +
                 ", montoPagado=" + montoPagado +
                 ", saldoPendiente=" + saldoPendiente +
                 ", fechaVencimiento=" + fechaVencimiento +
-                ", idEstadoCuenta=" + idEstadoCuenta +
+                ", estadoCuenta=" + estadoCuenta +
                 ", fechaCreacion=" + fechaCreacion +
                 ", cuotas=" + cuotas +
                 '}';

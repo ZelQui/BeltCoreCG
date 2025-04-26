@@ -1,30 +1,30 @@
 package development.team.Models;
 
-public class Clientes {
+public class Cliente {
 
     private int idCliente;
     private String nombres;
     private String apellidos;
     private String numeroDocumento;
-    private int idTipoDocumento;
+    private TipoDocumento tipoDocumento;
     private String direccion;
     private String telefono;
     private String correo;
-    private int idTipoCliente;
+    private TipoCliente tipoCliente;
 
-    public Clientes() {
+    public Cliente() {
     }
 
-    public Clientes(int idCliente, String nombres, String apellidos, String numeroDocumento, int idTipoDocumento, String direccion, String telefono, String correo, int idTipoCliente) {
+    public Cliente(int idCliente, String nombres, String apellidos, String numeroDocumento, TipoDocumento tipoDocumento, String direccion, String telefono, String correo, TipoCliente tipoCliente) {
         this.idCliente = idCliente;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.numeroDocumento = numeroDocumento;
-        this.idTipoDocumento = idTipoDocumento;
+        this.tipoDocumento = tipoDocumento;
         this.direccion = direccion;
         this.telefono = telefono;
         this.correo = correo;
-        this.idTipoCliente = idTipoCliente;
+        this.tipoCliente = tipoCliente;
     }
 
     public int getIdCliente() {
@@ -59,12 +59,12 @@ public class Clientes {
         this.numeroDocumento = numeroDocumento;
     }
 
-    public int getIdTipoDocumento() {
-        return idTipoDocumento;
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
     }
 
-    public void setIdTipoDocumento(int idTipoDocumento) {
-        this.idTipoDocumento = idTipoDocumento;
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
     }
 
     public String getDireccion() {
@@ -91,26 +91,26 @@ public class Clientes {
         this.correo = correo;
     }
 
-    public int getIdTipoCliente() {
-        return idTipoCliente;
+    public TipoCliente getTipoCliente() {
+        return tipoCliente;
     }
 
-    public void setIdTipoCliente(int idTipoCliente) {
-        this.idTipoCliente = idTipoCliente;
+    public void setTipoCliente(TipoCliente tipoCliente) {
+        this.tipoCliente = tipoCliente;
     }
 
     @Override
     public String toString() {
-        return "Clientes{" +
+        return "Cliente{" +
                 "idCliente=" + idCliente +
                 ", nombres='" + nombres + '\'' +
                 ", apellidos='" + apellidos + '\'' +
                 ", numeroDocumento='" + numeroDocumento + '\'' +
-                ", idTipoDocumento=" + idTipoDocumento +
+                ", tipoDocumento=" + tipoDocumento +
                 ", direccion='" + direccion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
-                ", idTipoCliente=" + idTipoCliente +
+                ", tipoCliente=" + tipoCliente +
                 '}';
     }
 }

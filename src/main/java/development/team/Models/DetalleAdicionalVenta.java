@@ -2,17 +2,17 @@ package development.team.Models;
 
 public class DetalleAdicionalVenta {
     private int idDetalleAdicional;
-    private int idVenta;
-    private int idConceptoAdicional;
+    private Venta venta;
+    private ConceptoAdicional conceptoAdicional;
     private double monto;
     private String comentario;
 
     public DetalleAdicionalVenta() {}
 
-    public DetalleAdicionalVenta(int idDetalleAdicional, int idVenta, int idConceptoAdicional, double monto, String comentario) {
+    public DetalleAdicionalVenta(int idDetalleAdicional, Venta venta, ConceptoAdicional conceptoAdicional, double monto, String comentario) {
         this.idDetalleAdicional = idDetalleAdicional;
-        this.idVenta = idVenta;
-        this.idConceptoAdicional = idConceptoAdicional;
+        this.venta = venta;
+        this.conceptoAdicional = conceptoAdicional;
         this.monto = monto;
         this.comentario = comentario;
     }
@@ -25,20 +25,20 @@ public class DetalleAdicionalVenta {
         this.idDetalleAdicional = idDetalleAdicional;
     }
 
-    public int getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
-    public int getIdConceptoAdicional() {
-        return idConceptoAdicional;
+    public ConceptoAdicional getConceptoAdicional() {
+        return conceptoAdicional;
     }
 
-    public void setIdConceptoAdicional(int idConceptoAdicional) {
-        this.idConceptoAdicional = idConceptoAdicional;
+    public void setConceptoAdicional(ConceptoAdicional conceptoAdicional) {
+        this.conceptoAdicional = conceptoAdicional;
     }
 
     public double getMonto() {
@@ -61,8 +61,8 @@ public class DetalleAdicionalVenta {
     public String toString() {
         return "DetalleAdicionalVenta{" +
                 "idDetalleAdicional=" + idDetalleAdicional +
-                ", idVenta=" + idVenta +
-                ", idConceptoAdicional=" + idConceptoAdicional +
+                ", venta=" + venta +
+                ", conceptoAdicional=" + conceptoAdicional +
                 ", monto=" + monto +
                 ", comentario='" + comentario + '\'' +
                 '}';

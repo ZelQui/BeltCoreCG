@@ -5,17 +5,17 @@ public class Usuario {
     private String nombre;
     private String correo;
     private String contrasena;
-    private int idRol;
+    private Rol rol;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String correo, String contrasena, int idRol) {
+    public Usuario(int idUsuario, String nombre, String correo, String contrasena, Rol rol) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
-        this.idRol = idRol;
+        this.rol = rol;
     }
 
     public int getIdUsuario() {
@@ -50,12 +50,12 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public int getIdRol() {
-        return idRol;
+    public Rol getRol() {
+        return rol;
     }
 
-    public void setIdRol(int idRol) {
-        this.idRol = idRol;
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +
-                ", idRol=" + idRol +
+                ", rol=" + rol +
                 '}';
     }
 }

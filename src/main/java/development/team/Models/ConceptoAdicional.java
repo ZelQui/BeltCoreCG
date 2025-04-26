@@ -1,14 +1,14 @@
 package development.team.Models;
 
-public class ConceptosAdicionales {
+public class ConceptoAdicional {
     private int idConceptoAdicional;
     private String nombre;
     private String descripcion;
 
-    public ConceptosAdicionales() {
+    public ConceptoAdicional() {
     }
 
-    public ConceptosAdicionales(int idConceptoAdicional, String nombre, String descripcion) {
+    public ConceptoAdicional(int idConceptoAdicional, String nombre, String descripcion) {
         this.idConceptoAdicional = idConceptoAdicional;
         this.nombre = nombre;
         this.descripcion = descripcion;

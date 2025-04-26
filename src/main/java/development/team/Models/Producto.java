@@ -9,21 +9,21 @@ public class Producto {
     private BigDecimal precioVenta;
     private int cantidadStock;
     private int stockMinimo;
-    private int idCategoria;
-    private int idEstadoProducto;
+    private Categoria categoria;
+    private EstadoProducto estadoProducto;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombre, String descripcion, BigDecimal precioVenta, int cantidadStock, int stockMinimo, int idCategoria, int idEstadoProducto) {
+    public Producto(int idProducto, String nombre, String descripcion, BigDecimal precioVenta, int cantidadStock, int stockMinimo, Categoria categoria, EstadoProducto estadoProducto) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precioVenta = precioVenta;
         this.cantidadStock = cantidadStock;
         this.stockMinimo = stockMinimo;
-        this.idCategoria = idCategoria;
-        this.idEstadoProducto = idEstadoProducto;
+        this.categoria = categoria;
+        this.estadoProducto = estadoProducto;
     }
 
     public int getIdProducto() {
@@ -74,20 +74,20 @@ public class Producto {
         this.stockMinimo = stockMinimo;
     }
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria getCategoria() {
+        return categoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
-    public int getIdEstadoProducto() {
-        return idEstadoProducto;
+    public EstadoProducto getEstadoProducto() {
+        return estadoProducto;
     }
 
-    public void setIdEstadoProducto(int idEstadoProducto) {
-        this.idEstadoProducto = idEstadoProducto;
+    public void setEstadoProducto(EstadoProducto estadoProducto) {
+        this.estadoProducto = estadoProducto;
     }
 
     @Override
@@ -99,8 +99,8 @@ public class Producto {
                 ", precioVenta=" + precioVenta +
                 ", cantidadStock=" + cantidadStock +
                 ", stockMinimo=" + stockMinimo +
-                ", idCategoria=" + idCategoria +
-                ", idEstadoProducto=" + idEstadoProducto +
+                ", categoria=" + categoria +
+                ", estadoProducto=" + estadoProducto +
                 '}';
     }
 }

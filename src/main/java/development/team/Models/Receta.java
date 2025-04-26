@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 
 public class Receta {
     private int idReceta;
-    private int idInsumo;
+    private Insumo insumo;
     private BigDecimal cantidadRequerida;
-    private int idProducto;
+    private Producto producto;
 
     public Receta() {
     }
 
-    public Receta(int idReceta, int idInsumo, BigDecimal cantidadRequerida, int idProducto) {
+    public Receta(int idReceta, Insumo insumo, BigDecimal cantidadRequerida, Producto producto) {
         this.idReceta = idReceta;
-        this.idInsumo = idInsumo;
+        this.insumo = insumo;
         this.cantidadRequerida = cantidadRequerida;
-        this.idProducto = idProducto;
+        this.producto = producto;
     }
 
     public int getIdReceta() {
@@ -26,12 +26,12 @@ public class Receta {
         this.idReceta = idReceta;
     }
 
-    public int getIdInsumo() {
-        return idInsumo;
+    public Insumo getInsumo() {
+        return insumo;
     }
 
-    public void setIdInsumo(int idInsumo) {
-        this.idInsumo = idInsumo;
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 
     public BigDecimal getCantidadRequerida() {
@@ -42,21 +42,21 @@ public class Receta {
         this.cantidadRequerida = cantidadRequerida;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     @Override
     public String toString() {
         return "Receta{" +
                 "idReceta=" + idReceta +
-                ", idInsumo=" + idInsumo +
+                ", insumo=" + insumo +
                 ", cantidadRequerida=" + cantidadRequerida +
-                ", idProducto=" + idProducto +
+                ", producto=" + producto +
                 '}';
     }
 }

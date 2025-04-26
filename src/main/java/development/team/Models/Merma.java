@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class Merma {
     private int idMerma;
-    private int idProduccion;
-    private int idInsumo;
+    private Produccion produccion;
+    private Insumo insumo;
     private int cantidadMermada;
     private String descripcion;
     private LocalDate fechaRegistro;
@@ -13,10 +13,10 @@ public class Merma {
     public Merma() {
     }
 
-    public Merma(int idMerma, int idProduccion, int idInsumo, int cantidadMermada, String descripcion, LocalDate fechaRegistro) {
+    public Merma(int idMerma, Produccion produccion, Insumo insumo, int cantidadMermada, String descripcion, LocalDate fechaRegistro) {
         this.idMerma = idMerma;
-        this.idProduccion = idProduccion;
-        this.idInsumo = idInsumo;
+        this.produccion = produccion;
+        this.insumo = insumo;
         this.cantidadMermada = cantidadMermada;
         this.descripcion = descripcion;
         this.fechaRegistro = fechaRegistro;
@@ -30,20 +30,20 @@ public class Merma {
         this.idMerma = idMerma;
     }
 
-    public int getIdProduccion() {
-        return idProduccion;
+    public Produccion getProduccion() {
+        return produccion;
     }
 
-    public void setIdProduccion(int idProduccion) {
-        this.idProduccion = idProduccion;
+    public void setProduccion(Produccion produccion) {
+        this.produccion = produccion;
     }
 
-    public int getIdInsumo() {
-        return idInsumo;
+    public Insumo getInsumo() {
+        return insumo;
     }
 
-    public void setIdInsumo(int idInsumo) {
-        this.idInsumo = idInsumo;
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 
     public int getCantidadMermada() {
@@ -74,8 +74,8 @@ public class Merma {
     public String toString() {
         return "Merma{" +
                 "idMerma=" + idMerma +
-                ", idProduccion=" + idProduccion +
-                ", idInsumo=" + idInsumo +
+                ", produccion=" + produccion +
+                ", insumo=" + insumo +
                 ", cantidadMermada=" + cantidadMermada +
                 ", descripcion='" + descripcion + '\'' +
                 ", fechaRegistro=" + fechaRegistro +

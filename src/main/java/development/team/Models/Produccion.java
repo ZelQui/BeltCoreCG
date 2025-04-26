@@ -4,20 +4,20 @@ import java.time.LocalDateTime;
 
 public class Produccion {
     private int idProduccion;
-    private int idProducto;
+    private Producto producto;
     private LocalDateTime fechaProduccion;
     private int cantidadProducida;
-    private int idUsuario;
+    private Usuario usuario;
 
     public Produccion() {
     }
 
-    public Produccion(int idProduccion, int idProducto, LocalDateTime fechaProduccion, int cantidadProducida, int idUsuario) {
+    public Produccion(int idProduccion, Producto producto, LocalDateTime fechaProduccion, int cantidadProducida, Usuario usuario) {
         this.idProduccion = idProduccion;
-        this.idProducto = idProducto;
+        this.producto = producto;
         this.fechaProduccion = fechaProduccion;
         this.cantidadProducida = cantidadProducida;
-        this.idUsuario = idUsuario;
+        this.usuario = usuario;
     }
 
     public int getIdProduccion() {
@@ -28,12 +28,12 @@ public class Produccion {
         this.idProduccion = idProduccion;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public LocalDateTime getFechaProduccion() {
@@ -52,22 +52,22 @@ public class Produccion {
         this.cantidadProducida = cantidadProducida;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public String toString() {
         return "Produccion{" +
                 "idProduccion=" + idProduccion +
-                ", idProducto=" + idProducto +
+                ", producto=" + producto +
                 ", fechaProduccion=" + fechaProduccion +
                 ", cantidadProducida=" + cantidadProducida +
-                ", idUsuario=" + idUsuario +
+                ", usuario=" + usuario +
                 '}';
     }
 }

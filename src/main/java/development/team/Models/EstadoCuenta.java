@@ -1,12 +1,12 @@
 package development.team.Models;
 
-public class EstadosCuenta {
+public class EstadoCuenta {
     private int idEstadoCuenta;
     private String nombre;
 
-    public EstadosCuenta() {}
+    public EstadoCuenta() {}
 
-    public EstadosCuenta(int idEstadoCuenta, String nombre) {
+    public EstadoCuenta(int idEstadoCuenta, String nombre) {
         this.idEstadoCuenta = idEstadoCuenta;
         this.nombre = nombre;
     }

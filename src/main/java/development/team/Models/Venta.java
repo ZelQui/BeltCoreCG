@@ -5,24 +5,24 @@ import java.time.LocalDateTime;
 
 public class Venta {
     private int idVenta;
-    private int idCliente;
+    private Cliente cliente;
     private LocalDateTime fechaVenta;
     private BigDecimal totalVenta;
-    private int idUsuario;
-    private int idMetodoPago;
-    private int idTipoVenta;
+    private Usuario usuario;
+    private MetodoPago metodoPago;
+    private TipoVenta tipoVenta;
 
     public Venta() {
     }
 
-    public Venta(int idVenta, int idCliente, LocalDateTime fechaVenta, BigDecimal totalVenta, int idUsuario, int idMetodoPago, int idTipoVenta) {
+    public Venta(int idVenta, Cliente cliente, LocalDateTime fechaVenta, BigDecimal totalVenta, Usuario usuario, MetodoPago metodoPago, TipoVenta tipoVenta) {
         this.idVenta = idVenta;
-        this.idCliente = idCliente;
+        this.cliente = cliente;
         this.fechaVenta = fechaVenta;
         this.totalVenta = totalVenta;
-        this.idUsuario = idUsuario;
-        this.idMetodoPago = idMetodoPago;
-        this.idTipoVenta = idTipoVenta;
+        this.usuario = usuario;
+        this.metodoPago = metodoPago;
+        this.tipoVenta = tipoVenta;
     }
 
     public int getIdVenta() {
@@ -33,12 +33,12 @@ public class Venta {
         this.idVenta = idVenta;
     }
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public LocalDateTime getFechaVenta() {
@@ -57,40 +57,40 @@ public class Venta {
         this.totalVenta = totalVenta;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public int getIdMetodoPago() {
-        return idMetodoPago;
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
     }
 
-    public void setIdMetodoPago(int idMetodoPago) {
-        this.idMetodoPago = idMetodoPago;
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
-    public int getIdTipoVenta() {
-        return idTipoVenta;
+    public TipoVenta getTipoVenta() {
+        return tipoVenta;
     }
 
-    public void setIdTipoVenta(int idTipoVenta) {
-        this.idTipoVenta = idTipoVenta;
+    public void setTipoVenta(TipoVenta tipoVenta) {
+        this.tipoVenta = tipoVenta;
     }
 
     @Override
     public String toString() {
         return "Venta{" +
                 "idVenta=" + idVenta +
-                ", idCliente=" + idCliente +
+                ", cliente=" + cliente +
                 ", fechaVenta=" + fechaVenta +
                 ", totalVenta=" + totalVenta +
-                ", idUsuario=" + idUsuario +
-                ", idMetodoPago=" + idMetodoPago +
-                ", idTipoVenta=" + idTipoVenta +
+                ", usuario=" + usuario +
+                ", metodoPago=" + metodoPago +
+                ", tipoVenta=" + tipoVenta +
                 '}';
     }
 }

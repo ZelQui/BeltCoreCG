@@ -1,19 +1,19 @@
 package development.team.Models;
 
-public class DetallesVenta {
+public class DetalleVenta {
     private int idDetalle;
-    private int idVenta;
-    private int idProducto;
+    private Venta venta;
+    private Producto producto;
     private int cantidad;
     private double precioUnitario;
     private double total;
 
-    public DetallesVenta() {}
+    public DetalleVenta() {}
 
-    public DetallesVenta(int idDetalle, int idVenta, int idProducto, int cantidad, double precioUnitario, double total) {
+    public DetalleVenta(int idDetalle, Venta venta, Producto producto, int cantidad, double precioUnitario, double total) {
         this.idDetalle = idDetalle;
-        this.idVenta = idVenta;
-        this.idProducto = idProducto;
+        this.venta = venta;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.total = total;
@@ -27,20 +27,20 @@ public class DetallesVenta {
         this.idDetalle = idDetalle;
     }
 
-    public int getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {
@@ -69,10 +69,10 @@ public class DetallesVenta {
 
     @Override
     public String toString() {
-        return "DetallesVenta{" +
+        return "DetalleVenta{" +
                 "idDetalle=" + idDetalle +
-                ", idVenta=" + idVenta +
-                ", idProducto=" + idProducto +
+                ", venta=" + venta +
+                ", producto=" + producto +
                 ", cantidad=" + cantidad +
                 ", precioUnitario=" + precioUnitario +
                 ", total=" + total +

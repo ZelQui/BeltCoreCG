@@ -4,16 +4,16 @@ public class TipoDocumento {
     private int idTipoDocumento;
     private String nombre;
     private String siglas;
-    private int idTipoCliente;
+    private TipoCliente tipoCliente;
 
     public TipoDocumento() {
     }
 
-    public TipoDocumento(int idTipoDocumento, String nombre, String siglas, int idTipoCliente) {
+    public TipoDocumento(int idTipoDocumento, String nombre, String siglas, TipoCliente tipoCliente) {
         this.idTipoDocumento = idTipoDocumento;
         this.nombre = nombre;
         this.siglas = siglas;
-        this.idTipoCliente = idTipoCliente;
+        this.tipoCliente = tipoCliente;
     }
 
     public int getIdTipoDocumento() {
@@ -40,12 +40,12 @@ public class TipoDocumento {
         this.siglas = siglas;
     }
 
-    public int getIdTipoCliente() {
-        return idTipoCliente;
+    public TipoCliente getTipoCliente() {
+        return tipoCliente;
     }
 
-    public void setIdTipoCliente(int idTipoCliente) {
-        this.idTipoCliente = idTipoCliente;
+    public void setTipoCliente(TipoCliente tipoCliente) {
+        this.tipoCliente = tipoCliente;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TipoDocumento {
                 "idTipoDocumento=" + idTipoDocumento +
                 ", nombre='" + nombre + '\'' +
                 ", siglas='" + siglas + '\'' +
-                ", idTipoCliente=" + idTipoCliente +
+                ", tipoCliente=" + tipoCliente +
                 '}';
     }
 }

@@ -1,23 +1,22 @@
 package development.team.Models;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class Comprobantes {
+public class Comprobante {
     private int idComprobante;
-    private int idVenta;
+    private Venta venta;
     private String tipoComprobante;
     private String serie;
     private String numero;
     private LocalDateTime fechaEmision;
     private double total;
 
-    public Comprobantes() {
+    public Comprobante() {
     }
 
-    public Comprobantes(int idComprobante, int idVenta, String tipoComprobante, String serie, String numero, LocalDateTime fechaEmision, double total) {
+    public Comprobante(int idComprobante, Venta venta, String tipoComprobante, String serie, String numero, LocalDateTime fechaEmision, double total) {
         this.idComprobante = idComprobante;
-        this.idVenta = idVenta;
+        this.venta = venta;
         this.tipoComprobante = tipoComprobante;
         this.serie = serie;
         this.numero = numero;
@@ -33,12 +32,12 @@ public class Comprobantes {
         this.idComprobante = idComprobante;
     }
 
-    public int getIdVenta() {
-        return idVenta;
+    public Venta getVenta() {
+        return venta;
     }
 
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public String getTipoComprobante() {
@@ -83,9 +82,9 @@ public class Comprobantes {
 
     @Override
     public String toString() {
-        return "Comprobantes{" +
+        return "Comprobante{" +
                 "idComprobante=" + idComprobante +
-                ", idVenta=" + idVenta +
+                ", venta=" + venta +
                 ", tipoComprobante='" + tipoComprobante + '\'' +
                 ", serie='" + serie + '\'' +
                 ", numero='" + numero + '\'' +

@@ -2,18 +2,18 @@ package development.team.Models;
 
 public class DetalleCompra {
     private int idDetalleCompra;
-    private int idCompra;
-    private int idInsumo;
+    private Compra compra;
+    private Insumo insumo;
     private int cantidad;
     private double precioUnitario;
     private double total;
 
     public DetalleCompra() {}
 
-    public DetalleCompra(int idDetalleCompra, int idCompra, int idInsumo, int cantidad, double precioUnitario, double total) {
+    public DetalleCompra(int idDetalleCompra, Compra compra, Insumo insumo, int cantidad, double precioUnitario, double total) {
         this.idDetalleCompra = idDetalleCompra;
-        this.idCompra = idCompra;
-        this.idInsumo = idInsumo;
+        this.compra = compra;
+        this.insumo = insumo;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
         this.total = total;
@@ -27,20 +27,20 @@ public class DetalleCompra {
         this.idDetalleCompra = idDetalleCompra;
     }
 
-    public int getIdCompra() {
-        return idCompra;
+    public Compra getCompra() {
+        return compra;
     }
 
-    public void setIdCompra(int idCompra) {
-        this.idCompra = idCompra;
+    public void setCompra(Compra compra) {
+        this.compra = compra;
     }
 
-    public int getIdInsumo() {
-        return idInsumo;
+    public Insumo getInsumo() {
+        return insumo;
     }
 
-    public void setIdInsumo(int idInsumo) {
-        this.idInsumo = idInsumo;
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 
     public int getCantidad() {
@@ -71,8 +71,8 @@ public class DetalleCompra {
     public String toString() {
         return "DetalleCompra{" +
                 "idDetalleCompra=" + idDetalleCompra +
-                ", idCompra=" + idCompra +
-                ", idConsumo=" + idInsumo +
+                ", compra=" + compra +
+                ", insumo=" + insumo +
                 ", cantidad=" + cantidad +
                 ", precioUnitario=" + precioUnitario +
                 ", total=" + total +

@@ -5,24 +5,24 @@ import java.time.LocalDateTime;
 
 public class Pago {
     private int idPago;
-    private int idCuenta;
+    private CuentaPorCobrar cuenta;
     private LocalDateTime fechaPago;
     private BigDecimal montoPago;
-    private int idMetodoPago;
+    private MetodoPago metodoPago;
     private String observaciones;
-    private int idUsuario;
+    private Usuario usuario;
 
     public Pago() {
     }
 
-    public Pago(int idPago, int idCuenta, LocalDateTime fechaPago, BigDecimal montoPago, int idMetodoPago, String observaciones, int idUsuario) {
+    public Pago(int idPago, CuentaPorCobrar cuenta, LocalDateTime fechaPago, BigDecimal montoPago, MetodoPago metodoPago, String observaciones, Usuario usuario) {
         this.idPago = idPago;
-        this.idCuenta = idCuenta;
+        this.cuenta = cuenta;
         this.fechaPago = fechaPago;
         this.montoPago = montoPago;
-        this.idMetodoPago = idMetodoPago;
+        this.metodoPago = metodoPago;
         this.observaciones = observaciones;
-        this.idUsuario = idUsuario;
+        this.usuario = usuario;
     }
 
     public int getIdPago() {
@@ -33,12 +33,12 @@ public class Pago {
         this.idPago = idPago;
     }
 
-    public int getIdCuenta() {
-        return idCuenta;
+    public CuentaPorCobrar getCuenta() {
+        return cuenta;
     }
 
-    public void setIdCuenta(int idCuenta) {
-        this.idCuenta = idCuenta;
+    public void setCuenta(CuentaPorCobrar cuenta) {
+        this.cuenta = cuenta;
     }
 
     public LocalDateTime getFechaPago() {
@@ -57,12 +57,12 @@ public class Pago {
         this.montoPago = montoPago;
     }
 
-    public int getIdMetodoPago() {
-        return idMetodoPago;
+    public MetodoPago getMetodoPago() {
+        return metodoPago;
     }
 
-    public void setIdMetodoPago(int idMetodoPago) {
-        this.idMetodoPago = idMetodoPago;
+    public void setMetodoPago(MetodoPago metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
     public String getObservaciones() {
@@ -73,24 +73,24 @@ public class Pago {
         this.observaciones = observaciones;
     }
 
-    public int getIdUsuario() {
-        return idUsuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public String toString() {
         return "Pago{" +
                 "idPago=" + idPago +
-                ", idCuenta=" + idCuenta +
+                ", cuenta=" + cuenta +
                 ", fechaPago=" + fechaPago +
                 ", montoPago=" + montoPago +
-                ", idMetodoPago=" + idMetodoPago +
+                ", metodoPago=" + metodoPago +
                 ", observaciones='" + observaciones + '\'' +
-                ", idUsuario=" + idUsuario +
+                ", usuario=" + usuario +
                 '}';
     }
 }

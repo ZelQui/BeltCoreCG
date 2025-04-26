@@ -1,12 +1,12 @@
 package development.team.Models;
 
-public class EstadosProducto {
+public class EstadoProducto {
     private int idEstadoProducto;
     private int nombre;
 
-    public EstadosProducto() {}
+    public EstadoProducto() {}
 
-    public EstadosProducto(int idEstadoProducto, int nombre) {
+    public EstadoProducto(int idEstadoProducto, int nombre) {
         this.idEstadoProducto = idEstadoProducto;
         this.nombre = nombre;
     }
