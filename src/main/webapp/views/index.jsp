@@ -15,7 +15,7 @@
     <div class="row border rounded-5 p-3 bg-white shadow box-area">
         <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box p-3" style="background: #0e2238;">
             <div class="featured-image">
-                <img src="../assets/img/" alt="Logo Correas" class="img-fluid" style="max-width: 100%; height: auto;">
+                <img src="assets/img/ImagenCorreas.png" alt="Logo Correas" class="img-fluid" style="max-width: 100%; height: auto;">
             </div>
         </div>
 
