@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html lang="eS">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesion | BeltCoreCG</title>
+    <title>Inicio de Sesión | BeltCoreGC</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
 <div class="circles">
@@ -23,42 +23,54 @@
 </div>
 
 <div class="login-container">
-    <div class="login-header">
-        <h1>BIENVENIDO</h1>
-        <p>Por favor, inicie sesión en su cuenta</p>
+    <div class="login-image">
+        <div class="brand-overlay">
+            <img src="<%=request.getContextPath()%>/assets/img/ImagenCorreas.png" alt="Correas de cuero" class="product-image">
+        </div>
     </div>
-
-    <form id="loginForm" action="login" method="post">
-        <div class="input-group">
-            <input type="email" id="email" name="correo" placeholder="correo" required>
-        </div>
-
-        <div class="input-group">
-            <input type="password" id="passwordField" placeholder="Password" name="password">
-            <i class="fas fa-eye" id="togglePassword"></i>
-        </div>
-
-
-        <button type="submit" class="login-button">Iniciar Sesion</button>
-
-        <div class="signup-link">
-            Te olvidaste tu contraseña? <a href="#">Aqui</a>
-        </div>
-
-        <div class="social-login">
-            <div class="social-icon facebook">
-                <i class="fab fa-facebook-f"></i>
+    <div class="login-form">
+        <div class="login-header">
+            <div class="logo-container">
+                <img src="<%=request.getContextPath()%>/assets/img/LogoEmpresa.png" alt="Logo Empresa" class="logo">
             </div>
-            <div class="social-icon google">
-                <i class="fab fa-google"></i>
-            </div>
-            <div class="social-icon twitter">
-                <i class="fab fa-twitter"></i>
-            </div>
+            <h1>BIENVENIDO</h1>
+            <p>Ingresa tus credenciales para acceder</p>
         </div>
-    </form>
+
+        <form method="post" action="login">
+            <div class="input-group">
+                <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <input type="text" placeholder="Correo" name="correo" required>
+            </div>
+
+            <div class="input-group">
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <input type="password" id="passwordField" name="password" placeholder="Contraseña" required>
+                <div class="password-toggle" id="togglePassword">
+                    <i class="far fa-eye" id="eyeIcon"></i>
+                </div>
+            </div>
+
+
+            <button  type="submit" class="login-button" >
+                Iniciar Sesión
+                <div class="button-icon">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <p>&copy; 2025 Tu Empresa. Todos los derechos reservados.</p>
+        </div>
+    </div>
 </div>
 
 <script src="<%=request.getContextPath()%>/assets/js/login.js"></script>
 </body>
 </html>
+
