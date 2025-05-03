@@ -32,7 +32,7 @@ public class DataBaseUtil {
             // Metodo de conexion convencional definiendo variales
             // Poco Seguro, recomendación solo usar en Entorno de Desarrollo*/
             // ================================
-            String DB_HOST = "127.0.0.1";
+            String DB_HOST = "159.112.132.125";
             String DB_PORT = "3306";
             String DB_NAME = "dbBeltcoreCG";
             String DB_USERNAME = "admon";
