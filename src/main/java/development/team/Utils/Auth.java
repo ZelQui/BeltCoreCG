@@ -10,14 +10,14 @@ public class Auth {
 
     /**
      * Inicia sesión y almacena el usuario en la sesión HTTP.
-     * @param username Nombre de usuario.
+     * @param correo Nombre de usuario.
      * @param password Contraseña del usuario.
      * @param request Petición HTTP.
      * @return true si las credenciales son correctas, false si son incorrectas.
      */
-    public boolean login(String username, String password, HttpServletRequest request) {
-        if (userdao.validarCredenciales(username, password)) {
-            Usuario user = userdao.obtenerUsuarioSesion(username);
+    public boolean login(String correo, String password, HttpServletRequest request) {
+        if (userdao.validarCredenciales(correo, password)) {
+            Usuario user = userdao.obtenerUsuarioSesion(correo);
             HttpSession session = request.getSession();
             session.setAttribute("usuario", user);
             System.out.println("Auth: Inicio de sesión exitoso");

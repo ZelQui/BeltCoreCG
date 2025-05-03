@@ -32,11 +32,11 @@ public class DataBaseUtil {
             // Metodo de conexion convencional definiendo variales
             // Poco Seguro, recomendación solo usar en Entorno de Desarrollo*/
             // ================================
-            String DB_HOST = "localhost";
-            String DB_PORT = "3316";
-            String DB_NAME = "dbbeltcorecg";
+            String DB_HOST = "hopper.proxy.rlwy.net";
+            String DB_PORT = "47916";
+            String DB_NAME = "railway";
             String DB_USERNAME = "root";
-            String DB_PASSWORD = "123456";
+            String DB_PASSWORD = "zEfpYhqvdFxLhBEufCHUUISGmJqhsJlA";
             String DB_URL = String.format("jdbc:mysql://%s:%s/%s?serverTimezone=UTC", DB_HOST, DB_PORT, DB_NAME);
 
 
