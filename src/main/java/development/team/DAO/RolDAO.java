@@ -19,15 +19,16 @@ public class RolDAO {
     public Rol obtenerRolPorId(int idRol, Connection con) throws SQLException {
         Rol rol = null;
         String sql = "SELECT id_rol, nombre_rol, descripcion FROM roles WHERE id_rol = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idRol);
-            if (rs.next()) {
-                rol = new Rol(
-                        rs.getInt("id_rol"),
-                        rs.getString("nombre_rol"),
-                        rs.getString("descripcion")
-                );
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    rol = new Rol(
+                            rs.getInt("id_rol"),
+                            rs.getString("nombre_rol"),
+                            rs.getString("descripcion")
+                    );
+                }
             }
         }
         return rol;

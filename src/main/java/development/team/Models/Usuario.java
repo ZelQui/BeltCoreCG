@@ -6,16 +6,18 @@ public class Usuario {
     private String correo;
     private String contrasena;
     private Rol rol;
+    private int estado;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String correo, String contrasena, Rol rol) {
+    public Usuario(int idUsuario, String nombre, String correo, String contrasena, Rol rol, int estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
         this.contrasena = contrasena;
         this.rol = rol;
+        this.estado = estado;
     }
 
     public int getIdUsuario() {
@@ -58,6 +60,14 @@ public class Usuario {
         this.rol = rol;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -66,6 +76,7 @@ public class Usuario {
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", rol=" + rol +
+                ", estado=" + estado +
                 '}';
     }
 }
