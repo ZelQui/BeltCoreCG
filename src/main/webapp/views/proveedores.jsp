@@ -1,23 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Proveedores</title>
-    <link rel="stylesheet" href="../assets/css/proveedores.css">
-</head>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/proveedores.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 <body>
     <div class="content-container">
         <h1>Gestión de Proveedores</h1>
-        
+
         <div class="header-controls">
             <div class="search-container">
-                <input type="text" class="search-provider" placeholder="Buscar proveedor...">
+                <label>
+                    <input type="text" class="search-provider" placeholder="Buscar proveedor...">
+                </label>
             </div>
             <button class="add-provider">Añadir Proveedor</button>
         </div>
-        
+
         <div class="table-container">
             <table class="provider-table">
                 <thead>
@@ -105,6 +102,6 @@
             </div>
         </div>
     </div>
-    <script src="../assets/js/proveedores.js"></script>
+
+    <script src="<%=request.getContextPath()%>/assets/js/proveedores.js"></script>
 </body>
-</html>
