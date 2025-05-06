@@ -1,6 +1,5 @@
 package development.team.DAO;
 
-import development.team.DTO.UsuarioRolDTO;
 import development.team.Models.Proveedor;
 import development.team.Utils.DataBaseUtil;
 
@@ -41,7 +40,7 @@ public class ProveedorDAO {
 
     // UPDATE
     private static boolean actualizarProveedor(Proveedor nuevoProveedor) {
-        String sql = "UPDATE proveedores SET nombre = ?, telefono = ?, correo = ?, direccion = ?";
+        String sql = "UPDATE proveedores SET nombre = ?, telefono = ?, correo = ?, direccion = ? WHERE id_proveedor = ?";
         boolean result = false;
 
         try (Connection con = dataSource.getConnection();
@@ -51,6 +50,7 @@ public class ProveedorDAO {
             ps.setString(2, nuevoProveedor.getTelefono());
             ps.setString(3, nuevoProveedor.getCorreo());
             ps.setString(4, nuevoProveedor.getDireccion());
+            ps.setInt(5, nuevoProveedor.getIdProveedor());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -66,7 +66,7 @@ public class ProveedorDAO {
         return result;
     }
 
-    // Activar Proveedor
+    // ACTIVAR PROVEEDOR
     public static void activarProveedor(int proveedorId) {
         String sql = "UPDATE proveedores SET estado = 1 WHERE id_proveedor = ?";
 
@@ -86,7 +86,7 @@ public class ProveedorDAO {
         }
     }
 
-    // Bloquear Proveedor
+    // BLOQUEAR PROVEEDOR
     public static void bloquearProveedor(int proveedorId) {
         String sql = "UPDATE proveedores SET estado = 0 WHERE id_proveedor = ?";
 
@@ -106,7 +106,7 @@ public class ProveedorDAO {
         }
     }
 
-    // Listar Proveedores
+    // LISTAR PROVEEDORES
     public static List<Proveedor> obtenerProveedores() {
         String sql = "SELECT * FROM proveedores";
         List<Proveedor> proveedoresList = new ArrayList<>();
