@@ -25,9 +25,9 @@ public class UsuarioController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
+        String accion = req.getParameter("accion");
 
-        if ("get".equals(action)) {
+        if ("get".equals(accion)) {
             IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
             userolDTO = userdao.obtenerUsuarioPorId(IdUsuario);
             System.out.println(userolDTO.toString());

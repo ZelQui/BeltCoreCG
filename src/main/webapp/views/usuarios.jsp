@@ -1,3 +1,6 @@
+<%@ page import="development.team.DAO.UsuarioDAO" %>
+<%@ page import="java.util.List" %>
+<%@ page import="development.team.DTO.UsuarioRolDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -9,6 +12,9 @@
     <!-- Añadido Font Awesome para los iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+<%
+    List<UsuarioRolDTO> usuarios = UsuarioDAO.obtenerTodosUsuarios();
+%>
 <body>
     <div class="content-container">
         <h1>Gestión de Usuarios</h1>
@@ -47,13 +53,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Ejemplo de filas de usuarios -->
-                    <tr data-id="1">
-                        <td>1</td>
-                        <td>Ana Martínez</td>
-                        <td>ana.martinez@ejemplo.com</td>
-                        <td><span class="role-badge role-blue">Administrador</span></td>
-                        <td><span class="role-badge role-green">Activo</span></td>
+                    <% int contador = 1; %>
+                    <%for (UsuarioRolDTO urdto : usuarios) { %>
+                    <tr data-id="<%=contador%>">
+                        <td><%=contador%></td>
+                        <td><%=urdto.getNombreUsuario()%></td>
+                        <td><%=urdto.getCorreo()%></td>
+                        <td><span class="role-badge role-blue"><%=urdto.getNombreRol()%></span></td>
+                        <td><%
+                            if (urdto.getEstado() == 1) { %>
+                                <span class="role-badge role-green">Activo</span>
+                            <% } else if (urdto.getEstado() == 0) { %>
+                            <span class="role-badge role-red">Inactivo</span>
+                            <% } %>
+                        </td>
                         <td>
                             <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
                             <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
@@ -61,33 +74,9 @@
                             <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
                         </td>
                     </tr>
-                    <tr data-id="2">
-                        <td>2</td>
-                        <td>Luis Rodríguez</td>
-                        <td>luis.rodriguez@ejemplo.com</td>
-                        <td><span class="role-badge role-gray">Vendedor</span></td>
-                        <td><span class="role-badge role-green">Activo</span></td>
-                        <td>
-                            <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                            <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                            <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
-                            <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
-                        </td>
-                    </tr>
-                    <tr data-id="3">
-                        <td>3</td>
-                        <td>Carmen García</td>
-                        <td>carmen.garcia@ejemplo.com</td>
-                        <td><span class="role-badge role-gray">Vendedor</span></td>
-                        <td><span class="role-badge role-red">Inactivo</span></td>
-                        <td>
-                            <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                            <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                            <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
-                            <button class="btn activate" title="Activar"><i class="fas fa-user-check"></i></button>
-                        </td>
-                    </tr>
-                    <!-- Puedes añadir más filas según necesites -->
+                    <% contador++;
+                    }
+                    %>
                 </tbody>
             </table>
         </div>

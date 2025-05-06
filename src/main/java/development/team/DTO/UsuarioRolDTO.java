@@ -10,11 +10,12 @@ public class UsuarioRolDTO {
     private int idRol;
     private String nombreRol;
     private String descripcion;
+    private int estado;
 
     public UsuarioRolDTO() {
     }
 
-    public UsuarioRolDTO(int idUsuario, String nombreUsuario, String correo, String contrasena, int idRol, String nombreRol, String descripcion) {
+    public UsuarioRolDTO(int idUsuario, String nombreUsuario, String correo, String contrasena, int idRol, String nombreRol, String descripcion, int estado) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
@@ -22,6 +23,7 @@ public class UsuarioRolDTO {
         this.idRol = idRol;
         this.nombreRol = nombreRol;
         this.descripcion = descripcion;
+        this.estado = estado;
     }
 
     public int getIdUsuario() {
@@ -80,16 +82,25 @@ public class UsuarioRolDTO {
         this.descripcion = descripcion;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "UsuarioRolDTO{" +
                 "idUsuario=" + idUsuario +
-                ", nombreUsuario=" + nombreUsuario +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", idRol=" + idRol +
                 ", nombreRol='" + nombreRol + '\'' +
                 ", descripcion='" + descripcion + '\'' +
+                ", estado=" + estado +
                 '}';
     }
 }

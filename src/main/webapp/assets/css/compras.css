@@ -1,0 +1,266 @@
+/* Estilos compatibles para la página de Gestión de Compras */
+/* Estos estilos se integrarán con el menu.css existente */
+
+/* Mantenemos los estilos base compartidos con menu.css */
+/* Aquí solo definimos lo específico para la página de compras */
+
+/* Contenedor principal de la página de compras */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: var(--white, white);
+    border-radius: var(--border-radius, 5px);
+    box-shadow: var(--card-shadow, 0 1px 3px rgba(0,0,0,0.1));
+}
+
+/* Títulos adaptados al estilo general */
+.container h1 {
+    color: var(--text-primary, #555);
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+/* Botones adaptados a los colores del tema */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color, #111e43);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark, #0f2a65);
+}
+
+.btn-danger {
+    background-color: var(--danger, #f36c6c);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #e05555;
+}
+
+.btn-info {
+    background-color: var(--primary-light, #edf0fb);
+    color: var(--primary-color, #111e43);
+}
+
+.btn-info:hover {
+    background-color: #dde4f9;
+}
+
+/* Contenedor de búsqueda */
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--gray-medium, #ddd);
+    border-radius: var(--border-radius, 4px);
+}
+
+/* Estilos para tabla que se integran con el diseño general */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: var(--white, white);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-medium, #ddd);
+}
+
+th {
+    background-color: var(--gray-light, #f5f5f5);
+    font-weight: bold;
+    color: var(--text-primary, #444);
+}
+
+tr:hover {
+    background-color: var(--primary-light, #f9f9f9);
+}
+
+/* Botones de acción en la tabla */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+/* Paginación adaptada */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: var(--text-primary, black);
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid var(--gray-medium, #ddd);
+    margin: 0 4px;
+    border-radius: 8px;
+}
+
+.pagination a.active {
+    background-color: var(--primary-color, #111e43);
+    color: white;
+    border: 1px solid var(--primary-color, #111e43);
+}
+
+.pagination a:hover:not(.active) {
+    background-color: var(--gray-medium, #ddd);
+}
+
+/* Estilos para los modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: var(--white, white);
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: var(--border-radius, 5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--gray-medium, #ddd);
+}
+
+.modal-header h2 {
+    color: var(--text-primary, #333);
+    font-size: 20px;
+}
+
+.close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-secondary, #777);
+}
+
+/* Estilos para el formulario */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--text-primary, #444);
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-medium, #ddd);
+    border-radius: var(--border-radius, 4px);
+    font-size: 14px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--gray-medium, #ddd);
+}
+
+/* Ajustes para el layout con sidebar */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Ajuste para integración con sidebar */
+@media (max-width: 992px) {
+    /* Ajustamos el contenido principal para pantallas más pequeñas */
+    .container {
+        padding: 15px;
+        margin: 10px auto;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        width: 100%;
+    }
+    
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .search-container {
+        width: 100%;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+        margin: 5px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+}

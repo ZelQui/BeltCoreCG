@@ -1,6 +1,6 @@
 // Función para cargar el contenido sin actualizar el sidebar
 function cargarPagina(pagina) {
-  fetch(pagina)  // Asegúrate de que 'pagina' ya contiene la ruta correcta (por ejemplo: 'html/loquesea.jsp')
+  fetch(pagina)  // Asegúrate de que 'pagina' ya contiene la ruta correcta (por ejemplo: 'html/loquesea.html')
       .then(response => {
           if (!response.ok) {
               throw new Error('Error al cargar la página: ' + pagina);
@@ -12,17 +12,17 @@ function cargarPagina(pagina) {
 
           // Esperar a que el DOM del nuevo contenido esté disponible
           setTimeout(() => {
-              if (pagina === "/views/menu.jsp") {
+              if (pagina === "/views/menu.html") {
                   iniciarGrafica(); // Ejecutar solo si es la página de inicio
               }
               
               // Si es la página de productos, inicializar sus eventos
-              if (pagina === "productos.jsp") {
+              if (pagina === "Productos.html") {
                   inicializarEventosProductos();
               }
               
               // Si es la página de usuarios, inicializar sus eventos
-              if (pagina === "usuarios.jsp" || pagina.includes("usuarios.jsp") || pagina.includes("/usuarios")) {
+              if (pagina === "Usuarios.html" || pagina.includes("usuarios.html") || pagina.includes("/usuarios")) {
                   if (typeof window.initializeUserFunctions === 'function') {
                       window.initializeUserFunctions();
                       console.log('Funciones de usuarios inicializadas después de cargar la página');

@@ -121,7 +121,7 @@ import java.util.List;
     //READ
     public static List<UsuarioRolDTO> obtenerTodosUsuarios() {
 
-        String sql = "SELECT u.id_usuario, u.nombre, u.correo, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.nombre, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 "FROM usuarios as u " +
                 "JOIN roles AS r ON u.id_rol = r.id_rol";
         List<UsuarioRolDTO> usuariosList = new ArrayList<>();
@@ -137,8 +137,9 @@ import java.util.List;
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");
                 String descripcionRol = rs.getString("descripcion");
+                int estado = rs.getInt("estado");
 
-                usuariosList.add(new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol));
+                usuariosList.add(new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol, estado));
             }
 
         } catch (SQLException e) {
@@ -148,7 +149,7 @@ import java.util.List;
         return usuariosList;
     }
     public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
-        String sql = "SELECT u.id_usuario, u.nombre, u.correo, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.nombre, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 " FROM usuarios as u " +
                 " JOIN roles AS r ON u.id_rol = r.id_rol " +
                 " WHERE id_usuario = ?";
@@ -167,8 +168,9 @@ import java.util.List;
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");
                 String descripcionRol = rs.getString("descripcion");
+                int estado = rs.getInt("estado");
 
-                new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol);
+                new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol, estado);
             }
         } catch (SQLException e) {
             System.err.println("Error SQLException al obtener usuario por ID: " + usuarioId + ": " + e.getMessage());
@@ -267,7 +269,6 @@ import java.util.List;
         }
     }
 
-    //DELETE
     public static void bloquearUsuario(int usuarioId) {
         String sql = "UPDATE usuarios SET estado = 0 WHERE id = ?";
 

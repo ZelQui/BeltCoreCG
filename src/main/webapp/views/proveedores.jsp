@@ -13,9 +13,7 @@
         
         <div class="header-controls">
             <div class="search-container">
-                <label>
-                    <input type="text" class="search-provider" placeholder="Buscar proveedor...">
-                </label>
+                <input type="text" class="search-provider" placeholder="Buscar proveedor...">
             </div>
             <button class="add-provider">Añadir Proveedor</button>
         </div>
@@ -107,6 +105,6 @@
             </div>
         </div>
     </div>
-    <script src="<%=request.getContextPath()%>/assets/js/proveedores.js"></script>
+    <script src="../assets/js/proveedores.js"></script>
 </body>
 </html>
