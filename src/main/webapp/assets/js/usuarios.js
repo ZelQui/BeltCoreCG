@@ -1,6 +1,7 @@
-// Función principal que inicializa todos los eventos de usuarios
+// Definir la función
 function initializeUserFunctions() {
-    console.log('Inicializando funciones de usuarios...');
+    // Aquí tus funciones y eventos relacionados a usuarios
+    console.log('initializeUserFunctions ejecutado correctamente');
     
     // Elementos del DOM
     const addBtn = document.querySelector('.add-user');
@@ -221,19 +222,24 @@ function initializeUserFunctions() {
     console.log('Funciones de usuarios inicializadas correctamente');
 }
 
-// Inicializar cuando el DOM está listo (cuando la página se carga directamente)
-document.addEventListener('DOMContentLoaded', function() {
-    // Comprobar si estamos en la página de usuarios
-    const userTable = document.querySelector('.user-table');
-    if (userTable) {
-        console.log('Página de usuarios detectada, inicializando...');
-        initializeUserFunctions();
-    } else {
-        console.log('No estamos en la página de usuarios');
-    }
-});
+// Ejecutarla de inmediato si detecta que ya está cargado en DOM (para SPA o carga con fetch)
+(function () {
+    const observer = new MutationObserver(() => {
+        const userTable = document.querySelector('.user-table');
+        if (userTable) {
+            console.log('Página de usuarios detectada por MutationObserver, inicializando...');
+            initializeUserFunctions();
+            observer.disconnect(); // Detener observación una vez encontrado
+        }
+    });
 
-// Exponer la función para que pueda ser llamada desde script.js
+    observer.observe(document.getElementById('contenido'), {
+        childList: true,
+        subtree: true,
+    });
+})();
+
+// Exponer globalmente por si necesitas llamarla manualmente también
 if (typeof window !== 'undefined') {
     window.initializeUserFunctions = initializeUserFunctions;
 }

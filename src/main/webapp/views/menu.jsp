@@ -85,8 +85,6 @@
     crossorigin="anonymous"></script>
     <!--SCRIPT PARA LLAMAR A FUNCIONES DE CADA HTML-->
     <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/usuarios.js"></script>
-    <script src="../assets/js/proveedores.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </body>
 </html>

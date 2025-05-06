@@ -107,6 +107,11 @@ body {
     color: #1f2937;
 }
 
+.btn.reset {
+    background-color: #04bd9a; /* amarillo */
+    color: #1f2937;
+}
+
 .btn.deactivate {
     background-color: #ef4444; /* rojo */
 }
