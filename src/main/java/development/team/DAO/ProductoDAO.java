@@ -2,9 +2,7 @@ package development.team.DAO;
 
 import development.team.DTO.ProductoCategoriaEstadoDTO;
 import development.team.Models.Producto;
-import development.team.Models.Usuario;
 import development.team.Utils.DataBaseUtil;
-
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
