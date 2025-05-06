@@ -6,16 +6,18 @@ public class Proveedor {
     private String telefono;
     private String correo;
     private String direccion;
+    private int estado;
 
     public Proveedor() {
     }
 
-    public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion) {
+    public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion, int estado) {
         this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
         this.direccion = direccion;
+        this.estado = estado;
     }
 
     public int getIdProveedor() {
@@ -58,6 +60,14 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Proveedor{" +
@@ -66,6 +76,7 @@ public class Proveedor {
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
                 ", direccion='" + direccion + '\'' +
+                ", estado='" + estado + '\'' +
                 '}';
     }
 }

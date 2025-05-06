@@ -250,6 +250,7 @@ import java.util.List;
 
         return usuarioActualizado;
     }
+
     public static void activarUsuario(int usuarioId) {
         String sql = "UPDATE usuarios SET estado = 1 WHERE id = ?";
 
