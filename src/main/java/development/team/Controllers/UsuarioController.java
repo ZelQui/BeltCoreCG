@@ -41,15 +41,14 @@ public class UsuarioController extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    /*
     String accion = req.getParameter("accion");
 
         switch (accion) {
             case "Listar":
-                List<User> lista = userdao.getAllUsers();
+                List<UsuarioRolDTO> lista = userdao.obtenerTodosUsuarios();
                 req.setAttribute("usuarios", lista);
                 break;
-            case "Registrar":
+            /*case "Registrar":
                 //Para validar datos de inicio de sesión
                 String name = req.getParameter("nombre");
                 String email = req.getParameter("email");
@@ -140,11 +139,10 @@ public class UsuarioController extends HttpServlet {
                 userLogin = userdao.updateUserPassword(userLogin, newPassword);
                 sessionActual.setAttribute("usuario", userLogin);
                 resp.sendRedirect("menu.jsp");
-                break;
+                break;*/
             default:
                 break;
         }
-    */
     }
 }
 

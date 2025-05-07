@@ -1,87 +1,99 @@
-// Función para inicializar eventos de la página de productos
-function inicializarEventosProductos() {
-    const btnProducto = document.getElementById('btnProducto');
-    const btnCategoria = document.getElementById('btnCategoria');
-  
-    const modalProducto = document.getElementById('modal-producto');
-    const modalCategoria = document.getElementById('modal-categoria');
-    
-    const formProducto = document.getElementById('form-producto');
-    const formCategoria = document.getElementById('form-categoria');
-    
-    // Verificar si los elementos existen antes de agregar event listeners
-    if (!btnProducto || !btnCategoria || !modalProducto || !modalCategoria || !formProducto || !formCategoria) {
-        console.error('No se encontraron todos los elementos necesarios para inicializar eventos de productos');
-        return;
-    }
-    
-    // Botones cerrar modal (X)
-    const cerrarBotones = document.querySelectorAll('.cerrar-modal');
-    
-    // Función para ocultar todos los modales
-    const ocultarModales = () => {
-      modalProducto.classList.add('oculto');
-      modalCategoria.classList.add('oculto');
-    };
-  
-    // Mostrar modales
-    btnProducto.addEventListener('click', () => {
-      ocultarModales(); // Primero oculta todos
-      modalProducto.classList.remove('oculto'); // Luego muestra el modal de producto
-    });
-  
-    btnCategoria.addEventListener('click', () => {
-      ocultarModales(); // Primero oculta todos
-      modalCategoria.classList.remove('oculto'); // Luego muestra el modal de categoría
-    });
-  
-    // Botones X para cerrar modales
-    cerrarBotones.forEach(boton => {
-      boton.addEventListener('click', ocultarModales);
-    });
-  
-    // Botones cancelar
-    const cancelarProducto = formProducto.querySelector('.cancelar');
-    const cancelarCategoria = formCategoria.querySelector('.cancelar');
-  
-    if (cancelarProducto) {
-        cancelarProducto.addEventListener('click', ocultarModales);
-    }
-    
-    if (cancelarCategoria) {
-        cancelarCategoria.addEventListener('click', ocultarModales);
-    }
-  
-    // Cerrar modal al hacer clic fuera del contenido
-    window.addEventListener('click', (e) => {
-      if (e.target === modalProducto) {
-        modalProducto.classList.add('oculto');
-      }
-      if (e.target === modalCategoria) {
-        modalCategoria.classList.add('oculto');
-      }
-    });
-  
-    // Opcional: ocultar modales al enviar formularios
-    formProducto.addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert('Producto agregado');
-      ocultarModales();
-    });
-  
-    formCategoria.addEventListener('submit', (e) => {
-      e.preventDefault();
-      alert('Categoría agregada');
-      ocultarModales();
-    });
-    
-    console.log('Eventos de productos inicializados correctamente');
-}
 
-// Al cargar la página directamente, inicializar eventos
-document.addEventListener('DOMContentLoaded', inicializarEventosProductos);
+document.addEventListener("DOMContentLoaded", function () {
+    // ----- Modal Producto -----
+    const btnProducto = document.getElementById("btnProducto");
+    const modalProducto = document.getElementById("modal-producto");
+    const cerrarProducto = modalProducto.querySelector(".cerrar-modal");
+    const cancelarProducto = modalProducto.querySelector(".cancelar");
+    const formProducto = document.getElementById("form-producto");
 
-// Exponer la función para que pueda ser llamada desde script.js
-if (typeof window !== 'undefined') {
-    window.inicializarEventosProductos = inicializarEventosProductos;
-}
+    btnProducto.addEventListener("click", () => {
+        modalProducto.classList.remove("oculto");
+        formProducto.reset();
+        modalProducto.querySelector("h2").textContent = "Nuevo Producto";
+        modalProducto.querySelector("button[type='submit']").textContent = "Agregar";
+    });
+
+    cerrarProducto.addEventListener("click", () => modalProducto.classList.add("oculto"));
+    cancelarProducto.addEventListener("click", () => modalProducto.classList.add("oculto"));
+    window.addEventListener("click", (e) => {
+        if (e.target === modalProducto) modalProducto.classList.add("oculto");
+    });
+
+    // ----- Modal Categoría -----
+    const btnCategoria = document.getElementById("btnCategoria");
+    const modalCategoria = document.getElementById("modal-categoria");
+    const cerrarCategoria = modalCategoria.querySelector(".cerrar-modal");
+    const cancelarCategoria = modalCategoria.querySelector(".cancelar");
+
+    btnCategoria.addEventListener("click", () => modalCategoria.classList.remove("oculto"));
+    cerrarCategoria.addEventListener("click", () => modalCategoria.classList.add("oculto"));
+    cancelarCategoria.addEventListener("click", () => modalCategoria.classList.add("oculto"));
+    window.addEventListener("click", (e) => {
+        if (e.target === modalCategoria) modalCategoria.classList.add("oculto");
+    });
+
+    // ----- Ver Producto -----
+    document.querySelectorAll(".btn.view").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const nombre = row.cells[2].textContent;
+            alert(`Visualizando producto: ${nombre}`);
+        });
+    });
+
+    // ----- Editar Producto -----
+    document.querySelectorAll(".btn.edit").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const nombre = row.cells[2].textContent.trim();
+            const categoria = row.cells[3].textContent.trim();
+            const precio = row.cells[4].textContent.replace("S/ ", "").trim();
+
+            // Rellenar formulario
+            formProducto.querySelector('input[type="text"]').value = nombre;
+            formProducto.querySelector('select').value = categoria;
+            formProducto.querySelector('input[type="number"]').value = precio;
+
+            // Cambiar título y botón
+            modalProducto.querySelector("h2").textContent = "Editar Producto";
+            modalProducto.querySelector("button[type='submit']").textContent = "Actualizar";
+
+            modalProducto.classList.remove("oculto");
+        });
+    });
+
+    // ----- Activar/Desactivar Producto -----
+    function attachActivateHandlers() {
+        document.querySelectorAll(".btn.activate").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const row = this.closest("tr");
+                const estado = row.querySelector(".role-badge");
+                estado.textContent = "Activo";
+                estado.classList.remove("role-red");
+                estado.classList.add("role-green");
+
+                this.outerHTML = `<button class="btn deactivate" title="Desactivar"><i class="fas fa-ban"></i></button>`;
+                attachDeactivateHandlers();
+            });
+        });
+    }
+
+    function attachDeactivateHandlers() {
+        document.querySelectorAll(".btn.deactivate").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const row = this.closest("tr");
+                const estado = row.querySelector(".role-badge");
+                estado.textContent = "Inactivo";
+                estado.classList.remove("role-green");
+                estado.classList.add("role-red");
+
+                this.outerHTML = `<button class="btn activate" title="Activar"><i class="fas fa-check-circle"></i></button>`;
+                attachActivateHandlers();
+            });
+        });
+    }
+
+    attachActivateHandlers();
+    attachDeactivateHandlers();
+});
