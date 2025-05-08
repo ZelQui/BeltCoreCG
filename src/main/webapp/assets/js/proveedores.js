@@ -66,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (confirm(`¿Estás seguro de desactivar al proveedor "${nombre}"?`)) {
         // Aquí puedes ocultar la fila, marcar como desactivado, o llamar a una función backend
-        row.style.opacity = 0.5;
         alert(`Proveedor "${nombre}" ha sido desactivado.`);
       }
     });

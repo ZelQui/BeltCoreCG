@@ -165,39 +165,7 @@
             </div>
         </div>
     </div>
-    <script>
-        /* compras.js */
-        // Abrir y cerrar modales de Compras
-        document.addEventListener('DOMContentLoaded', () => {
-            // Modal Registrar Compra
-            const btnAdd = document.getElementById('add-purchase-btn');
-            const purchaseModal = document.getElementById('purchaseModal');
-            const closePurchase = purchaseModal.querySelector('.close');
-            const cancelPurchase = purchaseModal.querySelector('.btn.cancel');
-
-            // Modal Buscar Productos
-            const btnSearchProd = document.getElementById('search-product-btn');
-            const productsModal = document.getElementById('productsModal');
-            const closeProducts = productsModal.querySelector('.close');
-
-            const openModal = modal => modal.classList.add('open');
-            const closeModal = modal => modal.classList.remove('open');
-
-            // Eventos Registrar Compra
-            btnAdd.addEventListener('click', () => openModal(purchaseModal));
-            closePurchase.addEventListener('click', () => closeModal(purchaseModal));
-            cancelPurchase.addEventListener('click', () => closeModal(purchaseModal));
-            purchaseModal.addEventListener('click', e => {
-                if (e.target === purchaseModal) closeModal(purchaseModal);
-            });
-
-            // Eventos Buscar Productos
-            btnSearchProd.addEventListener('click', () => openModal(productsModal));
-            closeProducts.addEventListener('click', () => closeModal(productsModal));
-            productsModal.addEventListener('click', e => {
-                if (e.target === productsModal) closeModal(productsModal);
-            });
-        });
-    </script>
+    <%--<script src="<%= request.getContextPath() %>/assets/js/compras.js"></script>--%>
 </body>
 </html>
+
