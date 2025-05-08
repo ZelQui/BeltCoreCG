@@ -2,11 +2,11 @@ package development.team.Models;
 
 public class EstadoProducto {
     private int idEstadoProducto;
-    private int nombre;
+    private String nombre;
 
     public EstadoProducto() {}
 
-    public EstadoProducto(int idEstadoProducto, int nombre) {
+    public EstadoProducto(int idEstadoProducto, String nombre) {
         this.idEstadoProducto = idEstadoProducto;
         this.nombre = nombre;
     }
@@ -19,11 +19,11 @@ public class EstadoProducto {
         this.idEstadoProducto = idEstadoProducto;
     }
 
-    public int getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(int nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 

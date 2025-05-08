@@ -1,6 +1,7 @@
 package development.team.Models;
 
 public class Modulo {
+    private int idModulo;
     private String nombre;
     private String ruta;
     private String icono;
@@ -9,11 +10,20 @@ public class Modulo {
     public Modulo() {
     }
 
-    public Modulo(String nombre, String ruta, String icono, Integer moduloPadreId) {
+    public Modulo(int idModulo, String nombre, String ruta, String icono, Integer moduloPadreId) {
+        this.idModulo = idModulo;
         this.nombre = nombre;
         this.ruta = ruta;
         this.icono = icono;
         this.moduloPadreId = moduloPadreId;
+    }
+
+    public int getIdModulo() {
+        return idModulo;
+    }
+
+    public void setIdModulo(int idModulo) {
+        this.idModulo = idModulo;
     }
 
     public String getNombre() {
@@ -51,7 +61,8 @@ public class Modulo {
     @Override
     public String toString() {
         return "Modulo{" +
-                "nombre='" + nombre + '\'' +
+                "idModulo=" + idModulo +
+                ", nombre='" + nombre + '\'' +
                 ", ruta='" + ruta + '\'' +
                 ", icono='" + icono + '\'' +
                 ", moduloPadreId=" + moduloPadreId +

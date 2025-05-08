@@ -31,10 +31,11 @@ public class LoginController extends HttpServlet {
             request.getSession().setAttribute("modulos_usuario", modulosUsuario);
 
             System.out.println("Éxito: redirigir al dashboard");
-            response.sendRedirect("views/menu.jsp"); // Éxito: redirigir al dashboard
+            response.sendRedirect(request.getContextPath() + "/app/inicio");
         } else {
             System.out.println("Error: mensaje Credenciales incorrectas");
-            response.sendRedirect("views/index.jsp"); // Error: mensaje Credenciales incorrectas
+            // Error: mensaje Credenciales incorrectas
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 
