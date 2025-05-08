@@ -1,3 +1,6 @@
+<%@ page import="development.team.Models.Proveedor" %>
+<%@ page import="java.util.List" %>
+<%@ page import="development.team.DAO.ProveedorDAO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
     <meta charset="UTF-8">
@@ -6,6 +9,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/proveedores.css" />
 </head>
+
+<%
+    List<Proveedor> proveedores = ProveedorDAO.obtenerProveedores();
+%>
+
 <div class="content-container">
     <h1>Gestión de Proveedores</h1>
     <button class="add-provider">Añadir Proveedor</button>
@@ -31,42 +39,25 @@
             </tr>
             </thead>
             <tbody>
-            <tr data-id="1">
-                <td>1</td>
-                <td>Proveedor Ejemplo S.A.</td>
-                <td>555-123-4567</td>
-                <td>juan@ejemplo.com</td>
-                <td>Av. Siempre Viva 123</td>
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn deactivate" title="Eliminar"><i class="fas fa-user-slash"></i></button>
-                </td>
-            </tr>
-            <tr data-id="2">
-                <td>2</td>
-                <td>Distribuidora XYZ</td>
-                <td>555-987-6543</td>
-                <td>maria@xyz.com</td>
-                <td>Jr. Comercio 456</td>
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn deactivate" title="Eliminar"><i class="fas fa-user-slash"></i></button>
-                </td>
-            </tr>
-            <tr data-id="3">
-                <td>3</td>
-                <td>Suministros ABC</td>
-                <td>555-456-7890</td>
-                <td>carlos@abc.com</td>
-                <td>Calle Progreso 789</td>
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn deactivate" title="Eliminar"><i class="fas fa-user-slash"></i></button>
-                </td>
-            </tr>
+            <%
+                int i = 1;
+                for (Proveedor proveedorList : proveedores) {%>
+                <tr data-id="<%= i %>">
+                    <td><%= i %></td>
+                    <td><%= proveedorList.getNombre() %></td>
+                    <td><%= proveedorList.getTelefono() %></td>
+                    <td><%= proveedorList.getCorreo() %></td>
+                    <td><%= proveedorList.getDireccion() %></td>
+                    <td>
+                        <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
+                        <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
+                        <button class="btn deactivate" title="Eliminar"><i class="fas fa-user-slash"></i></button>
+                    </td>
+                </tr>
+            <%
+                i++;
+                }
+            %>
             </tbody>
         </table>
     </div>
@@ -80,7 +71,7 @@
             <span class="close">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="providerForm">
+            <form id="providerForm" method="post" action="proveedor">
                 <div class="form-group">
                     <label for="providerName">Nombre</label>
                     <input type="text" id="providerName" name="providerName" required>

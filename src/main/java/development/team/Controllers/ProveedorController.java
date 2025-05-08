@@ -1,20 +1,36 @@
 package development.team.Controllers;
 
+import development.team.DAO.ProveedorDAO;
+import development.team.Models.Proveedor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "proveedor", urlPatterns = {"/proveedor"})
 public class ProveedorController extends HttpServlet {
 
+    private static ProveedorDAO proveedorDAO = new ProveedorDAO();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        String accion = request.getParameter("accion");
+        HttpSession session = request.getSession();
+
+        switch (accion) {
+            case "registrar":
+
+                break;
+            case "editar":
+                break;
+        }
     }
 
 
