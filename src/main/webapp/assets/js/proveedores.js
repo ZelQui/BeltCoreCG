@@ -21,11 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Cerrar modal al hacer clic fuera del contenido
-  window.addEventListener("click", (event) => {
+  /*window.addEventListener("click", (event) => {
     if (event.target === modal) {
       modal.style.display = "none";
     }
-  });
+  });*/
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -71,3 +71,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // Buscar proveedores por nombre
+  function applyFilters() {
+    const searchValue = document.querySelector(".search-provider").value.toLowerCase();
+    const rows = document.querySelectorAll(".provider-table tbody tr");
+
+    rows.forEach(row => {
+      const nombre = row.children[1].textContent.toLowerCase();
+      const matchesSearch = !searchValue || nombre.includes(searchValue);
+
+      row.style.display = matchesSearch ? "" : "none";
+    });
+  }
+
+  // Evento en tiempo real al escribir
+  document.querySelector(".search-provider").addEventListener("input", applyFilters);
+
+  // Evento al presionar botón "Buscar"
+  document.getElementById("applyFilters").addEventListener("click", applyFilters);
+});
+

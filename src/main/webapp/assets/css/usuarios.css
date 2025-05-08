@@ -65,6 +65,7 @@ body {
 /* Tabla */
 .table-container {
   overflow-x: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .user-table {

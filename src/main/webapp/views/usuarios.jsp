@@ -2,8 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="development.team.DTO.UsuarioRolDTO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +12,7 @@
 <%
     List<UsuarioRolDTO> usuarios = UsuarioDAO.obtenerTodosUsuarios();
 %>
-<body>
+
 <div class="content-container">
     <h1>Gestión de Usuarios</h1>
 
@@ -31,8 +29,8 @@
         </select>
         <select id="statusFilter">
             <option value="">Todos los estados</option>
-            <option value="active">Activo</option>
-            <option value="inactive">Inactivo</option>
+            <option value="Activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
         </select>
         <button class="btn primary" id="applyFilters">Buscar</button>
     </div>
@@ -50,20 +48,12 @@
             </tr>
             </thead>
             <tbody>
-            <% int contador = 1; %>
-            <% for (UsuarioRolDTO urdto : usuarios) { %>
-            <tr data-id="<%=contador%>">
-                <td><%=contador%></td>
-                <td><%=urdto.getNombreUsuario()%></td>
-                <td><%=urdto.getCorreo()%></td>
-                <td><span class="badge badge-info"><%=urdto.getNombreRol()%></span></td>
-                <td>
-                    <% if (urdto.getEstado() == 1) { %>
-                    <span class="badge badge-success">Activo</span>
-                    <% } else { %>
-                    <span class="badge badge-danger">Inactivo</span>
-                    <% } %>
-                </td>
+            <tr data-id="1">
+                <td>1</td>
+                <td>Ana Martínez</td>
+                <td>ana.martinez@ejemplo.com</td>
+                <td><span class="role-badge role-blue">Administrador</span></td>
+                <td><span class="role-badge role-green">Activo</span></td>
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
                     <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
@@ -71,7 +61,32 @@
                     <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
                 </td>
             </tr>
-            <% contador++; } %>
+            <tr data-id="2">
+                <td>2</td>
+                <td>Luis Rodríguez</td>
+                <td>luis.rodriguez@ejemplo.com</td>
+                <td><span class="role-badge role-gray">Vendedor</span></td>
+                <td><span class="role-badge role-green">Activo</span></td>
+                <td>
+                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
+                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
+                    <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
+                </td>
+            </tr>
+            <tr data-id="3">
+                <td>3</td>
+                <td>Carmen García</td>
+                <td>carmen.garcia@ejemplo.com</td>
+                <td><span class="role-badge role-gray">Vendedor</span></td>
+                <td><span class="role-badge role-red">Inactivo</span></td>
+                <td>
+                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
+                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
+                    <button class="btn activate" title="Activar"><i class="fas fa-user-check"></i></button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -143,5 +158,3 @@
 </div>
 
 <script src="../assets/js/usuarios.js"></script>
-
-</body>

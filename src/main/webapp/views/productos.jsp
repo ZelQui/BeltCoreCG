@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-  <link rel="stylesheet" href="../assets/css/productos.css" />
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/productos.css" />
 </head>
 
 <div class="productos-container">
@@ -9,7 +9,27 @@
 
   <div class="acciones">
     <button id="btnProducto"><i class="fas fa-plus"></i> Agregar Producto</button>
-    <button id="btnCategoria"><i class="fas fa-tags"></i> Agregar Categoría</button>
+  </div>
+
+  <div class="filter-container">
+    <div class="search-container">
+      <input type="text" class="search-provider" placeholder="Buscar producto...">
+    </div>
+
+    <select id="roleFilter">
+      <option value="">Todos las categorias</option>
+      <option value="correa">Correas 1</option>
+      <option value="correa">Correas 2</option>
+
+    </select>
+
+    <select id="statusFilter">
+      <option value="">Todos los estados</option>
+      <option value="En almacén">En almacén</option>
+      <option value="Agotado">Agotado</option>
+    </select>
+
+    <button class="btn primary" id="applyFilters">Buscar</button>
   </div>
 
   <!-- Tabla de productos -->
@@ -33,7 +53,7 @@
         <td>CORREA CIVVAL3325001NT-MR</td>
         <td>Correa</td>
         <td>S/ 139.90</td>
-        <td><span class="role-badge role-green">Activo</span></td>
+        <td><span class="role-badge role-green">En almacén</span></td>
         <td>
           <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
           <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
@@ -46,7 +66,7 @@
         <td>Correa Reversible De Vestir Negro/Marron 5AAC006</td>
         <td>Correa</td>
         <td>S/ 189.90</td>
-        <td><span class="role-badge role-red">Inactivo</span></td>
+        <td><span class="role-badge role-red">Agotado</span></td>
         <td>
           <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
           <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
@@ -88,27 +108,4 @@
   </div>
 </div>
 
-<!-- Modal Categoría -->
-<div id="modal-categoria" class="modal oculto">
-  <div class="modal-contenido">
-    <div class="modal-header">
-      <h2>Nueva Categoría</h2>
-      <span class="cerrar-modal">&times;</span>
-    </div>
-    <form id="form-categoria" class="formulario">
-      <label>Nombre de la categoría:</label>
-      <input type="text" placeholder="Ingrese nombre" />
-
-      <label>Descripción (opcional):</label>
-      <textarea placeholder="Ingrese una descripción"></textarea>
-
-      <div class="botones">
-        <button type="button" class="cancelar">Cancelar</button>
-        <button type="submit">Agregar</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-<script src="../assets/js/productos.js"></script>
+<script src="<%= request.getContextPath() %>/assets/js/productos.js"></script>

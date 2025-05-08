@@ -1,234 +1,116 @@
-// Script para la página de gestión de compras
-document.addEventListener('DOMContentLoaded', function() {
-    // Variables globales
-    let productCounter = 0;
-    let selectedProducts = [];
-    
-    // Referencias a elementos del DOM
-    const purchaseModal = document.getElementById('purchase-modal');
-    const productsModal = document.getElementById('products-modal');
-    const addPurchaseBtn = document.getElementById('add-purchase-btn');
-    const searchProductBtn = document.getElementById('search-product-btn');
-    const cancelBtn = document.getElementById('cancel-btn');
-    const saveBtn = document.getElementById('save-btn');
-    const productList = document.getElementById('product-list');
-    const totalAmount = document.getElementById('total-amount');
-    const closeButtons = document.querySelectorAll('.close');
-    
-    // Comprobar si los elementos existen antes de asignar eventos
-    if (addPurchaseBtn) {
-        // Abrir modal de compra
-        addPurchaseBtn.addEventListener('click', function() {
-            purchaseModal.style.display = 'block';
-            document.querySelector('.modal-header h2').textContent = 'Registrar Compra';
-            resetForm();
-        });
-    }
-    
-    // Cerrar modales con botón X
-    closeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            purchaseModal.style.display = 'none';
-            productsModal.style.display = 'none';
-        });
-    });
-    
-    // Cerrar modales haciendo clic fuera
-    window.addEventListener('click', function(event) {
-        if (event.target === purchaseModal) {
-            purchaseModal.style.display = 'none';
+const purchaseModal = document.getElementById("purchaseModal");
+const closeModal = purchaseModal.querySelector(".close");
+
+document.querySelector(".add-provider").addEventListener("click", () => {
+    openModal("add");
+});
+
+closeModal.addEventListener("click", () => {
+    purchaseModal.style.display = "none";
+});
+
+/* window.addEventListener("click", (e) => {
+    if (e.target === purchaseModal) purchaseModal.style.display = "none";
+}); */
+
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("purchaseModal");
+    const form = document.getElementById("purchaseForm");
+    const closeBtn = modal.querySelector(".close");
+    const cancelBtn = modal.querySelector(".cancel");
+
+    // Función para abrir el modal y rellenar si es edición
+    function openModal(mode, purchaseData = {}) {
+        form.reset();
+        form.setAttribute("data-mode", mode);
+
+        if (mode === "edit") {
+            document.getElementById("provider").value = purchaseData.provider || "";
+            document.getElementById("invoiceType").value = purchaseData.invoiceType || "";
+            document.getElementById("invoiceNumber").value = purchaseData.invoiceNumber || "";
+            document.getElementById("date").value = purchaseData.date || "";
         }
-        if (event.target === productsModal) {
-            productsModal.style.display = 'none';
-        }
+
+        modal.style.display = "block";
+    }
+
+    // Cerrar modal al hacer clic en "x"
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
     });
-    
-    // Asignar eventos solo si los elementos existen
-    if (searchProductBtn) {
-        // Abrir modal de búsqueda de productos
-        searchProductBtn.addEventListener('click', function() {
-            productsModal.style.display = 'block';
-        });
-    }
-    
-    if (cancelBtn) {
-        // Cancelar registro de compra
-        cancelBtn.addEventListener('click', function() {
-            purchaseModal.style.display = 'none';
-        });
-    }
-    
-    if (saveBtn) {
-        // Guardar compra
-        saveBtn.addEventListener('click', function() {
-            const form = document.getElementById('purchase-form');
-            // Aquí iría la validación del formulario y lógica para guardar
-            alert('Compra registrada con éxito');
-            purchaseModal.style.display = 'none';
-        });
-    }
-    
-    // Editar compra existente
-    document.querySelectorAll('.edit-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const purchaseId = this.getAttribute('data-id');
-            document.querySelector('.modal-header h2').textContent = 'Editar Compra #' + purchaseId;
-            purchaseModal.style.display = 'block';
-            
-            // Aquí cargarías los datos de la compra para editar
-            loadDummyPurchaseData(purchaseId);
+
+    // Cerrar modal al hacer clic en "Cancelar"
+    cancelBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // Acción: Ver compra
+    document.querySelectorAll(".btn.view").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const row = btn.closest("tr");
+            const purchaseInfo = row.children[2].textContent;
+            alert("Viendo información de: " + purchaseInfo);
         });
     });
-    
-    // Ver detalles de una compra
-    document.querySelectorAll('.view-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const purchaseId = this.getAttribute('data-id');
-            alert('Ver detalles de compra #' + purchaseId);
-            // Aquí podrías abrir un modal con los detalles en modo lectura
+
+    // Acción: Editar compra
+    document.querySelectorAll(".btn.edit").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const row = btn.closest("tr");
+            openModal("edit", {
+                provider: row.children[2].textContent,
+                invoiceNumber: row.children[3].textContent,
+                date: row.children[1].textContent,
+                invoiceType: row.children[5].textContent
+            });
         });
     });
-    
-    // Eliminar compra
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const purchaseId = this.getAttribute('data-id');
-            if (confirm('¿Está seguro de eliminar la compra #' + purchaseId + '?')) {
+
+    // Acción: Eliminar compra
+    document.querySelectorAll(".btn.deactivate").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const row = btn.closest("tr");
+            const purchaseId = row.children[0].textContent;
+            if (confirm(`¿Deseas eliminar la compra con ID ${purchaseId}?`)) {
+                alert("Compra eliminada correctamente.");
                 // Aquí iría la lógica para eliminar la compra
-                alert('Compra #' + purchaseId + ' eliminada correctamente');
-                // this.closest('tr').remove();
             }
         });
     });
-    
-    // Seleccionar producto - asignamos eventos de forma dinámica
-    const attachProductSelectors = () => {
-        document.querySelectorAll('.select-product').forEach(button => {
-            button.addEventListener('click', function() {
-                const productId = this.getAttribute('data-id');
-                const productName = this.getAttribute('data-name');
-                const productPrice = this.getAttribute('data-price');
-                
-                addProductToList(productId, productName, productPrice);
-                productsModal.style.display = 'none';
-            });
-        });
-    };
-    
-    // Ejecutamos la función para adjuntar los eventos
-    attachProductSelectors();
-    
-    // Agregar producto a la lista
-    function addProductToList(id, name, price) {
-        productCounter++;
-        
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${productCounter}</td>
-            <td>${name}</td>
-            <td>
-                <input type="number" min="1" value="1" class="form-control quantity-input" 
-                       style="width: 70px;" data-price="${price}">
-            </td>
-            <td>$${price}</td>
-            <td>
-                <button class="btn btn-danger btn-sm remove-product">
-                    Eliminar
-                </button>
-            </td>
-        `;
-        
-        if (productList) {
-            productList.appendChild(row);
-            
-            // Agregar event listener para eliminar producto
-            row.querySelector('.remove-product').addEventListener('click', function() {
-                row.remove();
-                updateTotal();
-            });
-            
-            // Agregar event listener para actualizar cantidad
-            row.querySelector('.quantity-input').addEventListener('change', function() {
-                updateTotal();
-            });
-            
-            updateTotal();
-        }
-    }
-    
-    // Actualizar total
-    function updateTotal() {
-        if (!totalAmount) return;
-        
-        let total = 0;
-        const quantityInputs = document.querySelectorAll('.quantity-input');
-        
-        quantityInputs.forEach(input => {
-            const quantity = parseInt(input.value);
-            const price = parseFloat(input.getAttribute('data-price'));
-            total += quantity * price;
-        });
-        
-        totalAmount.value = total.toFixed(2);
-    }
-    
-    // Resetear formulario
-    function resetForm() {
-        const form = document.getElementById('purchase-form');
-        if (!form) return;
-        
-        form.reset();
-        if (productList) productList.innerHTML = '';
-        productCounter = 0;
-        if (totalAmount) totalAmount.value = '0.00';
-    }
-    
-    // Cargar datos de ejemplo (para la función de editar)
-    function loadDummyPurchaseData(id) {
-        resetForm();
-        
-        // Datos de ejemplo según el ID
-        if (id === '1') {
-            addProductToList('P001', 'Zapatos de cuero negro talla 40', '45.00');
-            addProductToList('P003', 'Sandalias de cuero negro talla 38', '35.00');
-        } else if (id === '2') {
-            addProductToList('P002', 'Zapatos de cuero marrón talla 42', '50.00');
+
+    // Acción: Abrir modal de nuevo proveedor
+    document.querySelector(".add-provider").addEventListener("click", () => openModal("add"));
+});
+
+function applyFilters() {
+    const roleFilterValue = document.getElementById("roleFilter").value.toLowerCase(); // proveedor
+    const statusFilterValue = document.getElementById("statusFilter").value.toLowerCase(); // método de pago
+    const searchValue = document.querySelector(".search-provider").value.toLowerCase(); // texto libre
+
+    const rows = document.querySelectorAll(".provider-table tbody tr");
+
+    rows.forEach(row => {
+        const proveedor = row.cells[2].textContent.toLowerCase(); // columna proveedor
+        const factura = row.cells[3].textContent.toLowerCase();   // columna N° factura
+        const metodo = row.cells[5].textContent.toLowerCase();    // columna método de pago
+
+        const matchesProvider = !roleFilterValue || proveedor === roleFilterValue;
+        const matchesPayment = !statusFilterValue || metodo === statusFilterValue;
+        const matchesSearch = !searchValue || proveedor.includes(searchValue) || factura.includes(searchValue);
+
+        if (matchesProvider && matchesPayment && matchesSearch) {
+            row.style.display = "";
         } else {
-            addProductToList('P005', 'Mocasines de cuero marrón talla 41', '55.00');
+            row.style.display = "none";
         }
-    }
-});
+    });
+}
 
-/*
-    //compras.js
-    // Abrir y cerrar modales de Compras
-    document.addEventListener('DOMContentLoaded', () => {
-    // Modal Registrar Compra
-    const btnAdd = document.getElementById('add-purchase-btn');
-    const purchaseModal = document.getElementById('purchaseModal');
-    const closePurchase = purchaseModal.querySelector('.close');
-    const cancelPurchase = purchaseModal.querySelector('.btn.cancel');
+// Eventos para aplicar filtros en tiempo real
+document.getElementById("roleFilter").addEventListener("change", applyFilters);
+document.getElementById("statusFilter").addEventListener("change", applyFilters);
+document.querySelector(".search-provider").addEventListener("input", applyFilters);
 
-    // Modal Buscar Productos
-    const btnSearchProd = document.getElementById('search-product-btn');
-    const productsModal = document.getElementById('productsModal');
-    const closeProducts = productsModal.querySelector('.close');
-
-    const openModal = modal => modal.classList.add('open');
-    const closeModal = modal => modal.classList.remove('open');
-
-    // Eventos Registrar Compra
-    btnAdd.addEventListener('click', () => openModal(purchaseModal));
-    closePurchase.addEventListener('click', () => closeModal(purchaseModal));
-    cancelPurchase.addEventListener('click', () => closeModal(purchaseModal));
-    purchaseModal.addEventListener('click', e => {
-    if (e.target === purchaseModal) closeModal(purchaseModal);
-});
-
-    // Eventos Buscar Productos
-    btnSearchProd.addEventListener('click', () => openModal(productsModal));
-    closeProducts.addEventListener('click', () => closeModal(productsModal));
-    productsModal.addEventListener('click', e => {
-    if (e.target === productsModal) closeModal(productsModal);
-});
-}); */
+// Opcional: botón para volver a aplicar filtros
+const applyFiltersBtn = document.getElementById("applyFilters");
+applyFiltersBtn.addEventListener("click", applyFilters);

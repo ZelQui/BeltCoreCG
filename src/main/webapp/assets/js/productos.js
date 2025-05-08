@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
     // ----- Modal Producto -----
     const btnProducto = document.getElementById("btnProducto");
@@ -16,22 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     cerrarProducto.addEventListener("click", () => modalProducto.classList.add("oculto"));
     cancelarProducto.addEventListener("click", () => modalProducto.classList.add("oculto"));
-    window.addEventListener("click", (e) => {
-        if (e.target === modalProducto) modalProducto.classList.add("oculto");
-    });
-
-    // ----- Modal Categoría -----
-    const btnCategoria = document.getElementById("btnCategoria");
-    const modalCategoria = document.getElementById("modal-categoria");
-    const cerrarCategoria = modalCategoria.querySelector(".cerrar-modal");
-    const cancelarCategoria = modalCategoria.querySelector(".cancelar");
-
-    btnCategoria.addEventListener("click", () => modalCategoria.classList.remove("oculto"));
-    cerrarCategoria.addEventListener("click", () => modalCategoria.classList.add("oculto"));
-    cancelarCategoria.addEventListener("click", () => modalCategoria.classList.add("oculto"));
-    window.addEventListener("click", (e) => {
-        if (e.target === modalCategoria) modalCategoria.classList.add("oculto");
-    });
 
     // ----- Ver Producto -----
     document.querySelectorAll(".btn.view").forEach(btn => {
@@ -69,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.addEventListener("click", function () {
                 const row = this.closest("tr");
                 const estado = row.querySelector(".role-badge");
-                estado.textContent = "Activo";
+                estado.textContent = "En almacén";
                 estado.classList.remove("role-red");
                 estado.classList.add("role-green");
 
@@ -84,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
             btn.addEventListener("click", function () {
                 const row = this.closest("tr");
                 const estado = row.querySelector(".role-badge");
-                estado.textContent = "Inactivo";
+                estado.textContent = "Agotado";
                 estado.classList.remove("role-green");
                 estado.classList.add("role-red");
 
@@ -96,4 +79,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
     attachActivateHandlers();
     attachDeactivateHandlers();
+
+    // ----- Filtrar Productos -----
+    function applyFilters() {
+        const roleFilterValue = document.getElementById("roleFilter").value.toLowerCase();
+        const statusFilterValue = document.getElementById("statusFilter").value.toLowerCase();
+        const searchValue = document.querySelector(".search-provider").value.toLowerCase();
+
+        const rows = document.querySelectorAll(".user-table tbody tr");
+
+        rows.forEach(row => {
+            const categoria = row.cells[3].textContent.toLowerCase();
+            const estado = row.querySelector(".role-badge").textContent.toLowerCase();
+            const nombre = row.cells[2].textContent.toLowerCase();
+
+            // Filtrado por categoría, estado y búsqueda
+            const matchesCategory = !roleFilterValue || categoria === roleFilterValue;
+            const matchesStatus = !statusFilterValue || estado === statusFilterValue;
+            const matchesSearch = !searchValue || nombre.includes(searchValue);
+
+            // Mostrar o ocultar según el filtro
+            if (matchesCategory && matchesStatus && matchesSearch) {
+                row.style.display = ""; // Mostrar fila
+            } else {
+                row.style.display = "none"; // Ocultar fila
+            }
+        });
+    }
+
+    // Evento para aplicar los filtros en tiempo real
+    document.getElementById("roleFilter").addEventListener("change", applyFilters);
+    document.getElementById("statusFilter").addEventListener("change", applyFilters);
+    document.querySelector(".search-provider").addEventListener("input", applyFilters);
+
+    // ----- Buscar con el botón (opcional) -----
+    const applyFiltersBtn = document.getElementById("applyFilters");
+
+    applyFiltersBtn.addEventListener("click", function() {
+        applyFilters(); // Vuelve a aplicar los filtros si se hace clic en el botón
+    });
+
 });

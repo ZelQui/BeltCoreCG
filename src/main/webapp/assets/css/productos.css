@@ -7,7 +7,7 @@ body {
 }
 
 .productos-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: auto;
   background: white;
   border-radius: 12px;
@@ -30,6 +30,7 @@ body {
 }
 
 .acciones button {
+  margin-bottom: 15px;
   background-color: #22c55e;
   color: white;
   border: none;
@@ -47,6 +48,42 @@ body {
   background-color: #16a34a;
 }
 
+/* Filtros */
+.filter-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.search-container input,
+#roleFilter,
+#statusFilter {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+/* Botón aplicar filtros */
+.btn.primary {
+  background-color: #292929;
+  padding: 8px 12px;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn.primary:hover {
+  background-color: #0e0d0d;
+}
+
+/* styles de imagen */
+
 .product-img {
   width: 40px;
   height: 40px;
@@ -57,8 +94,8 @@ body {
 
 /* Contenedor general */
 .table-container {
-  margin-top: 20px;
-  background: #fff;
+  /*   margin-top: 20px;
+    background: #fff;*/
   border-radius: 12px;
   overflow-x: auto;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -68,6 +105,7 @@ body {
 .user-table {
   width: 100%;
   border-collapse: collapse;
+  border-radius: 8px;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -78,10 +116,10 @@ body {
 }
 
 .user-table th {
-  padding: 14px;
+  background-color: #1f2937;
+  color: white;
+  padding: 12px;
   text-align: left;
-  font-weight: 600;
-  font-size: 14px;
 }
 
 /* Cuerpo de la tabla */
@@ -89,16 +127,16 @@ body {
   padding: 12px;
   border-bottom: 1px solid #e0e0e0;
   vertical-align: middle;
-  font-size: 14px;
+
+}
+.user-table tbody tr {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
 }
 
-/* Imagen del producto */
-.product-img {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 6px;
-  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+.user-table tbody tr:hover {
+  background-color: #f9fafb;
 }
 
 /* Badges reutilizados para estado */
@@ -121,14 +159,12 @@ body {
 
 /* Botones de acciones */
 .user-table .btn {
-  padding: 6px 10px;
   border: none;
-  border-radius: 8px;
-  margin-right: 5px;
-  cursor: pointer;
+  padding: 8px;
+  margin: 0 2px;
+  border-radius: 6px;
   color: white;
-  font-size: 14px;
-  transition: background 0.3s ease;
+  cursor: pointer;
 }
 
 .user-table .btn i {
@@ -137,26 +173,31 @@ body {
 
 /* Colores de botones */
 .user-table .btn.view {
-  background-color: #03A9F4;
+  background-color: #0ea5e9;
 }
 
 .user-table .btn.edit {
-  background-color: #FFEB3B;
-  color: #333;
+  background-color: #facc15; /* amarillo */
+  color: #1f2937;
 }
 
 .user-table .btn.deactivate {
-  background-color: #F44336;
+  background-color: #ef4444;
 }
 
 .user-table .btn.activate {
-  background-color: #4CAF50;
+  background-color: #22c55e; /* verde */
 }
 
 .user-table .btn:hover {
   opacity: 0.85;
 }
 
+.btn i {
+  pointer-events: none;
+}
+
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -176,11 +217,11 @@ body {
 
 .modal-contenido {
   background: white;
-  border-radius: 12px;
+  border-radius: 10px;
   width: 100%;
   max-width: 500px;
   padding: 2rem;
-  position: relative;
+  /*   position: relative; */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   animation: modalFade 0.3s ease;
 }
@@ -200,7 +241,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  /*   margin-bottom: 1rem; */
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
 }
 
 .modal-header h2 {
@@ -219,6 +262,9 @@ body {
   color: #000;
 }
 
+.modal-body {
+  margin-top: 15px;
+}
 .formulario {
   display: flex;
   flex-direction: column;
@@ -235,7 +281,7 @@ body {
 .formulario textarea {
   padding: 0.6rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
   width: 100%;
 }
@@ -256,17 +302,16 @@ textarea {
 .botones {
   display: flex;
   justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .botones button {
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
+  padding: 10px 16px;
+  font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .botones .cancelar {
@@ -279,12 +324,12 @@ textarea {
 }
 
 .botones button[type="submit"] {
-  background-color: #22c55e;
+  background-color: #2563eb;
   color: white;
 }
 
 .botones button[type="submit"]:hover {
-  background-color: #16a34a;
+  background-color: #1d4ed8;
 }
 
 .oculto {
