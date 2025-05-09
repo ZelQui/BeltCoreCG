@@ -24,14 +24,15 @@
         </div>
         <select id="roleFilter">
             <option value="">Todos los roles</option>
-            <option value="admin">Administrador</option>
-            <option value="vended">Vendedor</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Vendedor">Vendedor</option>
         </select>
         <select id="statusFilter">
             <option value="">Todos los estados</option>
             <option value="Activo">Activo</option>
-            <option value="inactivo">Inactivo</option>
+            <option value="Inactivo">Inactivo</option>
         </select>
+
         <button class="btn primary" id="applyFilters">Buscar</button>
     </div>
 

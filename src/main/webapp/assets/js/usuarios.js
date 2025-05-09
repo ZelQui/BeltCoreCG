@@ -43,17 +43,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Acción: Editar usuario
-    document.querySelectorAll(".btn.edit").forEach((btn) => {
+    document.querySelectorAll(".btn.edit").forEach(btn => {
         btn.addEventListener("click", () => {
             const row = btn.closest("tr");
-            const names = row.children[1].textContent.split(" ");
             openModal("edit", {
-                firstName: names[0],
-                lastName: names.slice(1).join(" "),
+                firstName: row.children[1].textContent.split(" ")[0],
+                lastName: row.children[1].textContent.split(" ").slice(1).join(" "),
                 email: row.children[2].textContent,
-                username: row.children[3].textContent,
-                role: row.querySelector(".role-badge").textContent.trim().toLowerCase(),
-                status: row.querySelector(".status-badge").textContent.trim().toLowerCase(),
+                username: row.children[2].textContent.split("@")[0],
+                role: row.querySelector(".role-badge").textContent.toLowerCase().trim(),
+                status: row.querySelectorAll(".role-badge")[1].textContent.toLowerCase().trim()
             });
         });
     });
@@ -79,20 +78,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Filtros de tabla
-    function applyFilters() {
-        const nameFilter = document.querySelector(".search-provider").value.toLowerCase();
-        const roleFilter = document.getElementById("roleFilter").value.toLowerCase();
-        const statusFilter = document.getElementById("statusFilter").value.toLowerCase();
 
-        document.querySelectorAll(".user-table tbody tr").forEach((row) => {
-            const fullName = row.children[1].textContent.toLowerCase();
-            const role = row.querySelector(".role-badge").textContent.toLowerCase();
-            const status = row.querySelector(".status-badge").textContent.toLowerCase();
-            const show =
-                fullName.includes(nameFilter) &&
-                (roleFilter === "" || role.includes(roleFilter)) &&
-                (statusFilter === "" || status.includes(statusFilter));
-            row.style.display = show ? "" : "none";
+
+    function applyFilters() {
+        const roleFilterValue = document.getElementById("roleFilter").value.toLowerCase();
+        const statusFilterValue = document.getElementById("statusFilter").value.toLowerCase();
+        const searchValue = document.querySelector(".search-provider").value.toLowerCase();
+
+        const rows = document.querySelectorAll(".user-table tbody tr");
+
+        rows.forEach(row => {
+            const rol = row.cells[3].textContent.toLowerCase();
+            const estado = row.cells[4].textContent.toLowerCase(); // ✅ aquí está el fix
+            const nombre = row.cells[1].textContent.toLowerCase(); // ✅ nombre completo
+
+            const matchesRole = !roleFilterValue || rol === roleFilterValue;
+            const matchesStatus = !statusFilterValue || estado === statusFilterValue;
+            const matchesSearch = !searchValue || nombre.includes(searchValue);
+
+            row.style.display = (matchesRole && matchesStatus && matchesSearch) ? "" : "none";
         });
     }
 
