@@ -1,32 +1,5 @@
 
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("providerModal");
-  const openBtn = document.querySelector(".add-provider");
-  const closeBtn = modal.querySelector(".close");
-  const cancelBtn = modal.querySelector(".cancel");
 
-  // Mostrar modal
-  openBtn.addEventListener("click", () => {
-    modal.style.display = "block";
-  });
-
-  // Cerrar modal al hacer clic en "x"
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  // Cerrar modal al hacer clic en "Cancelar"
-  cancelBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  // Cerrar modal al hacer clic fuera del contenido
-  /*window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });*/
-});
 
 document.addEventListener("DOMContentLoaded", () => {
   // Ver proveedor
@@ -92,3 +65,71 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("applyFilters").addEventListener("click", applyFilters);
 });
 
+// MODALS
+document.addEventListener("DOMContentLoaded", () => {
+  // ----- MODAL PARA AÑADIR PROVEEDOR -----
+  const addModal = document.getElementById("addProviderModal");
+  const addOpenBtn = document.querySelector(".add-provider");
+  const addCloseBtn = addModal?.querySelector(".close");
+  const addCancelBtn = addModal?.querySelector(".cancel");
+
+  if (addOpenBtn) {
+    addOpenBtn.addEventListener("click", () => {
+      addModal.style.display = "block";
+    });
+  }
+
+  if (addCloseBtn) {
+    addCloseBtn.addEventListener("click", () => {
+      addModal.style.display = "none";
+    });
+  }
+
+  if (addCancelBtn) {
+    addCancelBtn.addEventListener("click", () => {
+      addModal.style.display = "none";
+    });
+  }
+
+  window.addEventListener("click", (event) => {
+    if (event.target === addModal) {
+      addModal.style.display = "none";
+    }
+  });
+
+  // ----- MODAL PARA EDITAR/VER PROVEEDOR -----
+  const editModal = document.getElementById("providerModal");
+  const editCloseBtn = editModal?.querySelector(".close");
+  const editCancelBtn = editModal?.querySelector(".cancel");
+
+  // Asignar evento a todos los botones de editar
+  const editBtns = document.querySelectorAll(".btn.edit");
+  editBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      editModal.style.display = "block";
+      // Aquí puedes cargar los datos al formulario si es necesario
+    });
+  });
+
+  if (editCloseBtn) {
+    editCloseBtn.addEventListener("click", () => {
+      editModal.style.display = "none";
+    });
+  }
+
+  if (editCancelBtn) {
+    editCancelBtn.addEventListener("click", () => {
+      editModal.style.display = "none";
+    });
+  }
+
+  window.addEventListener("click", (event) => {
+    if (event.target === editModal) {
+      editModal.style.display = "none";
+    }
+  });
+});
+
+function closeAddProviderModal() {
+  document.getElementById('addProviderModal').style.display = 'none';
+}

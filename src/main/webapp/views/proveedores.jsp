@@ -8,6 +8,9 @@
     <title>Gestión de Proveedores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/proveedores.css" />
+    <!-- Agregar SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <%
@@ -67,7 +70,52 @@
     </div>
 </div>
 
-<!-- Modal para añadir/editar proveedor -->
+<!-- Modal exclusivo para añadir proveedor -->
+<div id="addProviderModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nuevo Proveedor</h2>
+            <span class="close" onclick="closeAddProviderModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="addProviderForm">
+                <input type="hidden" name="accion" value="registrar">
+
+                <div class="form-group">
+                    <label for="nuevoNombre">Nombre</label>
+                    <input type="text" id="nuevoNombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="nuevoTelefono">Teléfono</label>
+                    <input type="tel" id="nuevoTelefono" name="telefono" required>
+                </div>
+                <div class="form-group">
+                    <label for="nuevoCorreo">Correo</label>
+                    <input type="email" id="nuevoCorreo" name="correo" required>
+                </div>
+                <div class="form-group">
+                    <label for="nuevaDireccion">Dirección</label>
+                    <input type="text" id="nuevaDireccion" name="direccion">
+                </div>
+                <div class="form-group">
+                    <label for="nuevoRuc">RUC</label>
+                    <input type="text" id="nuevoRuc" name="ruc" required>
+                </div>
+                <div class="form-group">
+                    <label for="nuevaCuenta">Cuenta Interbancaria</label>
+                    <input type="text" id="nuevaCuenta" name="cuentaInterbancaria">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn cancel" onclick="closeAddProviderModal()">Cancelar</button>
+                    <button type="submit" class="btn primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Editar proveedor -->
 <div id="providerModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">

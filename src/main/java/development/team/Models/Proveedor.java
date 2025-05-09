@@ -14,11 +14,14 @@ public class Proveedor {
     public Proveedor() {
     }
 
-    public Proveedor(String nombre, String telefono, String correo, String direccion) {
+    public Proveedor(String nombre, String telefono, String correo, String direccion, TipoDocumento tipoDocumento, String numeroRuc, String cuentaInterbancaria) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
         this.direccion = direccion;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroRuc = numeroRuc;
+        this.cuentaInterbancaria = cuentaInterbancaria;
     }
 
     public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion, int estado, TipoDocumento tipoDocumento, String numeroRuc, String cuentaInterbancaria) {
