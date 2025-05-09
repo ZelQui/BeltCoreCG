@@ -49,12 +49,15 @@
             </tr>
             </thead>
             <tbody>
+            <%
+                int i = 1;
+                for (UsuarioRolDTO usuarioList : usuarios) { %>
             <tr data-id="1">
-                <td>1</td>
-                <td>Ana Martínez</td>
-                <td>ana.martinez@ejemplo.com</td>
-                <td><span class="role-badge role-blue">Administrador</span></td>
-                <td><span class="role-badge role-green">Activo</span></td>
+                <td><%= i %></td>
+                <td><%= usuarioList.getNombreUsuario()%> </td>
+                <td><%= usuarioList.getCorreo() %></td>
+                <td><span class="role-badge role-blue"><%= usuarioList.getNombreRol() %></span></td>
+                <td><span class="role-badge role-green"><%= usuarioList.getEstado() == 1 ? "Activo" : "Inactivo" %></span></td>
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
                     <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
@@ -62,32 +65,10 @@
                     <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
                 </td>
             </tr>
-            <tr data-id="2">
-                <td>2</td>
-                <td>Luis Rodríguez</td>
-                <td>luis.rodriguez@ejemplo.com</td>
-                <td><span class="role-badge role-gray">Vendedor</span></td>
-                <td><span class="role-badge role-green">Activo</span></td>
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
-                    <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
-                </td>
-            </tr>
-            <tr data-id="3">
-                <td>3</td>
-                <td>Carmen García</td>
-                <td>carmen.garcia@ejemplo.com</td>
-                <td><span class="role-badge role-gray">Vendedor</span></td>
-                <td><span class="role-badge role-red">Inactivo</span></td>
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                    <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
-                    <button class="btn activate" title="Activar"><i class="fas fa-user-check"></i></button>
-                </td>
-            </tr>
+            <%
+                    i++;
+                }
+            %>
             </tbody>
         </table>
     </div>
