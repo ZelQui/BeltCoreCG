@@ -27,13 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Cerrar modal de agregar
     closeAddBtn.addEventListener("click", () => addModal.style.display = "none");
-
-    // Cerrar modal de editar
-    closeEditBtn.addEventListener("click", () => editModal.style.display = "none");
-
     // Botón Cancelar de agregar
     cancelAddBtn.addEventListener("click", () => addModal.style.display = "none");
 
+    // Cerrar modal de editar
+    closeEditBtn.addEventListener("click", () => editModal.style.display = "none");
     // Botón Cancelar de editar
     cancelEditBtn.addEventListener("click", () => editModal.style.display = "none");
 
@@ -42,15 +40,20 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             const row = btn.closest("tr");
 
-            // Limpiar y llenar el formulario de edición con los datos del usuario
-            editForm.reset();
-            editForm.querySelector("#fullNameEdit").value = row.children[1].textContent.trim();
-            editForm.querySelector("#emailEdit").value = row.children[2].textContent.trim();
-            editForm.querySelector("#roleEdit").value = row.querySelector(".role-badge").textContent.toLowerCase().trim();
+            // Obtener valores de la fila
+            const idUsuario = btn.dataset.id; // <- Aquí obtenemos el ID desde el data-id
+            const fullName = row.querySelector(".user-fullname").textContent.trim();
+            const email = row.querySelector(".user-email").textContent.trim();
+            const rolId = row.querySelector(".user-rol").dataset.rolId;
 
-            // Mostrar el modal de edición
+            // Asignar valores al formulario
+            editForm.querySelector("#idUsuarioEdit").value = idUsuario;
+            editForm.querySelector("#fullNameEdit").value = fullName;
+            editForm.querySelector("#emailEdit").value = email;
+            editForm.querySelector("#roleEdit").value = rolId;
+
+            // Mostrar el modal
             editModal.style.display = "block";
-            editForm.querySelector("input").focus();
         });
     });
 
@@ -79,6 +82,44 @@ document.addEventListener("DOMContentLoaded", () => {
                 icon: 'info',
                 confirmButtonText: 'Cerrar',
                 confirmButtonColor: '#3085d6',
+            });
+        });
+    });
+
+    // Accion Resetear Contraseña
+    document.querySelectorAll(".btn.reset-password").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const idUsuario = row.dataset.id;
+
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Se restablecerá la contraseña a su valor predeterminado.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, resetear",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${location.origin}/BeltCoreCG_war_exploded/user`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `accion=restartPass&idUsuario=${encodeURIComponent(idUsuario)}`
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                Swal.fire("¡Éxito!", "Contraseña reseteada correctamente.", "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error", "No se pudo resetear la contraseña.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Ocurrió un error en la solicitud.", "error");
+                        });
+                }
             });
         });
     });

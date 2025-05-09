@@ -240,6 +240,33 @@ import java.util.List;
 
         return result;
     }
+
+    public boolean resetearContrasena(int usuarioId) {
+        String sql = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
+        String nuevaContrasenaPorDefecto = "123456";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            String hashPassword = BCrypt.hashpw(nuevaContrasenaPorDefecto, BCrypt.gensalt());
+            ps.setString(1, hashPassword);
+            ps.setInt(2, usuarioId);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Contraseña reseteada para el usuario ID: " + usuarioId);
+                return true;
+            } else {
+                System.err.println("No se encontró usuario con ID: " + usuarioId);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("SQLException al resetear contraseña del usuario ID " + usuarioId + ": " + e.getMessage());
+        }
+
+        return false;
+    }
+
     public static Usuario actualizarContrasena(Usuario usuario, String nuevaContrasena) {
         String sql = "UPDATE usuarios SET password = ? WHERE id = ?";
 

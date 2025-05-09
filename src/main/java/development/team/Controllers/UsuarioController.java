@@ -67,7 +67,7 @@ public class UsuarioController extends HttpServlet {
                     user.setNombre(nombre);
                     user.setCorreo(correo);
                     user.setContrasena(password);
-                    //AGREGAR A ROL
+                    //AGREGAR EL ROL ASIGNADO
                     rol = roldao.obtenerRolPorId(idRol);
                     user.setRol(rol);
                     user.setEstado(1);
@@ -77,44 +77,43 @@ public class UsuarioController extends HttpServlet {
                 }
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
-            /*case "update":
-                int employeeId = Integer.parseInt(req.getParameter("idemployee"));
-                int id = employeedao.getUserIdByEmployeeId(employeeId);
-                User upUser = userdao.getUserById(id);
-                String nombreEditar = req.getParameter("nombreEdit");
-                String correoEditar = req.getParameter("correoEdit");
-                String user = req.getParameter("userEdit");
-                int rol = Integer.parseInt(req.getParameter("rolEditar"));
-                String status = req.getParameter("estatusEdit");
-                //ACTUALIZAR DATOS DE USUARIO
-                upUser.setUsername(user);
-                //ACTUALIZAR EMPLEADOS
-                int empleadoId = upUser.getEmployee().getId();
-                Employee upEmployee = userdao.obtenerEmpleadoPorId(empleadoId);
-                upEmployee.setName(nombreEditar);
-                if (rol == 1) {
-                    upEmployee.setPosition("Administrador");
-                } else if (rol == 2) {
-                    upEmployee.setPosition("Recepcionista");}
-                else {
-                    upEmployee.setPosition("rolEmpleado");
-                }
-                upEmployee.setEmail(correoEditar);
-                employeedao.updateEmployee(upEmployee, rol);
+            case "Actualizar":
+                System.out.println("Entra a Actualizar");
+                int usuarioId = Integer.parseInt(req.getParameter("idUsuario"));
+                String nombreEdit = req.getParameter("fullNameEdit");
+                String correoEdit = req.getParameter("emailEdit");
+                int idRolEdit = Integer.parseInt(req.getParameter("roleEdit"));
 
-                upUser.setEmployee(upEmployee);
-                upUser.setStatusUser(StatusUser.valueOf(status));
-                userdao.updateUser(upUser);
-                resp.sendRedirect("menu.jsp?view=usuarios");
-                break;
-            case "restartPass": //CUANDO SE LE DA AL BOTON DE ADMINISTRACION RESTABLECER A PREDETERMINADO
-                int idUsuario = Integer.parseInt(req.getParameter("idUser"));
-                User userReset = userdao.getUserById(idUsuario);
-                userdao.updateUserPassword(userReset, "123456");
-                System.out.println("Contraseña restablecida: ID USER: "+ idUsuario);
-                resp.sendRedirect("menu.jsp?view=usuarios");
-                break;
-            case "delete":
+                //ACTUALIZAR USUARIO
+                Usuario userEdit = new Usuario();
+                userEdit.setIdUsuario(usuarioId);
+                userEdit.setNombre(nombreEdit);
+                userEdit.setCorreo(correoEdit);
+                //ACTUALIZAR EL ROL ASIGNADO
+                Rol rolEdit = roldao.obtenerRolPorId(idRolEdit);
+                userEdit.setRol(rolEdit);
+
+                if (userdao.actualizarUsuario(userEdit)){
+                    System.out.printf("Se ha actualizado correctamente el User con ID: " + usuarioId);
+                } else {
+                    System.out.printf("Ocurrió un error al actualizar el User con ID: " + usuarioId);
+                }
+
+                resp.sendRedirect(req.getContextPath() + "/app/usuarios");
+                return;
+            case "restartPass":
+                int idUser = Integer.parseInt(req.getParameter("idUsuario"));
+
+                //RESTABLECER A PREDETERMINADO
+                if(userdao.resetearContrasena(idUser)){
+                    System.out.println("Se ha resetado la contraseña del User con ID: " + idUser);
+                }else {
+                    System.out.printf("Ocurrió un error al restablecer la contrasena");
+                }
+
+                resp.sendRedirect(req.getContextPath() + "/app/usuarios");
+                return;
+            /*case "delete":
                 int idUser = Integer.parseInt(req.getParameter("idUser"));
                 userdao.updateStatus(idUser, "Inactivo");
                 System.out.println("Usuario inactivado: ID: "+idUser);

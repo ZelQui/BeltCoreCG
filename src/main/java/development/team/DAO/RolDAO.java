@@ -61,6 +61,31 @@ public class RolDAO {
         return rol;
     }
 
+    public Rol obtenerIdRolPorNombre(String nombreRol) {
+        Rol rol = null;
+        String sql = "SELECT id_rol, nombre_rol, descripcion FROM roles WHERE nombre_rol = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nombreRol);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    rol = new Rol(
+                            rs.getInt("id_rol"),
+                            rs.getString("nombre_rol"),
+                            rs.getString("descripcion")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener rol por nombre: " + e.getMessage());
+        }
+
+        return rol;
+    }
+
     // LISTAR ROLES
     public static List<Rol> obtenerRols() {
         String sql = "SELECT * FROM roles";

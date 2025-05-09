@@ -29,7 +29,7 @@
             <%
                 for (Rol rolList : roles) {
             %>
-            <option value="<%= rolList.getNombreRol() %>"><%= rolList.getNombreRol() %></option>
+            <option value="<%= rolList.getIdRol() %>"><%= rolList.getNombreRol() %></option>
             <%
                 }
             %>
@@ -61,15 +61,26 @@
             <%
                 int i = 1;
                 for (UsuarioRolDTO usuarioList : usuarios) { %>
-            <tr data-id="1">
+            <tr data-id="<%= usuarioList.getIdUsuario() %>">
                 <td><%= i %></td>
-                <td><%= usuarioList.getNombreUsuario()%> </td>
-                <td><%= usuarioList.getCorreo() %></td>
-                <td><span class="role-badge role-blue"><%= usuarioList.getNombreRol() %></span></td>
+                <td><span class="user-fullname"><%= usuarioList.getNombreUsuario()%></span></td>
+                <td><span class="user-email"><%= usuarioList.getCorreo() %></span></td>
+                <td>
+                    <span class="user-rol role-badge role-blue" data-rol-id="<%= usuarioList.getIdRol() %>">
+                        <%= usuarioList.getNombreRol() %>
+                    </span>
+                </td>
                 <td><span class="role-badge role-green"><%= usuarioList.getEstado() == 1 ? "Activo" : "Inactivo" %></span></td>
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                    <button class="btn edit" id="editBtn_<%= usuarioList.getIdUsuario() %>" title="Editar"><i class="fas fa-edit"></i></button>
+
+                    <button class="btn edit"
+                            id="editBtn_<%= usuarioList.getIdUsuario() %>"
+                            data-id="<%= usuarioList.getIdUsuario() %>"
+                            title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
                     <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
                     <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
                 </td>
@@ -113,8 +124,9 @@
                         <label for="role">Rol</label>
                         <select id="role" name="role" required>
                             <option value="">Seleccione un rol</option>
-                            <option value="1">Administrador</option>
-                            <option value="2">Vendedor</option>
+                            <% for (Rol rolList : roles) { %>
+                            <option value="<%= rolList.getIdRol() %>"><%= rolList.getNombreRol() %></option>
+                            <% } %>
                         </select>
                     </div>
                 </div>
@@ -137,8 +149,9 @@
             <span class="close" id="closeEdit">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="editUserForm">
-                <input type="hidden" name="accion" value="update">
+            <form id="editUserForm" action="<%=request.getContextPath()%>/user" method="post">
+                <input type="hidden" name="accion" value="Actualizar">
+                <input type="hidden" id="idUsuarioEdit" name="idUsuario">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullNameEdit">Nombre Completo</label>
@@ -153,11 +166,12 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="role">Rol</label>
-                        <select id="roleEdit" name="role" required>
+                        <label for="roleEdit">Rol</label>
+                        <select id="roleEdit" name="roleEdit" required>
                             <option value="">Seleccione un rol</option>
-                            <option value="admin">Administrador</option>
-                            <option value="vendedor">Vendedor</option>
+                            <% for (Rol rolList : roles) { %>
+                            <option value="<%= rolList.getIdRol() %>"><%= rolList.getNombreRol() %></option>
+                            <% } %>
                         </select>
                     </div>
                 </div>
@@ -171,21 +185,5 @@
         </div>
     </div>
 </div>
-
-
-<!-- Modal para añadir/editar usuario -->
-<%--<div id="userModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Usuario</h2>
-            <span class="close">&times;</span>
-        </div>
-        <div class="modal-body">
-            <form id="userForm">
-
-            </form>
-        </div>
-    </div>
-</div>--%>
 
 <script src="../assets/js/usuarios.js"></script>
