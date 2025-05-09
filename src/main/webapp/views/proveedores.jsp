@@ -146,22 +146,22 @@
             <span class="close">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="providerForm" method="post" action="proveedor">
+            <form id="providerForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
                 <div class="form-group">
                     <label for="providerName">Nombre</label>
-                    <input type="text" id="providerName" name="providerName" required>
+                    <input type="text" id="providerName" name="nuevoNombre" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Correo</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="nuevoCorreo" required>
                 </div>
                 <div class="form-group">
                     <label for="phone">Teléfono</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="nuevoTelefono" required>
                 </div>
                 <div class="form-group">
                     <label for="address">Dirección</label>
-                    <textarea id="address" name="address" rows="3"></textarea>
+                    <textarea id="address" name="nuevaDireccion" rows="3"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn cancel">Cancelar</button>

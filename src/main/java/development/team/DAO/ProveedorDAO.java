@@ -154,4 +154,41 @@ public class ProveedorDAO {
         return proveedoresList;
     }
 
+    // BUSCAR PROVEEDOR POR ID
+    public static Proveedor buscarUsuario(int idProveedor) {
+        String sql = "SELECT * FROM proveedores WHERE id_proveedor = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            ps.setInt(1, idProveedor);
+
+            while (rs.next()) {
+                Proveedor proveedor = new Proveedor();
+                proveedor.setIdProveedor(rs.getInt("id_proveedor"));
+                proveedor.setNombre(rs.getString("nombre"));
+                proveedor.setTelefono(rs.getString("telefono"));
+                proveedor.setCorreo(rs.getString("correo"));
+                proveedor.setDireccion(rs.getString("direccion"));
+                proveedor.setEstado(rs.getInt("estado"));
+
+                TipoDocumento tipoDocumento = new TipoDocumento();
+                int idTipoDocumento = rs.getInt("id_tipo_documento");
+                tipoDocumento.setIdTipoDocumento(idTipoDocumento);
+                proveedor.setTipoDocumento(tipoDocumento);
+
+                proveedor.setNumeroRuc(rs.getString("numero_ruc"));
+                proveedor.setCuentaInterbancaria(rs.getString("cuenta_interbancaria"));
+                return proveedor;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al obtener proveedores: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+
 }
