@@ -17,6 +17,29 @@
     List<Proveedor> proveedores = ProveedorDAO.obtenerProveedores();
 %>
 
+
+<!-- Registrar Proveedor: Mensaje Registro -->
+<%
+    String mensajeRegistro = (String) session.getAttribute("mensajeRegistro");
+    String iconRegistro = (String) session.getAttribute("iconRegistro");
+    if (mensajeRegistro != null || iconRegistro != null) {
+
+        // Eliminar mensaje de la sesion para que no aparesca al recargar la pagina
+        session.removeAttribute("mensajeRegistro");
+        session.removeAttribute("iconRegistro");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            title: "<%= mensajeRegistro%>",
+            icon: "<%= iconRegistro%>",
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
+</script>
+<%  } %>
+
 <div class="content-container">
     <h1>Gestión de Proveedores</h1>
     <button class="add-provider">Añadir Proveedor</button>
@@ -78,8 +101,8 @@
             <span class="close" onclick="closeAddProviderModal()">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="addProviderForm">
-                <input type="hidden" name="accion" value="registrar">
+            <form id="addProviderForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
+                <input type="hidden" name="accion" id="accion" value="registrar">
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>

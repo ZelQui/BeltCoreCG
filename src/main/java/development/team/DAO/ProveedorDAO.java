@@ -13,33 +13,44 @@ public class ProveedorDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
 
     // CREATE
-    public static int registrarProveedor(Proveedor proveedor) {
-        String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion, id_tipo_documento, numero_duc, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public static int registrarProveedor(Proveedor proveedor, int usuarioId) {
+        String setUsuarioSql = "SET @usuario_id = ?";
+        String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion, id_tipo_documento, numero_ruc, cuenta_interbancaria) VALUES (?, ?, ?, ?, ?, ?, ?)";
         int proveedorId = -1;
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Importante para obtener ID generado
+        try (Connection con = dataSource.getConnection()) {
 
-            ps.setString(1, proveedor.getNombre());
-            ps.setString(2, proveedor.getTelefono());
-            ps.setString(3, proveedor.getCorreo());
-            ps.setString(4, proveedor.getDireccion());
-            ps.setInt(5, proveedor.getTipoDocumento().getIdTipoDocumento());
-            ps.setString(6, proveedor.getNumeroRuc());
-            ps.setString(7, proveedor.getCuentaInterbancaria());
+            // Setea @usuario_id en esta conexión
+            try (PreparedStatement psSetUsuario = con.prepareStatement(setUsuarioSql)) {
+                psSetUsuario.setInt(1, usuarioId);
+                psSetUsuario.execute();
+            }
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        proveedorId = rs.getInt(1); // Obtener el ID generado
+            // Ejecuta el insert normalmente
+            try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setString(1, proveedor.getNombre());
+                ps.setString(2, proveedor.getTelefono());
+                ps.setString(3, proveedor.getCorreo());
+                ps.setString(4, proveedor.getDireccion());
+                ps.setInt(5, proveedor.getTipoDocumento().getIdTipoDocumento());
+                ps.setString(6, proveedor.getNumeroRuc());
+                ps.setString(7, proveedor.getCuentaInterbancaria());
+
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected > 0) {
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            proveedorId = rs.getInt(1);
+                        }
                     }
                 }
             }
+
         } catch (SQLException e) {
-            System.err.println("Error SQLException al registrar usuario: " + e.getMessage());
+            System.err.println("Error SQLException al registrar proveedor: " + e.getMessage());
         }
-        return proveedorId; //Retorna el ID que ha insertado
+
+        return proveedorId;
     }
 
     // UPDATE

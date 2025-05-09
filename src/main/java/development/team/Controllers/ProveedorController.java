@@ -3,6 +3,7 @@ package development.team.Controllers;
 import development.team.DAO.ProveedorDAO;
 import development.team.Models.Proveedor;
 import development.team.Models.TipoDocumento;
+import development.team.Models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -33,8 +34,15 @@ public class ProveedorController extends HttpServlet {
 
     // REGISTRAR PROVEEDOR
     private void registrarProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String mensajeRegistro = "";
+        String iconRegistro = "";
+
+        HttpSession session = request.getSession();
 
         // Datos
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        int usuarioId = usuario.getIdUsuario();
+
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
         String telefono = request.getParameter("telefono");
@@ -49,21 +57,20 @@ public class ProveedorController extends HttpServlet {
 
         // Registro
         Proveedor proveedor = new Proveedor(nombre, telefono, correo, direccion, tipoDocumentoRuc, numeroRuc, cuentaInterbancaria);
-        int idProveedor = ProveedorDAO.registrarProveedor(proveedor);
+        int idProveedor = ProveedorDAO.registrarProveedor(proveedor, usuarioId);
 
-        // Establecer la respuesta como JSON
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
 
         // Verificar si el proveedor se registró con éxito
         if (idProveedor > 0) {
-            // Enviar respuesta exitosa
-            out.println("{\"status\": \"success\", \"message\": \"Proveedor registrado exitosamente!\"}");
+            mensajeRegistro = "Proveedor Crear Exitosamente";
+            iconRegistro = "success";
         } else {
-            // Enviar respuesta de error
-            out.println("{\"status\": \"error\", \"message\": \"Hubo un problema al registrar el proveedor.\"}");
+            mensajeRegistro = "Error al Crear Proveedor";
+            iconRegistro = "error";
         }
-        out.flush();
+        session.setAttribute("mensajeRegistro", mensajeRegistro);
+        session.setAttribute("iconRegistro", iconRegistro);
+        response.sendRedirect(request.getContextPath() + "/app/proveedores");
     }
 
 
