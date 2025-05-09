@@ -1,8 +1,10 @@
 package development.team.Controllers;
 
 import com.google.gson.Gson;
+import development.team.DAO.RolDAO;
 import development.team.DAO.UsuarioDAO;
 import development.team.DTO.UsuarioRolDTO;
+import development.team.Models.Rol;
 import development.team.Models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,6 +23,9 @@ public class UsuarioController extends HttpServlet {
     UsuarioDAO userdao = new UsuarioDAO();
     Usuario user = new Usuario();
     UsuarioRolDTO userolDTO = new UsuarioRolDTO();
+
+    Rol rol = new Rol();
+    RolDAO roldao = new RolDAO();
     int IdUsuario = 0;
 
     @Override
@@ -48,42 +53,31 @@ public class UsuarioController extends HttpServlet {
                 List<UsuarioRolDTO> lista = userdao.obtenerTodosUsuarios();
                 req.setAttribute("usuarios", lista);
                 break;
-            /*case "Registrar":
+            case "Registrar":
                 //Para validar datos de inicio de sesión
-                String name = req.getParameter("nombre");
-                String email = req.getParameter("email");
-                String username1 = req.getParameter("username");
-                String password1 = "123456";
-                int idRol = Integer.parseInt(req.getParameter("rol"));
+                String nombre = req.getParameter("fullName");
+                String correo = req.getParameter("email");
+                String password = "123456";
+                int idRol = Integer.parseInt(req.getParameter("role"));
 
-                if (userdao.existeUsuario(username1)) {
-                    System.out.println("El email ya está registrado.");
+                if (userdao.existeUsuario(correo)) {
+                    System.out.println("El correo ya está registrado.");
                 } else {
                     //AGREGAR A USUARIOS
-                    user.setUsername(username1);
-                    user.setPassword(password1);
-                    //AGREGAR A EMPLEADOS
-                    employee.setName(name);
-                    if (idRol == 1) {
-                        employee.setPosition("Administrador");
-                    } else if (idRol == 2) {
-                        employee.setPosition("Recepcionista");}
-                    else {
-                        employee.setPosition("rolEmpleado");
-                    }
-                    employee.setEmail(email);
-                    IdEmployee = employeedao.registerEmployee(employee, idRol);
-                    employee.setId(IdEmployee);
-
-                    user.setEmployee(employee);
-                    user.setStatusUser(StatusUser.valueOf("Activo"));
-                    IdUsuario = userdao.registerUser(user);
-
+                    user.setNombre(nombre);
+                    user.setCorreo(correo);
+                    user.setContrasena(password);
+                    //AGREGAR A ROL
+                    rol = roldao.obtenerRolPorId(idRol);
+                    user.setRol(rol);
+                    user.setEstado(1);
+                    int IdUsuario = userdao.registrarUsuario(user);
+                    user.setIdUsuario(IdUsuario);
                     System.out.printf("Se ha registrado el User con ID: " + IdUsuario);
                 }
-                resp.sendRedirect("menu.jsp?view=usuarios");
+                resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
-            case "update":
+            /*case "update":
                 int employeeId = Integer.parseInt(req.getParameter("idemployee"));
                 int id = employeedao.getUserIdByEmployeeId(employeeId);
                 User upUser = userdao.getUserById(id);

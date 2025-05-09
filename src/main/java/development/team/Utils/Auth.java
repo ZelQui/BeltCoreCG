@@ -18,19 +18,25 @@ public class Auth {
     public boolean login(String correo, String password, HttpServletRequest request) {
         if (userdao.validarCredenciales(correo, password)) {
             Usuario user = userdao.obtenerUsuarioSesion(correo);
-            System.out.println("user: "+user);
+            System.out.println("user: " + user);
+
             if (userdao.verificarEstadoActivo(user)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", user);
-                System.out.println("Auth exitoso");
-                return true; // Inicio de sesión exitoso
+
+                // SETTEAR USUARIO EN BASE DE DATOS, PARA QUE PUEDA USAR SQL
+                if (userdao.SettearUsuario(user.getIdUsuario())) {
+                    System.out.println("Auth exitoso");
+                    return true; // Inicio de sesión exitoso
+                }
+                return false; // Falló al settear usuario
             } else {
                 System.out.println("Auth: Usuario inactivado");
                 return false;
             }
         }
         System.out.println("Auth: Credenciales incorrectas");
-        return false; // Credenciales incorrectas
+        return false;
     }
 
     /**

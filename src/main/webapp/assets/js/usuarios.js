@@ -1,85 +1,89 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("userModal");
-    const form = document.getElementById("userForm");
-    const openBtn = document.querySelector(".add-provider");
-    const closeBtn = modal.querySelector(".close");
-    const cancelBtn = modal.querySelector(".cancel");
+    // MODALES y FORMULARIOS
+    const addModal = document.getElementById("addUserModal");
+    const editModal = document.getElementById("editUserModal");
 
-    // Función para abrir el modal (add/edit)
-    function openModal(mode, userData = {}) {
-        form.reset();
-        form.setAttribute("data-mode", mode);
+    const addForm = document.getElementById("addUserForm");
+    const editForm = document.getElementById("editUserForm");
 
-        if (mode === "edit") {
-            document.getElementById("firstName").value = userData.firstName || "";
-            document.getElementById("lastName").value = userData.lastName || "";
-            document.getElementById("email").value = userData.email || "";
-            document.getElementById("username").value = userData.username || "";
-            document.getElementById("role").value = userData.role || "";
-            document.getElementById("status").value = userData.status || "";
-        }
+    const openAddBtn = document.getElementById("openAddUserBtn"); // Botón de agregar usuario
+    const closeAddBtn = document.getElementById("closeAdd");
+    const closeEditBtn = document.getElementById("closeEdit");
 
-        modal.style.display = "block";
-        document.getElementById("firstName").focus();
-    }
+    const cancelAddBtn = document.getElementById("cancelAdd");
+    const cancelEditBtn = document.getElementById("cancelEdit");
 
-    // Abrir modal para nuevo usuario
-    openBtn.addEventListener("click", () => openModal("add"));
+    /*window.addEventListener("click", (e) => {
+        if (e.target === addModal) addModal.style.display = "none";
+        if (e.target === editModal) editModal.style.display = "none";
+    });*/
 
-    // Cerrar modal con botón "x", "Cancelar" o clic fuera
-    closeBtn.addEventListener("click", () => (modal.style.display = "none"));
-    cancelBtn.addEventListener("click", () => (modal.style.display = "none"));
-    window.addEventListener("click", (e) => {
-        if (e.target === modal) modal.style.display = "none";
+    // Abrir modal de agregar
+    openAddBtn.addEventListener("click", () => {
+        addForm.reset();
+        addModal.style.display = "block";
+        addForm.querySelector("input").focus();
     });
 
-    // Acción: Ver usuario
-    document.querySelectorAll(".btn.view").forEach((btn) => {
+    // Cerrar modal de agregar
+    closeAddBtn.addEventListener("click", () => addModal.style.display = "none");
+
+    // Cerrar modal de editar
+    closeEditBtn.addEventListener("click", () => editModal.style.display = "none");
+
+    // Botón Cancelar de agregar
+    cancelAddBtn.addEventListener("click", () => addModal.style.display = "none");
+
+    // Botón Cancelar de editar
+    cancelEditBtn.addEventListener("click", () => editModal.style.display = "none");
+
+    // Abrir modal de edición con datos
+    document.querySelectorAll("[id^='editBtn_']").forEach(btn => {
         btn.addEventListener("click", () => {
             const row = btn.closest("tr");
-            const userName = row.children[1].textContent;
-            alert(`Viendo información de: ${userName}`);
+
+            // Limpiar y llenar el formulario de edición con los datos del usuario
+            editForm.reset();
+            editForm.querySelector("#fullNameEdit").value = row.children[1].textContent.trim();
+            editForm.querySelector("#emailEdit").value = row.children[2].textContent.trim();
+            editForm.querySelector("#roleEdit").value = row.querySelector(".role-badge").textContent.toLowerCase().trim();
+
+            // Mostrar el modal de edición
+            editModal.style.display = "block";
+            editForm.querySelector("input").focus();
         });
     });
 
-    // Acción: Editar usuario
-    document.querySelectorAll(".btn.edit").forEach(btn => {
+    // Visualizar detalles del usuario con SweetAlert
+    document.querySelectorAll(".btn.view").forEach(btn => {
         btn.addEventListener("click", () => {
             const row = btn.closest("tr");
-            openModal("edit", {
-                firstName: row.children[1].textContent.split(" ")[0],
-                lastName: row.children[1].textContent.split(" ").slice(1).join(" "),
-                email: row.children[2].textContent,
-                username: row.children[2].textContent.split("@")[0],
-                role: row.querySelector(".role-badge").textContent.toLowerCase().trim(),
-                status: row.querySelectorAll(".role-badge")[1].textContent.toLowerCase().trim()
+
+            const idUsuario = row.children[0].textContent.trim();
+            const nombreCompleto = row.children[1].textContent.trim();
+            const email = row.children[2].textContent.trim();
+            const rol = row.querySelector(".role-badge").textContent.trim();
+            const estado = row.querySelectorAll(".role-badge")[1]?.textContent.trim() || "Desconocido";
+
+            // Mostrar SweetAlert con los detalles del usuario
+            Swal.fire({
+                title: `Detalles del Usuario:`,
+                html: `
+                    <strong># ${idUsuario}</strong><br>
+                    <strong>Nombre Completo:</strong> ${nombreCompleto} <br>
+                    <strong>Email:</strong> ${email} <br>
+                    <strong>Contraseña:</strong> ***** <br>
+                    <strong>Rol:</strong> ${rol} <br>
+                    <strong>Estado:</strong> ${estado} <br>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: '#3085d6',
             });
         });
     });
 
-    // Acción: Resetear contraseña
-    document.querySelectorAll(".btn.reset-password").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const email = btn.closest("tr").children[2].textContent;
-            if (confirm(`¿Deseas resetear la contraseña de ${email}?`)) {
-                alert("Contraseña reseteada correctamente.");
-            }
-        });
-    });
-
-    // Acción: Activar / Desactivar usuario
-    document.querySelectorAll(".btn.activate, .btn.deactivate").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const row = btn.closest("tr");
-            const name = row.children[1].textContent;
-            const action = btn.classList.contains("activate") ? "activado" : "desactivado";
-            alert(`${name} ha sido ${action}.`);
-        });
-    });
-
     // Filtros de tabla
-
-
     function applyFilters() {
         const roleFilterValue = document.getElementById("roleFilter").value.toLowerCase();
         const statusFilterValue = document.getElementById("statusFilter").value.toLowerCase();
@@ -89,8 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         rows.forEach(row => {
             const rol = row.cells[3].textContent.toLowerCase();
-            const estado = row.cells[4].textContent.toLowerCase(); // ✅ aquí está el fix
-            const nombre = row.cells[1].textContent.toLowerCase(); // ✅ nombre completo
+            const estado = row.cells[4].textContent.toLowerCase();
+            const nombre = row.cells[1].textContent.toLowerCase();
 
             const matchesRole = !roleFilterValue || rol === roleFilterValue;
             const matchesStatus = !statusFilterValue || estado === statusFilterValue;

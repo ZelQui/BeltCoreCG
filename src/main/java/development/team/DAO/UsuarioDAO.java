@@ -14,6 +14,21 @@ import java.util.List;
         private static final DataSource dataSource = DataBaseUtil.getDataSource();
         private static final RolDAO rolDAO = new RolDAO();
 
+        public static boolean SettearUsuario( int usuarioId) {
+            String setUsuarioSql = "SET @usuario_id = ?";
+
+            try (Connection con = dataSource.getConnection();
+                 PreparedStatement psSetUsuario = con.prepareStatement(setUsuarioSql)) {
+                    psSetUsuario.setInt(1, usuarioId);
+                    psSetUsuario.execute();
+                    return true;
+                }
+                catch (SQLException e) {
+                    System.err.println("Error SQLException al registrar proveedor: " + e.getMessage());
+                }
+            return false;
+        }
+
         public static boolean validarCredenciales(String correo, String contrasena) {
             String sql = "SELECT contrasena FROM usuarios WHERE correo = ?";
 
