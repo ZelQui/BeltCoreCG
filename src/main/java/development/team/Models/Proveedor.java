@@ -7,6 +7,9 @@ public class Proveedor {
     private String correo;
     private String direccion;
     private int estado;
+    private TipoDocumento tipoDocumento;
+    private String numeroRuc;
+    private String cuentaInterbancaria;
 
     public Proveedor() {
     }
@@ -18,13 +21,16 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
-    public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion, int estado) {
+    public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion, int estado, TipoDocumento tipoDocumento, String numeroRuc, String cuentaInterbancaria) {
         this.idProveedor = idProveedor;
         this.nombre = nombre;
         this.telefono = telefono;
         this.correo = correo;
         this.direccion = direccion;
         this.estado = estado;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroRuc = numeroRuc;
+        this.cuentaInterbancaria = cuentaInterbancaria;
     }
 
     public int getIdProveedor() {
@@ -75,6 +81,30 @@ public class Proveedor {
         this.estado = estado;
     }
 
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getNumeroRuc() {
+        return numeroRuc;
+    }
+
+    public void setNumeroRuc(String numeroRuc) {
+        this.numeroRuc = numeroRuc;
+    }
+
+    public String getCuentaInterbancaria() {
+        return cuentaInterbancaria;
+    }
+
+    public void setCuentaInterbancaria(String cuentaInterbancaria) {
+        this.cuentaInterbancaria = cuentaInterbancaria;
+    }
+
     @Override
     public String toString() {
         return "Proveedor{" +
@@ -83,7 +113,10 @@ public class Proveedor {
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
                 ", direccion='" + direccion + '\'' +
-                ", estado='" + estado + '\'' +
+                ", estado=" + estado +
+                ", tipoDocumento=" + tipoDocumento +
+                ", numeroRuc='" + numeroRuc + '\'' +
+                ", cuentaInterbancaria='" + cuentaInterbancaria + '\'' +
                 '}';
     }
 }

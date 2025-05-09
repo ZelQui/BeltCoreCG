@@ -1,6 +1,7 @@
 package development.team.DAO;
 
 import development.team.Models.Proveedor;
+import development.team.Models.TipoDocumento;
 import development.team.Utils.DataBaseUtil;
 
 import javax.sql.DataSource;
@@ -13,7 +14,7 @@ public class ProveedorDAO {
 
     // CREATE
     public static int registrarProveedor(Proveedor proveedor) {
-        String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion, id_tipo_documento, numero_duc, cuenta_bancaria) VALUES (?, ?, ?, ?, ?, ?, ?)";
         int proveedorId = -1;
 
         try (Connection con = dataSource.getConnection();
@@ -23,6 +24,9 @@ public class ProveedorDAO {
             ps.setString(2, proveedor.getTelefono());
             ps.setString(3, proveedor.getCorreo());
             ps.setString(4, proveedor.getDireccion());
+            ps.setInt(5, proveedor.getTipoDocumento().getIdTipoDocumento());
+            ps.setString(6, proveedor.getNumeroRuc());
+            ps.setString(7, proveedor.getCuentaInterbancaria());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -122,8 +126,14 @@ public class ProveedorDAO {
                 String correo = rs.getString("correo");
                 String direccion = rs.getString("direccion");
                 int estado = rs.getInt("estado");
+                int idTipoDocumento = rs.getInt("id_tipo_documento");
+                TipoDocumento tipoDocumento = new TipoDocumento();
+                tipoDocumento.setIdTipoDocumento(idTipoDocumento);
 
-                proveedoresList.add(new Proveedor(idProveedor, nombre, telefono, correo, direccion, estado));
+                String numeroRuc = rs.getString("numero_ruc");
+                String cuentaInterbancaria = rs.getString("cuenta_interbancaria");
+
+                proveedoresList.add(new Proveedor(idProveedor, nombre, telefono, correo, direccion, estado, tipoDocumento, numeroRuc, cuentaInterbancaria));
             }
 
         } catch (SQLException e) {

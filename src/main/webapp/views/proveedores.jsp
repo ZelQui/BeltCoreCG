@@ -35,6 +35,8 @@
                 <th>Teléfono</th>
                 <th>Correo</th>
                 <th>Dirección</th>
+                <th>Ruc</th>
+                <th>Cuenta Interbancaria</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -48,6 +50,8 @@
                     <td><%= proveedorList.getTelefono() %></td>
                     <td><%= proveedorList.getCorreo() %></td>
                     <td><%= proveedorList.getDireccion() %></td>
+                    <td><%= proveedorList.getNumeroRuc() %></td>
+                    <td><%= proveedorList.getCuentaInterbancaria() %></td>
                     <td>
                         <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
                         <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
