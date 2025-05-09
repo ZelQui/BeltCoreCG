@@ -1,6 +1,8 @@
 <%@ page import="development.team.DAO.UsuarioDAO" %>
 <%@ page import="java.util.List" %>
 <%@ page import="development.team.DTO.UsuarioRolDTO" %>
+<%@ page import="development.team.Models.Rol" %>
+<%@ page import="development.team.DAO.RolDAO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
     <meta charset="UTF-8">
@@ -11,6 +13,7 @@
 </head>
 <%
     List<UsuarioRolDTO> usuarios = UsuarioDAO.obtenerTodosUsuarios();
+    List<Rol> roles = RolDAO.obtenerRols();
 %>
 
 <div class="content-container">
@@ -24,8 +27,13 @@
         </div>
         <select id="roleFilter">
             <option value="">Todos los roles</option>
-            <option value="Administrador">Administrador</option>
-            <option value="Vendedor">Vendedor</option>
+            <%
+                for (Rol rolList : roles) {
+            %>
+            <option value="<%= rolList.getNombreRol() %>"><%= rolList.getNombreRol() %></option>
+            <%
+                }
+            %>
         </select>
         <select id="statusFilter">
             <option value="">Todos los estados</option>

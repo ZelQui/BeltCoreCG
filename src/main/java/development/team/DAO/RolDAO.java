@@ -1,5 +1,6 @@
 package development.team.DAO;
 
+import development.team.Models.Proveedor;
 import development.team.Models.Rol;
 import development.team.Utils.DataBaseUtil;
 
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RolDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
@@ -32,5 +35,29 @@ public class RolDAO {
             }
         }
         return rol;
+    }
+
+    // LISTAR ROLES
+    public static List<Rol> obtenerRols() {
+        String sql = "SELECT * FROM roles";
+        List<Rol> rolesList = new ArrayList<>();
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int idRol = rs.getInt("id_rol");
+                String nombreRol = rs.getString("nombre_rol");
+                String descripcion = rs.getString("descripcion");
+
+                rolesList.add(new Rol(idRol, nombreRol, descripcion));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al obtener roles: " + e.getMessage());
+        }
+
+        return rolesList;
     }
 }
