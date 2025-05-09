@@ -24,6 +24,15 @@ public class Proveedor {
         this.cuentaInterbancaria = cuentaInterbancaria;
     }
 
+    // Editar Proveedor
+    public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion) {
+        this.idProveedor = idProveedor;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.direccion = direccion;
+    }
+
     public Proveedor(int idProveedor, String nombre, String telefono, String correo, String direccion, int estado, TipoDocumento tipoDocumento, String numeroRuc, String cuentaInterbancaria) {
         this.idProveedor = idProveedor;
         this.nombre = nombre;

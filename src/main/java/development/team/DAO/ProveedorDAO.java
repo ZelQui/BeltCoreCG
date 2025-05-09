@@ -13,18 +13,11 @@ public class ProveedorDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
 
     // CREATE
-    public static int registrarProveedor(Proveedor proveedor, int usuarioId) {
-        String setUsuarioSql = "SET @usuario_id = ?";
+    public static int registrarProveedor(Proveedor proveedor) {
         String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion, id_tipo_documento, numero_ruc, cuenta_interbancaria) VALUES (?, ?, ?, ?, ?, ?, ?)";
         int proveedorId = -1;
 
         try (Connection con = dataSource.getConnection()) {
-
-            // Setea @usuario_id en esta conexión
-            try (PreparedStatement psSetUsuario = con.prepareStatement(setUsuarioSql)) {
-                psSetUsuario.setInt(1, usuarioId);
-                psSetUsuario.execute();
-            }
 
             // Ejecuta el insert normalmente
             try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -54,7 +47,7 @@ public class ProveedorDAO {
     }
 
     // UPDATE
-    private static boolean actualizarProveedor(Proveedor nuevoProveedor) {
+    public static boolean actualizarProveedor(Proveedor nuevoProveedor) {
         String sql = "UPDATE proveedores SET nombre = ?, telefono = ?, correo = ?, direccion = ? WHERE id_proveedor = ?";
         boolean result = false;
 
@@ -81,43 +74,24 @@ public class ProveedorDAO {
         return result;
     }
 
-    // ACTIVAR PROVEEDOR
-    public static void activarProveedor(int proveedorId) {
-        String sql = "UPDATE proveedores SET estado = 1 WHERE id_proveedor = ?";
+    // ESTADOS PROVEEDOR
+    public static void cambiarEstadoProveedor(int proveedorId, int estado) {
+        String sql = "UPDATE proveedores SET estado = ? WHERE id_proveedor = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, proveedorId);
+            ps.setInt(1, estado);
+            ps.setInt(2, proveedorId);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Proveedor " + proveedorId + " actualizado correctamente.");
+                System.out.println("Proveedor " + proveedorId + " cambiado correctamente.");
             } else {
-                System.err.println("Error al activar proveedor con ID: " + proveedorId);
+                System.err.println("Error al cambiar estado al proveedor con ID: " + proveedorId);
             }
         } catch (SQLException e) {
-            System.err.println("Error SQLException al activar proveedor " + proveedorId + ": " + e.getMessage());
-        }
-    }
-
-    // BLOQUEAR PROVEEDOR
-    public static void bloquearProveedor(int proveedorId) {
-        String sql = "UPDATE proveedores SET estado = 0 WHERE id_proveedor = ?";
-
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, proveedorId);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Proveedor " + proveedorId + " actualizado correctamente.");
-            } else {
-                System.err.println("Error al bloquear proveedor con ID: " + proveedorId);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error SQLException al bloquear proveedor " + proveedorId + ": " + e.getMessage());
+            System.err.println("Error SQLException al cambiar el estado al proveedor " + proveedorId + ": " + e.getMessage());
         }
     }
 
@@ -155,15 +129,15 @@ public class ProveedorDAO {
     }
 
     // BUSCAR PROVEEDOR POR ID
-    public static Proveedor buscarUsuario(int idProveedor) {
+    public static Proveedor buscarProveedor(int idProveedor) {
         String sql = "SELECT * FROM proveedores WHERE id_proveedor = ?";
 
         try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idProveedor);
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Proveedor proveedor = new Proveedor();
                 proveedor.setIdProveedor(rs.getInt("id_proveedor"));
@@ -184,7 +158,7 @@ public class ProveedorDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error SQLException al obtener proveedores: " + e.getMessage());
+            System.err.println("Error SQLException al obtener el proveedor: " + e.getMessage());
         }
 
         return null;

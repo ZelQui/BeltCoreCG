@@ -8,6 +8,7 @@
     <title>Gestión de Proveedores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/proveedores.css" />
+
     <!-- Agregar SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -40,6 +41,28 @@
 </script>
 <%  } %>
 
+<!-- Editar Proveedor: Mensaje Editado -->
+<%
+    String mensajeEditado = (String) session.getAttribute("mensajeEditado");
+    String icon = (String) session.getAttribute("icon");
+    if (mensajeEditado != null || icon != null) {
+
+        // Eliminar mensaje de la sesion para que no aparesca al recargar la pagina
+        session.removeAttribute("mensajeEditado");
+        session.removeAttribute("icon");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            title: "<%= mensajeEditado%>",
+            icon: "<%= icon%>",
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
+</script>
+<%  }%>
+
 <div class="content-container">
     <h1>Gestión de Proveedores</h1>
     <button class="add-provider">Añadir Proveedor</button>
@@ -69,23 +92,34 @@
             <tbody>
             <%
                 int i = 1;
-                for (Proveedor proveedorList : proveedores) {%>
-                <tr data-id="<%= i %>">
-                    <td><%= i %></td>
-                    <td><%= proveedorList.getNombre() %></td>
-                    <td><%= proveedorList.getTelefono() %></td>
-                    <td><%= proveedorList.getCorreo() %></td>
-                    <td><%= proveedorList.getDireccion() %></td>
-                    <td><%= proveedorList.getNumeroRuc() %></td>
-                    <td><%= proveedorList.getCuentaInterbancaria() %></td>
-                    <td>
-                        <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
-                        <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
-                        <button class="btn deactivate" title="Eliminar"><i class="fas fa-user-slash"></i></button>
-                    </td>
-                </tr>
+                for (Proveedor proveedorList : proveedores) {
+            %>
+            <tr data-id="<%= proveedorList.getIdProveedor() %>">
+                <td><%= i %></td>
+                <td><%= proveedorList.getNombre() %></td>
+                <td><%= proveedorList.getTelefono() %></td>
+                <td><%= proveedorList.getCorreo() %></td>
+                <td><%= proveedorList.getDireccion() %></td>
+                <td><%= proveedorList.getNumeroRuc() %></td>
+                <td><%= proveedorList.getCuentaInterbancaria() %></td>
+                <td>
+                    <button class="btn view" title="Ver"><i class="fas fa-eye fa-sm"></i></button>
+                    <button class="btn edit" title="Editar"><i class="fas fa-edit fa-sm"></i></button>
+                    <form method="post" action="${pageContext.request.contextPath}/ProveedorController">
+                        <input type="hidden" name="accion" value="cambiarEstado">
+                        <input type="hidden" name="idProveedor" value="<%= proveedorList.getIdProveedor() %>">
+                        <input type="hidden" name="nuevoEstado" value="<%= proveedorList.getEstado() == 1 ? 0 : 1 %>">
+                        <button type="submit" class="btn toggle" title="Cambiar estado">
+                            <i class="fas <%= proveedorList.getEstado() == 1 ? "fa-user-check text-success" : "fa-user-slash text-danger" %> fa-sm"></i>
+                            <span class="<%= proveedorList.getEstado() == 1 ? "text-success" : "text-danger" %> fw-bold">
+                            <%= proveedorList.getEstado() == 1 ? "Activo" : "Inactivo" %>
+                        </span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
             <%
-                i++;
+                    i++;
                 }
             %>
             </tbody>
@@ -102,7 +136,7 @@
         </div>
         <div class="modal-body">
             <form id="addProviderForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
-                <input type="hidden" name="accion" id="accion" value="registrar">
+                <input type="hidden" name="accion" value="registrar">
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
@@ -147,10 +181,14 @@
         </div>
         <div class="modal-body">
             <form id="providerForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
+                <input type="hidden" name="accion" value="editar">
+                <input type="hidden" id="providerId" name="idProveedor">
+
                 <div class="form-group">
                     <label for="providerName">Nombre</label>
                     <input type="text" id="providerName" name="nuevoNombre" required>
                 </div>
+
                 <div class="form-group">
                     <label for="email">Correo</label>
                     <input type="email" id="email" name="nuevoCorreo" required>

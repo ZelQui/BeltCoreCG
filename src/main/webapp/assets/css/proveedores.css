@@ -259,3 +259,14 @@ body {
 .modal-footer .btn.primary:hover {
     background-color: #1d4ed8;
 }
+
+ .text-success {
+     color: #28a745 !important; /* Verde */
+ }
+.text-danger {
+    color: #dc3545 !important; /* Rojo */
+}
+.btn .fa-sm {
+    font-size: 0.85rem;
+}
+

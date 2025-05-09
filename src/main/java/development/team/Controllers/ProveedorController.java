@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebServlet(name = "ProveedorController", urlPatterns = {"/ProveedorController"})
 public class ProveedorController extends HttpServlet {
@@ -28,6 +27,10 @@ public class ProveedorController extends HttpServlet {
                 registrarProveedor(request, response);
                 break;
             case "editar":
+                editarProveedor(request, response);
+                break;
+            case "cambiarEstado":
+                estadoProveedor(request, response);
                 break;
         }
     }
@@ -38,10 +41,6 @@ public class ProveedorController extends HttpServlet {
         String iconRegistro = "";
 
         HttpSession session = request.getSession();
-
-        // Datos
-        Usuario usuario = (Usuario) session.getAttribute("usuario");
-        int usuarioId = usuario.getIdUsuario();
 
         String nombre = request.getParameter("nombre");
         String correo = request.getParameter("correo");
@@ -57,7 +56,7 @@ public class ProveedorController extends HttpServlet {
 
         // Registro
         Proveedor proveedor = new Proveedor(nombre, telefono, correo, direccion, tipoDocumentoRuc, numeroRuc, cuentaInterbancaria);
-        int idProveedor = ProveedorDAO.registrarProveedor(proveedor, usuarioId);
+        int idProveedor = ProveedorDAO.registrarProveedor(proveedor);
 
 
         // Verificar si el proveedor se registró con éxito
@@ -73,8 +72,79 @@ public class ProveedorController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/app/proveedores");
     }
 
+    // EDITAR PROVEEDOR
+    private void editarProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+        String mensaje = "";
+        String icon = "";
+
+        // Crear Session
+        HttpSession session = request.getSession();
+
+        // Datos
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        String nombre = request.getParameter("nuevoNombre");
+        String telefono = request.getParameter("nuevoTelefono");
+        String correo = request.getParameter("nuevoCorreo");
+        String direccion = request.getParameter("nuevaDireccion");
+
+        // Buscar Usuario id para verificar los datos para editar
+        Proveedor proveedorActual = ProveedorDAO.buscarProveedor(idProveedor);
+
+        // Si no se edita nada, no se actualizara
+        if (nombre.equals(proveedorActual.getNombre()) && telefono.equals(proveedorActual.getTelefono()) && correo.equals(proveedorActual.getCorreo()) && direccion.equals(proveedorActual.getDireccion())) {
+            mensaje = "No se edito ningun campo correspondiente";
+            icon = "warning";
+            session.setAttribute("mensajeEditado", mensaje);
+            session.setAttribute("icon", icon);
+            response.sendRedirect(request.getContextPath() + "/app/proveedores");
+            return;
+        }
+
+        // Si algun campo esta vacio se mantiene los datos del Usuario
+        if (nombre.isEmpty()) {
+            nombre = proveedorActual.getNombre();
+        }
+        if (telefono.isEmpty()) {
+            telefono = proveedorActual.getTelefono();
+        }
+        if (correo.isEmpty()) {
+            correo = proveedorActual.getCorreo();
+        }
+        if (direccion.isEmpty()) {
+            direccion = proveedorActual.getDireccion();
+        }
+
+        // Usuario a editar
+        Proveedor proveedorEditar = new Proveedor(idProveedor, nombre, telefono, correo, direccion);
+        boolean editadoProveedor = ProveedorDAO.actualizarProveedor(proveedorEditar);
+
+        if (editadoProveedor) {
+            mensaje = "Editado Correctamente";
+            icon = "success";
+            session.setAttribute("mensajeEditado", mensaje);
+            session.setAttribute("icon", icon);
+        } else {
+            mensaje = "Error al Editar el Proveedor";
+            icon = "error";
+            session.setAttribute("mensajeEditado", mensaje);
+            session.setAttribute("icon", icon);
+        }
+
+        response.sendRedirect(request.getContextPath() + "/app/proveedores");
+    }
+
+    // ESTADOS PROVEEDOR
+    private void estadoProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        int nuevoEstado = Integer.parseInt(request.getParameter("nuevoEstado"));
+
+        ProveedorDAO.cambiarEstadoProveedor(idProveedor, nuevoEstado);
+        response.sendRedirect(request.getContextPath() + "/app/proveedores");
+    }
+
+
+        // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
