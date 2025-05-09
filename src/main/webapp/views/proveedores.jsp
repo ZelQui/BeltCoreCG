@@ -79,13 +79,11 @@
         <table class="provider-table">
             <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Correo</th>
-                <th>Dirección</th>
                 <th>Ruc</th>
-                <th>Cuenta Interbancaria</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -99,9 +97,12 @@
                 <td><%= proveedorList.getNombre() %></td>
                 <td><%= proveedorList.getTelefono() %></td>
                 <td><%= proveedorList.getCorreo() %></td>
-                <td><%= proveedorList.getDireccion() %></td>
                 <td><%= proveedorList.getNumeroRuc() %></td>
-                <td><%= proveedorList.getCuentaInterbancaria() %></td>
+
+                <!-- Campos ocultos -->
+                <input type="hidden" class="direccion-hidden" value="<%= proveedorList.getDireccion() %>">
+                <input type="hidden" class="cci-hidden" value="<%= proveedorList.getCuentaInterbancaria() %>">
+
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye fa-sm"></i></button>
                     <button class="btn edit" title="Editar"><i class="fas fa-edit fa-sm"></i></button>
@@ -109,10 +110,10 @@
                         <input type="hidden" name="accion" value="cambiarEstado">
                         <input type="hidden" name="idProveedor" value="<%= proveedorList.getIdProveedor() %>">
                         <input type="hidden" name="nuevoEstado" value="<%= proveedorList.getEstado() == 1 ? 0 : 1 %>">
-                        <button type="submit" class="btn toggle" title="Cambiar estado">
-                            <i class="fas <%= proveedorList.getEstado() == 1 ? "fa-user-check text-success" : "fa-user-slash text-danger" %> fa-sm"></i>
+                        <button type="submit" class="btn toggle <%= proveedorList.getEstado() == 1 ? "btn deactivate" : "btn activate" %>" title="Cambiar estado">
+                            <i class="fas <%= proveedorList.getEstado() == 1 ? "fa-user-slash text-danger" : "fa-user-check text-success" %> fa-sm"></i>
                             <span class="<%= proveedorList.getEstado() == 1 ? "text-success" : "text-danger" %> fw-bold">
-                            <%= proveedorList.getEstado() == 1 ? "Activo" : "Inactivo" %>
+                            <%= proveedorList.getEstado() == 1 ? "Desactivar" : "Activar" %>
                         </span>
                         </button>
                     </form>

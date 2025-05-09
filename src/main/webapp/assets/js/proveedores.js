@@ -1,17 +1,43 @@
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Ver proveedor
+  // Ver proveedor con SweetAlert (mejorado sin mensaje al copiar)
   document.querySelectorAll(".btn.view").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
-      const nombre = row.children[1].textContent;
-      const telefono = row.children[2].textContent;
-      const correo = row.children[3].textContent;
-      const direccion = row.children[4].textContent;
+      const nombre = row.children[1].textContent.trim();
+      const telefono = row.children[2].textContent.trim();
+      const correo = row.children[3].textContent.trim();
+      const ruc = row.children[4].textContent.trim();
+      const direccion = row.querySelector(".direccion-hidden").value;
+      const cci = row.querySelector(".cci-hidden").value;
 
-      alert(`👁️ Ver proveedor:\n\nNombre: ${nombre}\nTeléfono: ${telefono}\nCorreo: ${correo}\nDirección: ${direccion}`);
+      Swal.fire({
+        title: 'Detalles del Proveedor',
+        html: `
+        <p><strong>Nombre:</strong> ${nombre}</p>
+        <p><strong>Teléfono:</strong> ${telefono}</p>
+        <p><strong>Correo:</strong> ${correo}</p>
+        <p><strong>Dirección:</strong> ${direccion}</p>
+        <p><strong>🧾 RUC:</strong> ${ruc}</p>
+        <p>
+          <strong>CCI:</strong> 
+          <span id="cciText">${cci}</span>
+          <button id="copyCCIButton" title="Copiar CCI" class="btn-copy-cci">
+            <i class="fas fa-copy"></i>
+          </button>
+        </p>
+      `,
+        icon: 'info',
+        confirmButtonText: 'Cerrar',
+        customClass: {
+          popup: 'swal2-border-radius'
+        },
+        didRender: () => {
+          const btnCopy = Swal.getHtmlContainer().querySelector("#copyCCIButton");
+          btnCopy.addEventListener("click", () => {
+            navigator.clipboard.writeText(cci).catch(() => {});
+          });
+        }
+      });
     });
   });
 

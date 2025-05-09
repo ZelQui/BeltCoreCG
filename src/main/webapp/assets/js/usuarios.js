@@ -133,8 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const rows = document.querySelectorAll(".user-table tbody tr");
 
         rows.forEach(row => {
-            const rol = row.cells[3].textContent.toLowerCase();
-            const estado = row.cells[4].textContent.toLowerCase();
+            const rol = row.querySelector(".user-rol").textContent.toLowerCase().trim();
+            const estado = row.querySelector(".user-estado").textContent.toLowerCase().trim();
             const nombre = row.cells[1].textContent.toLowerCase();
 
             const matchesRole = !roleFilterValue || rol === roleFilterValue;

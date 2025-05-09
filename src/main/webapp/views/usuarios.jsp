@@ -29,7 +29,7 @@
             <%
                 for (Rol rolList : roles) {
             %>
-            <option value="<%= rolList.getIdRol() %>"><%= rolList.getNombreRol() %></option>
+            <option value="<%= rolList.getNombreRol().toLowerCase() %>"><%= rolList.getNombreRol() %></option>
             <%
                 }
             %>
@@ -49,7 +49,7 @@
         <table class="user-table">
             <thead>
             <tr>
-                <th>ID</th>
+                <th>#</th>
                 <th>Nombre completo</th>
                 <th>Email</th>
                 <th>Rol</th>
@@ -70,7 +70,16 @@
                         <%= usuarioList.getNombreRol() %>
                     </span>
                 </td>
-                <td><span class="role-badge role-green"><%= usuarioList.getEstado() == 1 ? "Activo" : "Inactivo" %></span></td>
+                <td>
+                    <%
+                        boolean esActivo = usuarioList.getEstado() == 1;  // Verifica si el usuario está activo
+                        String claseEstado = esActivo ? "role-green" : "role-red";
+                        String textoEstado = esActivo ? "Activo" : "Inactivo";
+                        String botonEstado = esActivo ? "btn deactivate" : "btn activate"; // Cambiar clase del botón
+                        String tituloEstado = esActivo ? "Desactivar" : "Activar"; // Cambiar título del botón
+                    %>
+                    <span class="user-estado role-badge <%= claseEstado %>"><%= textoEstado %></span>
+                </td>
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
 
@@ -82,7 +91,10 @@
                     </button>
 
                     <button class="btn reset-password" title="Resetear Contraseña"><i class="fas fa-key"></i></button>
-                    <button class="btn deactivate" title="Desactivar"><i class="fas fa-user-slash"></i></button>
+                    <!-- Aquí cambiamos el botón dependiendo del estado -->
+                    <button class="<%= botonEstado %>" title="<%= tituloEstado %>">
+                        <i class="fas fa-user-<%= esActivo ? "slash" : "check" %>"></i> <!-- Icono dinámico -->
+                    </button>
                 </td>
             </tr>
             <%
