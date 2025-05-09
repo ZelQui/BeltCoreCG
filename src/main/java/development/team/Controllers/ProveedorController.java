@@ -9,14 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "proveedor", urlPatterns = {"/proveedor"})
 public class ProveedorController extends HttpServlet {
-
-    private static ProveedorDAO proveedorDAO = new ProveedorDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -31,6 +27,22 @@ public class ProveedorController extends HttpServlet {
             case "editar":
                 break;
         }
+    }
+
+    // REGISTRAR PROVEEDOR
+    private void registrarProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        // Datos
+        String nombre = request.getParameter("nombre");
+        String correo = request.getParameter("correo");
+        String telefono = request.getParameter("telefono");
+        String direccion = request.getParameter("direccion");
+
+        // Registro
+        Proveedor proveedor = new Proveedor(nombre, correo, telefono, direccion);
+        int idProveedor = ProveedorDAO.registrarProveedor(proveedor);
+
+
     }
 
 
