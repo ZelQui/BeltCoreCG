@@ -1,5 +1,6 @@
 package development.team.DAO;
 
+import development.team.DTO.ProveedorCuentasBancarias;
 import development.team.Models.Proveedor;
 import development.team.Models.TipoDocumento;
 import development.team.Utils.DataBaseUtil;
@@ -14,20 +15,21 @@ public class ProveedorDAO {
 
     // CREATE
     public static int registrarProveedor(Proveedor proveedor) {
-        String sql = "INSERT INTO proveedores (nombre, telefono, correo, direccion, id_tipo_documento, numero_ruc, cuenta_interbancaria) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO proveedores (id_tipo_documento, numero_ruc, nombre_razon_social, estado_contribuyente, domicilio_fiscal, domicilio_alterna, telefono, numero_cuenta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         int proveedorId = -1;
 
         try (Connection con = dataSource.getConnection()) {
 
             // Ejecuta el insert normalmente
             try (PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1, proveedor.getNombre());
-                ps.setString(2, proveedor.getTelefono());
-                ps.setString(3, proveedor.getCorreo());
-                ps.setString(4, proveedor.getDireccion());
-                ps.setInt(5, proveedor.getTipoDocumento().getIdTipoDocumento());
-                ps.setString(6, proveedor.getNumeroRuc());
-                ps.setString(7, proveedor.getCuentaInterbancaria());
+                ps.setInt(1, proveedor.getTipoDocumento().getIdTipoDocumento());
+                ps.setString(2, proveedor.getRuc());
+                ps.setString(3, proveedor.getNombre());
+                ps.setString(4, proveedor.getEstadoContribuyente());
+                ps.setString(5, proveedor.getDomicilioFiscal());
+                ps.setString(6, proveedor.getDomicilioAlterna());
+                ps.setString(7, proveedor.getTelefono());
+                ps.setString(8, proveedor.getNumeroCuenta());
 
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected > 0) {
@@ -48,17 +50,15 @@ public class ProveedorDAO {
 
     // UPDATE
     public static boolean actualizarProveedor(Proveedor nuevoProveedor) {
-        String sql = "UPDATE proveedores SET nombre = ?, telefono = ?, correo = ?, direccion = ? WHERE id_proveedor = ?";
+        String sql = "UPDATE proveedores SET telefono = ?, domicilio_alterna = ? WHERE id_proveedor = ?";
         boolean result = false;
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, nuevoProveedor.getNombre());
-            ps.setString(2, nuevoProveedor.getTelefono());
-            ps.setString(3, nuevoProveedor.getCorreo());
-            ps.setString(4, nuevoProveedor.getDireccion());
-            ps.setInt(5, nuevoProveedor.getIdProveedor());
+            ps.setString(1, nuevoProveedor.getTelefono());
+            ps.setString(2, nuevoProveedor.getDomicilioAlterna());
+            ps.setInt(3, nuevoProveedor.getIdProveedor());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -74,31 +74,23 @@ public class ProveedorDAO {
         return result;
     }
 
-    // ESTADOS PROVEEDOR
-    public static void cambiarEstadoProveedor(int proveedorId, int estado) {
-        String sql = "UPDATE proveedores SET estado = ? WHERE id_proveedor = ?";
-
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, estado);
-            ps.setInt(2, proveedorId);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Proveedor " + proveedorId + " cambiado correctamente.");
-            } else {
-                System.err.println("Error al cambiar estado al proveedor con ID: " + proveedorId);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error SQLException al cambiar el estado al proveedor " + proveedorId + ": " + e.getMessage());
-        }
-    }
-
     // LISTAR PROVEEDORES
-    public static List<Proveedor> obtenerProveedores() {
-        String sql = "SELECT * FROM proveedores";
-        List<Proveedor> proveedoresList = new ArrayList<>();
+    public static List<ProveedorCuentasBancarias> obtenerProveedores() {
+        String sql = "SELECT \n" +
+                "    p.id_proveedor,\n" +
+                "    p.numero_ruc,\n" +
+                "    p.nombre_razon_social,\n" +
+                "    p.estado_contribuyente,\n" +
+                "    p.domicilio_fiscal,\n" +
+                "    p.telefono,\n" +
+                "    p.domicilio_alterna,\n" +
+                "    p.numero_cuenta,\n" +
+                "    cb.id_cuenta_bancaria,\n" +
+                "    cb.tipo_cuenta_bancaria \n" +
+                "FROM proveedores p\n" +
+                "JOIN proveedores_cuentas pc ON p.id_proveedor = pc.id_proveedor\n" +
+                "JOIN cuentas_bancarias cb ON pc.id_cuenta_bancaria = cb.id_cuenta_bancaria;\n";
+        List<ProveedorCuentasBancarias> proveedoresList = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -106,19 +98,18 @@ public class ProveedorDAO {
 
             while (rs.next()) {
                 int idProveedor = rs.getInt("id_proveedor");
-                String nombre = rs.getString("nombre");
+                String nombreRazonSocial = rs.getString("nombre_razon_social");
                 String telefono = rs.getString("telefono");
-                String correo = rs.getString("correo");
-                String direccion = rs.getString("direccion");
-                int estado = rs.getInt("estado");
-                int idTipoDocumento = rs.getInt("id_tipo_documento");
-                TipoDocumento tipoDocumento = new TipoDocumento();
-                tipoDocumento.setIdTipoDocumento(idTipoDocumento);
-
+                String domicilioFiscal = rs.getString("domicilio_fiscal");
+                String domicilioAlterna = rs.getString("domicilio_alterna");
+                String estadoContribuyente = rs.getString("estado_contribuyente");
                 String numeroRuc = rs.getString("numero_ruc");
-                String cuentaInterbancaria = rs.getString("cuenta_interbancaria");
+                String numeroCuenta = rs.getString("numero_cuenta");
 
-                proveedoresList.add(new Proveedor(idProveedor, nombre, telefono, correo, direccion, estado, tipoDocumento, numeroRuc, cuentaInterbancaria));
+                int idCuentaBancaria = rs.getInt("id_cuenta_bancaria");
+                String tipoCuentaBancaria = rs.getString("tipo_cuenta_bancaria");
+
+                proveedoresList.add(new ProveedorCuentasBancarias(idProveedor, nombreRazonSocial, telefono, domicilioFiscal, domicilioAlterna, estadoContribuyente, numeroRuc, numeroCuenta, idCuentaBancaria, tipoCuentaBancaria));
             }
 
         } catch (SQLException e) {
@@ -141,19 +132,18 @@ public class ProveedorDAO {
             while (rs.next()) {
                 Proveedor proveedor = new Proveedor();
                 proveedor.setIdProveedor(rs.getInt("id_proveedor"));
-                proveedor.setNombre(rs.getString("nombre"));
+                proveedor.setNombre(rs.getString("nombre_razon_social"));
                 proveedor.setTelefono(rs.getString("telefono"));
-                proveedor.setCorreo(rs.getString("correo"));
-                proveedor.setDireccion(rs.getString("direccion"));
-                proveedor.setEstado(rs.getInt("estado"));
+                proveedor.setDomicilioFiscal(rs.getString("domicilio_fiscal"));
+                proveedor.setDomicilioAlterna(rs.getString("domicilio_alterna"));
+                proveedor.setRuc(rs.getString("numero_ruc"));
+                proveedor.setNumeroCuenta(rs.getString("numero_cuenta"));
 
                 TipoDocumento tipoDocumento = new TipoDocumento();
                 int idTipoDocumento = rs.getInt("id_tipo_documento");
                 tipoDocumento.setIdTipoDocumento(idTipoDocumento);
                 proveedor.setTipoDocumento(tipoDocumento);
 
-                proveedor.setNumeroRuc(rs.getString("numero_ruc"));
-                proveedor.setCuentaInterbancaria(rs.getString("cuenta_interbancaria"));
                 return proveedor;
             }
 

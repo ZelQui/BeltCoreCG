@@ -1,54 +1,32 @@
-package development.team.Models;
+package development.team.DTO;
 
-public class Proveedor {
+public class ProveedorCuentasBancarias {
+
     private int idProveedor;
-    private String nombre;
-    private String ruc;
+    private String nombreRazonSocial;
     private String telefono;
     private String domicilioFiscal;
     private String domicilioAlterna;
     private String estadoContribuyente;
-    private TipoDocumento tipoDocumento;
+    private String numeroRuc;
     private String numeroCuenta;
+    private int idCuentaBancaria;
+    private String tipoCuentaBancaria;
 
-    public Proveedor() {
+    public ProveedorCuentasBancarias() {
     }
 
-    public Proveedor(int idProveedor, String telefono, String domicilioAlterna) {
+    public ProveedorCuentasBancarias(int idProveedor, String nombreRazonSocial, String telefono, String domicilioFiscal, String domicilioAlterna, String estadoContribuyente, String numeroRuc, String numeroCuenta, int idCuentaBancaria, String tipoCuentaBancaria) {
         this.idProveedor = idProveedor;
-        this.telefono = telefono;
-        this.domicilioAlterna = domicilioAlterna;
-    }
-
-    public Proveedor(int idProveedor, String nombre, String ruc, String telefono, String domicilioFiscal, String domicilioAlterna, String estadoContribuyente, TipoDocumento tipoDocumento, String numeroCuenta) {
-        this.idProveedor = idProveedor;
-        this.nombre = nombre;
-        this.ruc = ruc;
+        this.nombreRazonSocial = nombreRazonSocial;
         this.telefono = telefono;
         this.domicilioFiscal = domicilioFiscal;
         this.domicilioAlterna = domicilioAlterna;
         this.estadoContribuyente = estadoContribuyente;
-        this.tipoDocumento = tipoDocumento;
+        this.numeroRuc = numeroRuc;
         this.numeroCuenta = numeroCuenta;
-    }
-
-    public Proveedor(String nombre, String ruc, String telefono, String domicilioFiscal, String domicilioAlterna, String estadoContribuyente, TipoDocumento tipoDocumento, String numeroCuenta) {
-        this.nombre = nombre;
-        this.ruc = ruc;
-        this.telefono = telefono;
-        this.domicilioFiscal = domicilioFiscal;
-        this.domicilioAlterna = domicilioAlterna;
-        this.estadoContribuyente = estadoContribuyente;
-        this.tipoDocumento = tipoDocumento;
-        this.numeroCuenta = numeroCuenta;
-    }
-
-    public String getRuc() {
-        return ruc;
-    }
-
-    public void setRuc(String ruc) {
-        this.ruc = ruc;
+        this.idCuentaBancaria = idCuentaBancaria;
+        this.tipoCuentaBancaria = tipoCuentaBancaria;
     }
 
     public int getIdProveedor() {
@@ -59,12 +37,12 @@ public class Proveedor {
         this.idProveedor = idProveedor;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreRazonSocial() {
+        return nombreRazonSocial;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreRazonSocial(String nombreRazonSocial) {
+        this.nombreRazonSocial = nombreRazonSocial;
     }
 
     public String getTelefono() {
@@ -99,12 +77,12 @@ public class Proveedor {
         this.estadoContribuyente = estadoContribuyente;
     }
 
-    public TipoDocumento getTipoDocumento() {
-        return tipoDocumento;
+    public String getNumeroRuc() {
+        return numeroRuc;
     }
 
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setNumeroRuc(String numeroRuc) {
+        this.numeroRuc = numeroRuc;
     }
 
     public String getNumeroCuenta() {
@@ -115,16 +93,32 @@ public class Proveedor {
         this.numeroCuenta = numeroCuenta;
     }
 
+    public int getIdCuentaBancaria() {
+        return idCuentaBancaria;
+    }
+
+    public void setIdCuentaBancaria(int idCuentaBancaria) {
+        this.idCuentaBancaria = idCuentaBancaria;
+    }
+
+    public String getTipoCuentaBancaria() {
+        return tipoCuentaBancaria;
+    }
+
+    public void setTipoCuentaBancaria(String tipoCuentaBancaria) {
+        this.tipoCuentaBancaria = tipoCuentaBancaria;
+    }
+
     @Override
     public String toString() {
-        return "Proveedor{" +
+        return "ProveedorCuentasBancarias{" +
                 "idProveedor=" + idProveedor +
-                ", nombre='" + nombre + '\'' +
+                ", nombreRazonSocial='" + nombreRazonSocial + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", domicilioFiscal='" + domicilioFiscal + '\'' +
                 ", domicilioAlterna='" + domicilioAlterna + '\'' +
                 ", estadoContribuyente='" + estadoContribuyente + '\'' +
-                ", tipoDocumento=" + tipoDocumento +
+                ", numeroRuc='" + numeroRuc + '\'' +
                 ", numeroCuenta='" + numeroCuenta + '\'' +
                 '}';
     }

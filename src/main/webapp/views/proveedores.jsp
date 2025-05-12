@@ -1,6 +1,9 @@
 <%@ page import="development.team.Models.Proveedor" %>
 <%@ page import="java.util.List" %>
 <%@ page import="development.team.DAO.ProveedorDAO" %>
+<%@ page import="development.team.Models.CuentaBancaria" %>
+<%@ page import="development.team.DAO.CuentaBancariaDAO" %>
+<%@ page import="development.team.DTO.ProveedorCuentasBancarias" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
     <meta charset="UTF-8">
@@ -15,7 +18,7 @@
 </head>
 
 <%
-    List<Proveedor> proveedores = ProveedorDAO.obtenerProveedores();
+    List<ProveedorCuentasBancarias> proveedores = ProveedorDAO.obtenerProveedores();
 %>
 
 
@@ -80,43 +83,35 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Nombre</th>
-                <th>Teléfono</th>
-                <th>Correo</th>
                 <th>Ruc</th>
+                <th>Nombre o Razon Social</th>
+                <th>Estado Contribuyente</th>
+                <th>Domicilio Fiscal</th>
+                <th>Telefono</th>
                 <th>Acciones</th>
             </tr>
             </thead>
             <tbody>
             <%
                 int i = 1;
-                for (Proveedor proveedorList : proveedores) {
+                for (ProveedorCuentasBancarias proveedorList : proveedores) {
             %>
             <tr data-id="<%= proveedorList.getIdProveedor() %>">
                 <td><%= i %></td>
-                <td><%= proveedorList.getNombre() %></td>
-                <td><%= proveedorList.getTelefono() %></td>
-                <td><%= proveedorList.getCorreo() %></td>
                 <td><%= proveedorList.getNumeroRuc() %></td>
+                <td><%= proveedorList.getNombreRazonSocial() %></td>
+                <td><%= proveedorList.getEstadoContribuyente() %></td>
+                <td><%= proveedorList.getDomicilioFiscal() %></td>
+                <td><%= proveedorList.getTelefono() %></td>
 
                 <!-- Campos ocultos -->
-                <input type="hidden" class="direccion-hidden" value="<%= proveedorList.getDireccion() %>">
-                <input type="hidden" class="cci-hidden" value="<%= proveedorList.getCuentaInterbancaria() %>">
+                <input type="hidden" class="direccion-hidden" value="<%= proveedorList.getDomicilioAlterna() %>">
+                <input type="hidden" class="tipo-hidden" value="<%= proveedorList.getTipoCuentaBancaria() %>">
+                <input type="hidden" class="cci-hidden" value="<%= proveedorList.getNumeroCuenta() %>">
 
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye fa-sm"></i></button>
                     <button class="btn edit" title="Editar"><i class="fas fa-edit fa-sm"></i></button>
-                    <form method="post" action="${pageContext.request.contextPath}/ProveedorController">
-                        <input type="hidden" name="accion" value="cambiarEstado">
-                        <input type="hidden" name="idProveedor" value="<%= proveedorList.getIdProveedor() %>">
-                        <input type="hidden" name="nuevoEstado" value="<%= proveedorList.getEstado() == 1 ? 0 : 1 %>">
-                        <button type="submit" class="btn toggle <%= proveedorList.getEstado() == 1 ? "btn deactivate" : "btn activate" %>" title="Cambiar estado">
-                            <i class="fas <%= proveedorList.getEstado() == 1 ? "fa-user-slash text-danger" : "fa-user-check text-success" %> fa-sm"></i>
-                            <span class="<%= proveedorList.getEstado() == 1 ? "text-success" : "text-danger" %> fw-bold">
-                            <%= proveedorList.getEstado() == 1 ? "Desactivar" : "Activar" %>
-                        </span>
-                        </button>
-                    </form>
                 </td>
             </tr>
             <%
@@ -149,18 +144,22 @@
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
-                    <input type="text" id="nuevoNombre" name="nombre" required>
+                    <input type="text" id="nuevoNombre" name="nombreRazonSocial" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="nuevaDireccion">Dirección</label>
-                    <input type="text" id="nuevaDireccion" name="direccion">
-                </div>
-
-                <!-- Campo de estado SUNAT (solo lectura) -->
                 <div class="form-group">
                     <label for="estadoRuc">Estado SUNAT</label>
-                    <input type="text" id="estadoRuc" readonly>
+                    <input type="text" id="estadoRuc" name="estadoContribuyente" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="nuevaDireccion">Domicilio Fiscal</label>
+                    <input type="text" id="nuevaDireccion" name="domicilioFiscal" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nuevaDireccion">Domicilio Alterna</label>
+                    <input type="text" id="nuevaDireccionAlterna" name="domicilioAlterna" required>
                 </div>
 
                 <div class="form-group">
@@ -169,13 +168,27 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="nuevoCorreo">Correo</label>
-                    <input type="email" id="nuevoCorreo" name="correo" required>
+                    <label for="tipoCuenta">Tipo de Cuenta Bancaria</label>
+                    <select id="tipoCuenta" name="idCuentaBancaria" required onchange="habilitarCuenta()">
+                        <option value="">Seleccione una cuenta</option>
+                        <%
+                            List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
+                            if (cuentasBancarias != null) {
+                                for (CuentaBancaria cuenta : cuentasBancarias) {
+                        %>
+                        <option value="<%= cuenta.getIdCuentaBancaria() %>">
+                            <%= cuenta.getTipoCuentaBancaria() %>
+                        </option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="nuevaCuenta">Cuenta Interbancaria</label>
-                    <input type="text" id="nuevaCuenta" name="cuentaInterbancaria">
+                    <label for="nuevaCuenta">Número de Cuenta</label>
+                    <input type="text" id="nuevaCuenta" name="numeroCuenta" required disabled>
                 </div>
 
                 <div class="modal-footer">
@@ -201,22 +214,45 @@
                 <input type="hidden" id="providerId" name="idProveedor">
 
                 <div class="form-group">
-                    <label for="providerName">Nombre</label>
-                    <input type="text" id="providerName" name="nuevoNombre" required>
+                    <label for="editRuc">RUC</label>
+                    <input type="text" id="editRuc" name="ruc" disabled>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Correo</label>
-                    <input type="email" id="email" name="nuevoCorreo" required>
+                    <label for="editName">Nombre o Razón Social</label>
+                    <input type="text" id="editName" name="nombreRazonSocial" disabled>
                 </div>
+
                 <div class="form-group">
-                    <label for="phone">Teléfono</label>
-                    <input type="tel" id="phone" name="nuevoTelefono" required>
+                    <label for="editEstado">Estado SUNAT</label>
+                    <input type="text" id="editEstado" name="estadoContribuyente" disabled>
                 </div>
+
                 <div class="form-group">
-                    <label for="address">Dirección</label>
-                    <textarea id="address" name="nuevaDireccion" rows="3"></textarea>
+                    <label for="editDireccion">Dirección Fiscal</label>
+                    <input type="text" id="editDireccion" name="domicilioFiscal" disabled>
                 </div>
+
+                <div class="form-group">
+                    <label for="editDireccionAlterna">Dirección Alterna</label>
+                    <input type="text" id="editDireccionAlterna" name="domicilioAlterna">
+                </div>
+
+                <div class="form-group">
+                    <label for="editTelefono">Teléfono</label>
+                    <input type="tel" id="editTelefono" name="telefono">
+                </div>
+
+                <div class="form-group">
+                    <label for="editTipoCuenta">Tipo de Cuenta</label>
+                    <input type="text" id="editTipoCuenta" name="tipoCuenta" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="editNumeroCuenta">Número de Cuenta</label>
+                    <input type="text" id="editNumeroCuenta" name="numeroCuenta" disabled>
+                </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn cancel">Cancelar</button>
                     <button type="submit" class="btn primary">Guardar</button>

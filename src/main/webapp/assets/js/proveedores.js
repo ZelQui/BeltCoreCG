@@ -41,6 +41,19 @@ function buscarProveedorSUNAT() {
       });
 }
 
+function habilitarCuenta() {
+  const select = document.getElementById("tipoCuenta");
+  const inputCuenta = document.getElementById("nuevaCuenta");
+
+  if (select.value !== "") {
+    inputCuenta.disabled = false;
+  } else {
+    inputCuenta.disabled = true;
+    inputCuenta.value = "";
+  }
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
   // Ver proveedor con SweetAlert (mejorado sin mensaje al copiar)
   document.querySelectorAll(".btn.view").forEach((button) => {
@@ -88,21 +101,36 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".btn.edit").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
+      const idProveedor = row.dataset.id;
 
-      // Obtener ID del proveedor (ya sea desde el <td> o atributo data-id)
-      const idProveedor = row.dataset.id; // si usas <tr data-id="...">
+      // Obtener los datos de las celdas
+      const ruc = row.children[1].textContent.trim();
+      const nombre = row.children[2].textContent.trim();
+      const estado = row.children[3].textContent.trim();
+      const direccionFiscal = row.children[4].textContent.trim();
+      const telefono = row.children[5].textContent.trim();
 
-      // Llenar el modal con los datos de la fila
+      // Obtener datos ocultos
+      const domicilioAlterna = row.querySelector(".direccion-hidden").value;
+      const tipoCuenta = row.querySelector(".tipo-hidden").value;
+      const numeroCuenta = row.querySelector(".cci-hidden").value;
+
+      // Llenar los campos del modal
       document.getElementById("providerId").value = idProveedor;
-      document.getElementById("providerName").value = row.children[1].textContent;
-      document.getElementById("phone").value = row.children[2].textContent;
-      document.getElementById("email").value = row.children[3].textContent;
-      document.getElementById("address").value = row.children[4].textContent;
+      document.getElementById("editRuc").value = ruc;
+      document.getElementById("editName").value = nombre;
+      document.getElementById("editEstado").value = estado;
+      document.getElementById("editDireccion").value = direccionFiscal;
+      document.getElementById("editTelefono").value = telefono;
+      document.getElementById("editDireccionAlterna").value = domicilioAlterna;
+      document.getElementById("editTipoCuenta").value = tipoCuenta;
+      document.getElementById("editNumeroCuenta").value = numeroCuenta;
 
       // Mostrar el modal
       document.getElementById("providerModal").style.display = "block";
     });
   });
+
 
   // Cambiar Estados Proveedor
   document.querySelectorAll(".btn.toggle").forEach((button) => {
@@ -228,3 +256,4 @@ document.addEventListener("DOMContentLoaded", () => {
 function closeAddProviderModal() {
   document.getElementById('addProviderModal').style.display = 'none';
 }
+
