@@ -3,6 +3,9 @@ package development.team.Models;
 public class Usuario {
     private int idUsuario;
     private String nombre;
+    private String apellido_paterno;
+    private String apellido_materno;
+    private String telefono;
     private String correo;
     private String contrasena;
     private Rol rol;
@@ -11,20 +14,15 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String correo, String contrasena, Rol rol, int estado) {
+    public Usuario(int idUsuario, String nombre, String apellido_paterno, String apellido_materno, String telefono, String correo, String contrasena, Rol rol, int estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
+        this.apellido_paterno = apellido_paterno;
+        this.apellido_materno = apellido_materno;
+        this.telefono = telefono;
         this.correo = correo;
         this.contrasena = contrasena;
         this.rol = rol;
-        this.estado = estado;
-    }
-
-    public Usuario(int idUsuario, String nombre, String correo, String contrasena, int estado) {
-        this.idUsuario = idUsuario;
-        this.nombre = nombre;
-        this.correo = correo;
-        this.contrasena = contrasena;
         this.estado = estado;
     }
 
@@ -42,6 +40,30 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getApellido_paterno() {
+        return apellido_paterno;
+    }
+
+    public void setApellido_paterno(String apellido_paterno) {
+        this.apellido_paterno = apellido_paterno;
+    }
+
+    public String getApellido_materno() {
+        return apellido_materno;
+    }
+
+    public void setApellido_materno(String apellido_materno) {
+        this.apellido_materno = apellido_materno;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getCorreo() {
@@ -81,6 +103,9 @@ public class Usuario {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +
                 ", nombre='" + nombre + '\'' +
+                ", apellido_paterno='" + apellido_paterno + '\'' +
+                ", apellido_materno='" + apellido_materno + '\'' +
+                ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", rol=" + rol +

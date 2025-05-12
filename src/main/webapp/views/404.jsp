@@ -148,7 +148,7 @@
   <h2>Error 404</h2>
   <p>No se ha encontrado la página solicitada.</p>
   <p>Por favor, verifique la ruta a la que desea acceder.</p>
-  <button onclick="window.location.href='menu.jsp'" class="back-home">Volver al inicio</button>
+  <button onclick="window.location.href='inicio'" class="back-home">Volver al inicio</button>
 </div>
 
 </body>

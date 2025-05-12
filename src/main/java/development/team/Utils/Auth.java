@@ -16,7 +16,10 @@ public class Auth {
      * @return true si las credenciales son correctas, false si son incorrectas.
      */
     public boolean login(String correo, String password, HttpServletRequest request) {
-        if (userdao.validarCredenciales(correo, password)) {
+        // Validar credenciales
+        Boolean validar = userdao.validarCredenciales (correo, password);
+        System.out.println("Auth: validar: " + validar);
+        if (validar) {
             Usuario user = userdao.obtenerUsuarioSesion(correo);
             System.out.println("user: " + user);
 

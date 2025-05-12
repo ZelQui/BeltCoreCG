@@ -73,7 +73,7 @@ import java.util.List;
 
         public static Usuario obtenerUsuarioSesion(String correo) {
             Usuario usuario = null;
-            String sql = "SELECT id_usuario, nombre, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = ?";
+            String sql = "SELECT id_usuario, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = ?";
 
             try (Connection con = dataSource.getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
@@ -86,7 +86,10 @@ import java.util.List;
                         Rol rol = rolDAO.obtenerRolPorId(rs.getInt("id_rol"), con);
                         usuario = new Usuario(
                                 rs.getInt("id_usuario"),
-                                rs.getString("nombre"),
+                                rs.getString("nombres"),
+                                rs.getString("apellido_paterno"),
+                                rs.getString("apellido_materno"),
+                                rs.getString("telefono"),
                                 rs.getString("correo"),
                                 rs.getString("contrasena"),
                                 rol,
@@ -104,7 +107,7 @@ import java.util.List;
     //METODOS CRUD
     //CREATE
     public static int registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nombre, correo, contrasena, id_rol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombres, correo, contrasena, id_rol) VALUES (?, ?, ?, ?)";
         int usuarioId = -1;
 
         try (Connection con = dataSource.getConnection();
@@ -136,7 +139,7 @@ import java.util.List;
     //READ
     public static List<UsuarioRolDTO> obtenerTodosUsuarios() {
 
-        String sql = "SELECT u.id_usuario, u.nombre, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.nombres, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 "FROM usuarios as u " +
                 "JOIN roles AS r ON u.id_rol = r.id_rol";
         List<UsuarioRolDTO> usuariosList = new ArrayList<>();
@@ -164,7 +167,7 @@ import java.util.List;
         return usuariosList;
     }
     public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
-        String sql = "SELECT u.id_usuario, u.nombre, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.nombres, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 " FROM usuarios as u " +
                 " JOIN roles AS r ON u.id_rol = r.id_rol " +
                 " WHERE id_usuario = ?";
@@ -216,7 +219,7 @@ import java.util.List;
 
     //UPDATE
     public static boolean actualizarUsuario(Usuario nuevoUsuario) {
-        String sql = "UPDATE usuarios SET nombre = ?, correo = ? , id_rol = ? WHERE id_usuario = ?";
+        String sql = "UPDATE usuarios SET nombres = ?, correo = ? , id_rol = ? WHERE id_usuario = ?";
         boolean result = false;
 
         try (Connection con = dataSource.getConnection();
@@ -268,7 +271,7 @@ import java.util.List;
     }
 
     public static Usuario actualizarContrasena(Usuario usuario, String nuevaContrasena) {
-        String sql = "UPDATE usuarios SET password = ? WHERE id = ?";
+        String sql = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
 
         Usuario usuarioActualizado = usuario;
 
@@ -294,7 +297,7 @@ import java.util.List;
     }
 
     public static void activarUsuario(int usuarioId) {
-        String sql = "UPDATE usuarios SET estado = 1 WHERE id = ?";
+        String sql = "UPDATE usuarios SET estado = 1 WHERE id_usuario = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -313,7 +316,7 @@ import java.util.List;
     }
 
     public static void bloquearUsuario(int usuarioId) {
-        String sql = "UPDATE usuarios SET estado = 0 WHERE id = ?";
+        String sql = "UPDATE usuarios SET estado = 0 WHERE id_usuario = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
