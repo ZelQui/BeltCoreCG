@@ -23,11 +23,11 @@
 </div>
 
 <div class="login-container">
-    <div class="login-image">
+<%--    <div class="login-image">
         <div class="brand-overlay">
             <img src="<%=request.getContextPath()%>/assets/img/ImagenCorreas.png" alt="Correas de cuero" class="product-image">
         </div>
-    </div>
+    </div>--%>
     <div class="login-form">
         <div class="login-header">
             <div class="logo-container">
@@ -65,7 +65,7 @@
         </form>
 
         <div class="login-footer">
-            <p>&copy; 2025 Tu Empresa. Todos los derechos reservados.</p>
+            <p>&copy; 2025 BeltCoreCG. Todos los derechos reservados.</p>
         </div>
     </div>
 </div>

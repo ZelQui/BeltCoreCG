@@ -37,8 +37,6 @@ body {
 }
 
 .login-container {
-    width: 85%;
-    max-width: 1000px;
     height: 600px;
     background-color: var(--white);
     border-radius: var(--border-radius);
@@ -88,7 +86,7 @@ body {
 
 /* Formulario de inicio de sesión */
 .login-form {
-    width: 50%;
+    width: 100%;
     padding: 40px;
     display: flex;
     flex-direction: column;

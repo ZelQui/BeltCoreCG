@@ -1,6 +1,5 @@
 package development.team.DAO;
 
-import development.team.Models.Proveedor;
 import development.team.Models.Rol;
 import development.team.Utils.DataBaseUtil;
 
@@ -15,7 +14,7 @@ import java.util.List;
 public class RolDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
 
-    public Rol obtenerRolPorId(int idRol) {
+    public static Rol obtenerRolPorId(int idRol) {
         Rol rol = null;
         String sql = "SELECT id_rol, nombre_rol, descripcion FROM roles WHERE id_rol = ?";
 
@@ -39,6 +38,26 @@ public class RolDAO {
 
         return rol;
     }
+
+    public static List<Integer> obtenerModulosAsignados(int idRol) {
+        List<Integer> modulosAsignados = new ArrayList<>();
+        String sql = "SELECT m.id_modulo FROM modulos AS m " +
+                        "JOIN rol_modulo AS rm ON m.id_modulo = rm.id_modulo " +
+                        "WHERE rm.id_rol = ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idRol);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    modulosAsignados.add(rs.getInt("id_modulo"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return modulosAsignados;
+    }
+
     /**
      * Obtiene un rol usando una conexión ya proporcionada.
      * No crea una nueva conexión.

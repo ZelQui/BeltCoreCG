@@ -150,7 +150,7 @@ import java.util.List;
 
             while (rs.next()) {
                 int idUsuario = rs.getInt("id_usuario");
-                String nombre = rs.getString("nombre");
+                String nombre = rs.getString("nombres");
                 String correo = rs.getString("correo");
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");
@@ -181,7 +181,7 @@ import java.util.List;
 
             if (rs.next()) {
                 int idUsuario = rs.getInt("id_usuario");
-                String nombre = rs.getString("nombre");
+                String nombre = rs.getString("nombres");
                 String correo = rs.getString("correo");
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");

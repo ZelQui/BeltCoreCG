@@ -59,6 +59,11 @@ body {
     color: #1f2937;
 }
 
+.btn.assign {
+    background-color: #980cdf; /* amarillo */
+    color: #1f2937;
+}
+
 .btn:hover {
     opacity: 0.9;
 }

@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/menu.css" />
 </head>
 <%
+    HttpSession sessionObj = request.getSession(false);
+    if (sessionObj == null || sessionObj.getAttribute("usuario") == null) {
+        response.sendRedirect("../"); //Mensaje: Inicia sesión primero
+        return;
+    }
+
     String contenidoAttr = (String) request.getAttribute("contenido");
     if (contenidoAttr == null) {
         contenidoAttr = "inicio.jsp";
