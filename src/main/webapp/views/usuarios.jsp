@@ -119,6 +119,14 @@
                 <!-- Contenido de campos -->
                 <div class="form-row">
                     <div class="form-group">
+                        <label for="dni">DNI</label>
+                        <input type="text" id="dni" name="dni" maxlength="8" required>
+                        <button type="button" id="buscarDniBtn">Buscar</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="fullName">Nombre Completo</label>
                         <input type="text" id="fullName" name="fullName" required>
                     </div>
@@ -198,4 +206,7 @@
     </div>
 </div>
 
+<script>
+    const BASE_URL = "<%=request.getContextPath()%>";
+</script>
 <script src="../assets/js/usuarios.js"></script>

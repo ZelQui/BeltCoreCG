@@ -1,3 +1,33 @@
+//BUSCAR API DNI
+document.getElementById('buscarDniBtn').addEventListener('click', function () {
+    const dni = document.getElementById('dni').value;
+
+    if (dni.length !== 8 || isNaN(dni)) {
+        alert("Ingrese un DNI válido de 8 dígitos.");
+        return;
+    }
+
+    fetch(BASE_URL + "/consultarDni?dni=" + dni)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al consultar el DNI');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Resultado de la API:', data); // Solo consola por ahora
+
+            // Opcional: rellenar campo nombre completo
+            var fullName = data.nombres + ' ' + data.apellidoPaterno + ' ' + data.apellidoMaterno;
+            console.log('fullName:', fullName);
+            document.getElementById('fullName').value = fullName;
+        })
+        .catch(error => {
+            console.error('Error al consultar DNI:', error);
+            alert('No se pudo obtener los datos del DNI.');
+        });
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     // MODALES y FORMULARIOS
     const addModal = document.getElementById("addUserModal");
@@ -149,4 +179,5 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector(".search-provider").addEventListener("input", applyFilters);
     document.getElementById("roleFilter").addEventListener("change", applyFilters);
     document.getElementById("statusFilter").addEventListener("change", applyFilters);
+
 });
