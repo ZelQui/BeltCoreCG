@@ -140,25 +140,39 @@
                 <input type="hidden" name="accion" value="registrar">
 
                 <div class="form-group">
+                    <label for="nuevoRuc">RUC</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="nuevoRuc" name="ruc" required>
+                        <button type="button" onclick="buscarProveedorSUNAT()">Buscar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
                     <input type="text" id="nuevoNombre" name="nombre" required>
                 </div>
-                <div class="form-group">
-                    <label for="nuevoTelefono">Teléfono</label>
-                    <input type="tel" id="nuevoTelefono" name="telefono" required>
-                </div>
-                <div class="form-group">
-                    <label for="nuevoCorreo">Correo</label>
-                    <input type="email" id="nuevoCorreo" name="correo" required>
-                </div>
+
                 <div class="form-group">
                     <label for="nuevaDireccion">Dirección</label>
                     <input type="text" id="nuevaDireccion" name="direccion">
                 </div>
+
+                <!-- Campo de estado SUNAT (solo lectura) -->
                 <div class="form-group">
-                    <label for="nuevoRuc">RUC</label>
-                    <input type="text" id="nuevoRuc" name="ruc" required>
+                    <label for="estadoRuc">Estado SUNAT</label>
+                    <input type="text" id="estadoRuc" readonly>
                 </div>
+
+                <div class="form-group">
+                    <label for="nuevoTelefono">Teléfono</label>
+                    <input type="tel" id="nuevoTelefono" name="telefono" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nuevoCorreo">Correo</label>
+                    <input type="email" id="nuevoCorreo" name="correo" required>
+                </div>
+
                 <div class="form-group">
                     <label for="nuevaCuenta">Cuenta Interbancaria</label>
                     <input type="text" id="nuevaCuenta" name="cuentaInterbancaria">
@@ -172,6 +186,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Editar proveedor -->
 <div id="providerModal" class="modal">
@@ -210,5 +225,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    const BASE_URL = "<%=request.getContextPath()%>";
+</script>
+
 <script src="<%= request.getContextPath() %>/assets/js/proveedores.js"></script>
 

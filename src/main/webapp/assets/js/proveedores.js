@@ -1,3 +1,46 @@
+
+function buscarProveedorSUNAT() {
+  const inputElement = document.getElementById('nuevoRuc');
+
+  if (!inputElement) {
+    console.error("Input 'nuevoRuc' no encontrado");
+    return;
+  }
+
+  const ruc = inputElement.value.trim();
+
+  if (!ruc || !/^\d{11}$/.test(ruc)) {
+    alert('Por favor ingrese un RUC válido de 11 dígitos');
+    return;
+  }
+
+  
+  const url = BASE_URL + "/apiController?ruc=" + ruc;
+
+  console.log("RUC enviado:", ruc);
+  console.log("URL final para la consulta:", url);
+
+  fetch(url)
+      .then(response => {
+        if (!response.ok) throw new Error('Error en la consulta');
+        return response.json();
+      })
+      .then(data => {
+        if (!data || data.error || !data.razonSocial) throw new Error('RUC no encontrado');
+
+        document.getElementById('nuevoNombre').value = data.razonSocial || '';
+        document.getElementById('nuevaDireccion').value = data.direccion || '';
+        document.getElementById('estadoRuc').value = data.estado || '';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('No se pudo obtener información para el RUC ingresado');
+        document.getElementById('nuevoNombre').value = '';
+        document.getElementById('nuevaDireccion').value = '';
+        document.getElementById('estadoRuc').value = 'No encontrado';
+      });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   // Ver proveedor con SweetAlert (mejorado sin mensaje al copiar)
   document.querySelectorAll(".btn.view").forEach((button) => {
