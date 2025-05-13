@@ -120,7 +120,7 @@ public class UsuarioController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
             case "inactivate":
-                IdUsuario = Integer.parseInt(req.getParameter("idUser"));
+                IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
                 boolean inactivado = userdao.bloquearUsuario(IdUsuario);
 
                 if (inactivado) {
@@ -131,7 +131,7 @@ public class UsuarioController extends HttpServlet {
                 }
                 break;
             case "activate":
-                IdUsuario = Integer.parseInt(req.getParameter("idUser"));
+                IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
                 boolean activado = userdao.activarUsuario(IdUsuario);
 
                 if (activado) {

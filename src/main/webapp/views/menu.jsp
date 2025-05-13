@@ -1,5 +1,7 @@
 <%@ page import="development.team.Models.Modulo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.mindrot.jbcrypt.BCrypt" %>
+<%@ page import="development.team.Models.Usuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +23,9 @@
     if (contenidoAttr == null) {
         contenidoAttr = "inicio.jsp";
     }
+/*
+    Usuario usuario = (Usuario) sessionObj.getAttribute("usuario");
+    boolean mostrarModal = BCrypt.checkpw("123456", usuario.getContrasena());*/
 %>
 <body>
 <!-- Sidebar -->
@@ -58,6 +63,35 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
 
+<!-- Modal para cambiar contraseña -->
+<%--<div class="modal" id="modalCambiarPassword" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cambiar Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tu contraseña actual es la predeterminada. Por seguridad, cámbiala ahora.</p>
+                <form id="formCambiarPassword" >
+                    <input type="hidden" name="accion" value="updatePassword">
+                    <div class="mb-3">
+                        <label for="nuevaPassword">Nueva Contraseña</label>
+                        <input type="password" class="form-control" name="newPassword" id="nuevaPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmarPassword">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="confirmarPassword" required>
+                    </div>
+                    <div id="errorMensaje" class="alert alert-danger mt-3" role="alert" style="display: none;">
+                        Las contraseñas no coinciden.
+                    </div>
+                    <button type="button" class="btn secondary" >Cancelar</button>
+                    <button type="submit" class="btn primary">Actualizar Contraseña</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>--%>
 <!-- contenedor principal -->
 <div class="main-content" id="contenido">
     <jsp:include page="<%= contenidoAttr %>" />

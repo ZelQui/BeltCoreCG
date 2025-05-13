@@ -189,6 +189,45 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Acción Activar o Desactivar Usuario
+    document.querySelectorAll(".btn-toggle-status").forEach(btn => {
+        btn.addEventListener("click", function () {
+            const row = this.closest("tr");
+            const idUsuario = row.dataset.id;
+            const esActivo = row.dataset.activo === "true"; // true o false
+            const accion = esActivo ? "inactivate" : "activate"; // Acción que se envía
+
+            Swal.fire({
+                title: `¿Estás seguro de ${esActivo ? "desactivar" : "activar"} este usuario?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: esActivo ? "Sí, desactivar" : "Sí, activar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`${location.origin}/BeltCoreCG_war_exploded/user`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: `accion=${accion}&idUsuario=${encodeURIComponent(idUsuario)}`
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                Swal.fire("¡Éxito!", `Usuario ${esActivo ? "desactivado" : "activado"} correctamente.`, "success")
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire("Error", "No se pudo completar la acción.", "error");
+                            }
+                        })
+                        .catch(() => {
+                            Swal.fire("Error", "Ocurrió un error en la solicitud.", "error");
+                        });
+                }
+            });
+        });
+    });
+
     // Filtros de tabla
     function applyFilters() {
         const roleFilterValue = document.getElementById("roleFilter").value.toLowerCase();

@@ -119,6 +119,53 @@
   margin-right: 10px; /* Espacio entre el icono y el texto */
 }
 
+/* Modal general */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor interno del modal */
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 700px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Encabezado del modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.modal-header h5 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-header .close {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Cuerpo del modal */
+.modal-body {
+  margin-top: 15px;
+}
+
   /* Main Content Styles */
   .main-content {
     flex: 1;

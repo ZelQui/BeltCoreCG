@@ -48,7 +48,8 @@
                 <td><%= rol.getNombreRol() %></td>
                 <td><%= rol.getDescripcion() %></td>
                 <td>
-                    <button class="btn edit" onclick="openEditModal(1, 'Administrador', 'Rol con todos los permisos')">
+                    <button class="btn edit"
+                            onclick="openEditModal(<%=rol.getIdRol()%>, '<%=rol.getNombreRol()%>', '<%=rol.getDescripcion()%>')">
                         <i class="fas fa-edit"></i>
                     </button>
 
@@ -102,7 +103,8 @@
             <span class="close" onclick="cerrarModal()">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="roleForm">
+            <form id="roleForm" action="<%=request.getContextPath()%>/rol" method="post">
+                <input type="hidden" name="accion" value="Actualizar">
                 <input type="hidden" id="roleId" name="roleId">
 
                 <div class="form-group">

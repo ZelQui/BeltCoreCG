@@ -14,6 +14,45 @@ import java.util.List;
 public class RolDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
 
+    //CRUD
+    //CREATE
+    public static boolean insertarRol(Rol rol) {
+        String sql = "INSERT INTO roles (nombre_rol, descripcion) VALUES (?, ?)";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, rol.getNombreRol());
+            ps.setString(2, rol.getDescripcion());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al insertar rol: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //UPDATE
+    public static boolean actualizarRol(Rol rol) {
+        String sql = "UPDATE roles SET nombre_rol = ?, descripcion = ? WHERE id_rol = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, rol.getNombreRol());
+            ps.setString(2, rol.getDescripcion());
+            ps.setInt(3, rol.getIdRol());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar rol: " + e.getMessage());
+            return false;
+        }
+    }
+
+    //READ
     public static Rol obtenerRolPorId(int idRol) {
         Rol rol = null;
         String sql = "SELECT id_rol, nombre_rol, descripcion FROM roles WHERE id_rol = ?";
