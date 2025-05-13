@@ -96,6 +96,12 @@ body {
     vertical-align: middle;
 }
 
+td.acciones {
+    white-space: nowrap;
+    min-width: 120px;
+    text-align: center;
+}
+
 .provider-table tbody tr {
     background-color: white;
     border-bottom: 1px solid #e5e7eb;
@@ -106,7 +112,7 @@ body {
     background-color: #f9fafb;
 }
 
-/* Botones de acciones */
+/* Botones */
 .btn {
     border: none;
     padding: 8px;

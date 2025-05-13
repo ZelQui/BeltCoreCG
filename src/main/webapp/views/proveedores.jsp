@@ -131,9 +131,9 @@
                 <input type="hidden" class="tipo-hidden" value="<%= proveedorList.getTipoCuentaBancaria() %>">
                 <input type="hidden" class="cuenta-hidden" value="<%= proveedorList.getNumeroCuenta() %>">
 
-                <td>
-                    <button class="btn view" title="Ver"><i class="fas fa-eye fa-sm"></i></button>
-                    <button class="btn edit" title="Editar"><i class="fas fa-edit fa-sm"></i></button>
+                <td class="acciones">
+                    <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
+                    <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
                 </td>
             </tr>
             <%
