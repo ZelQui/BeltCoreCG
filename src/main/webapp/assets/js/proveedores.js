@@ -434,11 +434,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.addEventListener("click", (event) => {
+/*  window.addEventListener("click", (event) => {
     if (event.target === addModal) {
       addModal.style.display = "none";
     }
-  });
+  });*/
 
   // ----- MODAL PARA EDITAR/VER PROVEEDOR -----
   const editModal = document.getElementById("providerModal");
