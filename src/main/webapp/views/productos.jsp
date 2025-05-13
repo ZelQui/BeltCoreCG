@@ -78,31 +78,83 @@
   </div>
 </div>
 
-<!-- Modal Producto -->
 <div id="modal-producto" class="modal oculto">
   <div class="modal-contenido">
-    <div class="modal-header">
-      <h2>Nuevo Producto</h2>
-      <span class="cerrar-modal">&times;</span>
-    </div>
     <form id="form-producto" class="formulario">
-      <label>Foto:</label>
-      <input type="file" accept="image/*" />
+      <div class="modal-header">
+        <h2>Nuevo Producto</h2>
+        <span class="cerrar-modal">&times;</span>
+      </div>
 
-      <label>Nombre del producto:</label>
-      <input type="text" placeholder="Ingrese nombre" />
+      <!-- Contenedor de dos columnas -->
+      <div class="formulario-doble-columna">
+        <!-- Columna izquierda -->
+        <div class="formulario-izquierda">
+          <label for="foto">Foto:</label>
+          <input type="file" id="foto" accept="image/*" />
 
-      <label>Categoría:</label>
-      <select>
-        <option value="">Seleccione una categoría</option>
-      </select>
+          <label for="nombre">Nombre del producto:</label>
+          <input type="text" id="nombre" placeholder="Ingrese nombre" required />
 
-      <label>Precio:</label>
-      <input type="number" step="0.01" placeholder="S/ 0.00" />
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" placeholder="Agregue una descripción..." rows="3"></textarea>
 
-      <div class="botones">
-        <button type="button" class="cancelar">Cancelar</button>
-        <button type="submit">Agregar</button>
+          <label for="precio">Precio:</label>
+          <input type="number" id="precio" step="0.01" placeholder="S/ 0.00" required />
+
+          <label for="stock">Stock:</label>
+          <input type="number" id="stock" placeholder="Cantidad" required />
+
+          <label for="categoria">Categoría:</label>
+          <select id="categoria" required>
+            <option value="">Seleccione una categoría</option>
+            <!-- Agrega aquí las opciones dinámicamente -->
+          </select>
+        </div>
+
+        <!-- Columna derecha -->
+        <div class="formulario-derecha">
+
+          <label for="insumo">Insumo:</label>
+          <select id="insumo" required>
+            <option value="">Seleccione insumo</option>
+            <option value="1">Correa</option>
+            <!-- Agrega aquí las opciones dinámicamente -->
+          </select>
+
+          <label for="cantidad">Cantidad:</label>
+          <input type="number" id="cantidad" placeholder="Ej. 50" required min="0" step="0.01" />
+
+          <label for="unidad">Unidad de medida:</label>
+          <select id="unidad" required>
+            <option value="">Seleccione unidad</option>
+            <option value="cm">cm</option>
+            <option value="m">metros</option>
+            <option value="kg">kg</option>
+            <option value="l">litros</option>
+            <option value="unidad">unidad</option>
+          </select>
+
+          <button type="button" id="btn-agregar-insumo">Agregar</button>
+
+          <!-- Tabla de insumos agregados -->
+          <table id="tabla-insumos" class="tabla-insumos" style="margin-top: 15px; width: 100%; border-collapse: collapse; display: none;">
+            <thead>
+            <tr>
+              <th>Insumo</th>
+              <th>Cantidad</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Filas se agregarán aquí -->
+            </tbody>
+          </table>
+          <!-- Botones -->
+          <div class="botones">
+            <button type="button" class="cancelar">Cancelar</button>
+            <button type="submit" class="guardar">Guardar</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

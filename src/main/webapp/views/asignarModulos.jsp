@@ -19,7 +19,7 @@
 <body>
 
 <div class="container">
-  <h2>Asignar Módulos al Rol: <%= rol.getNombreRol() %></h2>
+  <h2>Asignar Módulos al Rol: <%= rol.getNombreRol() %></h2><br><br>
 
   <form action="<%=request.getContextPath()%>/GuardarAsignacionController" method="post">
     <input type="hidden" name="idRol" value="<%= rol.getIdRol() %>">
@@ -38,7 +38,6 @@
       </div>
       <% } %>
     </div>
-
     <div class="form-actions">
       <button type="submit" class="btn primary">Guardar Asignación</button>
     </div>

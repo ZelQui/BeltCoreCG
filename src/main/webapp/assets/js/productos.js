@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         modalProducto.classList.remove("oculto");
         formProducto.reset();
         modalProducto.querySelector("h2").textContent = "Nuevo Producto";
-        modalProducto.querySelector("button[type='submit']").textContent = "Agregar";
+        modalProducto.querySelector("button[type='submit']").textContent = "Guardar";
     });
 
     cerrarProducto.addEventListener("click", () => modalProducto.classList.add("oculto"));
@@ -120,3 +120,57 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+document.addEventListener("DOMContentLoaded", initFormularioInsumos);
+
+    function initFormularioInsumos() {
+    const insumoSelect = document.getElementById("insumo");
+    const cantidadInput = document.getElementById("cantidad");
+    const unidadSelect = document.getElementById("unidad");
+    const btnAgregar = document.getElementById("btn-agregar-insumo");
+    const tablaInsumos = document.getElementById("tabla-insumos");
+    const tbody = tablaInsumos.querySelector("tbody");
+    const cancelarBtn = document.querySelector(".cancelar");
+
+    btnAgregar.addEventListener("click", function () {
+    agregarInsumo(insumoSelect, cantidadInput, unidadSelect, tablaInsumos, tbody);
+});
+
+    cancelarBtn.addEventListener("click", function () {
+    cancelarInsumos(insumoSelect, cantidadInput, unidadSelect, tablaInsumos, tbody);
+});
+}
+
+    function agregarInsumo(insumoSelect, cantidadInput, unidadSelect, tablaInsumos, tbody) {
+    const insumoId = insumoSelect.value;
+    const insumoTexto = insumoSelect.options[insumoSelect.selectedIndex].text;
+    const cantidad = parseFloat(cantidadInput.value);
+    const unidad = unidadSelect.value;
+
+    if (!insumoId || isNaN(cantidad) || cantidad <= 0 || !unidad) {
+    alert("Por favor complete todos los campos correctamente.");
+    return;
+}
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+        <td>${insumoTexto}</td>
+        <td>${cantidad} (${unidad})</td>
+    `;
+    tbody.appendChild(fila);
+    tablaInsumos.style.display = "table";
+
+    limpiarCampos(insumoSelect, cantidadInput, unidadSelect);
+}
+
+    function cancelarInsumos(insumoSelect, cantidadInput, unidadSelect, tablaInsumos, tbody) {
+    tbody.innerHTML = "";
+    tablaInsumos.style.display = "none";
+    limpiarCampos(insumoSelect, cantidadInput, unidadSelect);
+}
+
+    function limpiarCampos(insumoSelect, cantidadInput, unidadSelect) {
+    insumoSelect.value = "";
+    cantidadInput.value = "";
+    unidadSelect.value = "";
+}
