@@ -89,7 +89,8 @@ public class ProveedorDAO {
                 "    cb.tipo_cuenta_bancaria \n" +
                 "FROM proveedores p\n" +
                 "JOIN proveedores_cuentas pc ON p.id_proveedor = pc.id_proveedor\n" +
-                "JOIN cuentas_bancarias cb ON pc.id_cuenta_bancaria = cb.id_cuenta_bancaria;\n";
+                "JOIN cuentas_bancarias cb ON pc.id_cuenta_bancaria = cb.id_cuenta_bancaria\n" +
+                "ORDER BY p.id_proveedor ASC\n;";
         List<ProveedorCuentasBancarias> proveedoresList = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
