@@ -45,6 +45,6 @@
   </div>
 
   <script>
-    const contextPath = "<%=request.getContextPath()%>";
+    const imgPatch = "<%=request.getContextPath()%>";
   </script>
   <script src="<%=request.getContextPath()%>/assets/js/stock.js"></script>

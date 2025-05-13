@@ -2,7 +2,7 @@
 let inventario = [
   {
     id: 1,
-    imagen: contextPath + "/assets/img/correa.png",
+    imagen: imgPatch + "/assets/img/correa.png",
     nombre: "Correa Negra",
     descripcion: "Correa de cuero negro",
     precioventa: 25.00,
@@ -11,7 +11,7 @@ let inventario = [
   },
   {
     id: 2,
-    imagen: contextPath + "/assets/img/correa.png",
+    imagen: imgPatch +"/assets/img/correa.png",
     nombre: "Correa Marrón",
     descripcion: "Correa de cuero marrón",
     precioventa: 22.50,
@@ -20,7 +20,7 @@ let inventario = [
   },
   {
     id: 3,
-    imagen: contextPath + "/assets/img/correa.png",
+    imagen: imgPatch +"/assets/img/correa.png",
     nombre: "Cartera Negra",
     descripcion: "Cartera de cuero sintético",
     precioventa: 35.00,
