@@ -18,7 +18,13 @@ public class ModuloDAO {
                 "FROM modulos m " +
                 "INNER JOIN rol_modulo rm ON m.id_modulo = rm.id_modulo " +
                 "WHERE rm.id_rol = ? " +
-                "ORDER BY m.id_modulo"; // Opcional: orden por ID
+                "ORDER BY " +
+                "    CASE " +
+                "        WHEN m.id_modulo = 9 THEN 2 " +
+                "        WHEN m.modulo_padre_id = 9 THEN 3 " +
+                "        ELSE 1 " +
+                "    END, " +
+                "    m.id_modulo;"; // Opcional: orden por ID
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

@@ -85,14 +85,14 @@ public class UsuarioController extends HttpServlet {
                 return;
             case "Actualizar":
                 System.out.println("Entra a Actualizar");
-                int usuarioId = Integer.parseInt(req.getParameter("idUsuario"));
+                IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
                 String nombreEdit = req.getParameter("fullNameEdit");
                 String correoEdit = req.getParameter("emailEdit");
                 int idRolEdit = Integer.parseInt(req.getParameter("roleEdit"));
 
                 //ACTUALIZAR USUARIO
                 Usuario userEdit = new Usuario();
-                userEdit.setIdUsuario(usuarioId);
+                userEdit.setIdUsuario(IdUsuario);
                 userEdit.setNombre(nombreEdit);
                 userEdit.setCorreo(correoEdit);
                 //ACTUALIZAR EL ROL ASIGNADO
@@ -100,37 +100,48 @@ public class UsuarioController extends HttpServlet {
                 userEdit.setRol(rolEdit);
 
                 if (userdao.actualizarUsuario(userEdit)){
-                    System.out.printf("Se ha actualizado correctamente el User con ID: " + usuarioId);
+                    System.out.printf("Se ha actualizado correctamente el User con ID: " + IdUsuario);
                 } else {
-                    System.out.printf("Ocurrió un error al actualizar el User con ID: " + usuarioId);
+                    System.out.printf("Ocurrió un error al actualizar el User con ID: " + IdUsuario);
                 }
 
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
             case "restartPass":
-                int idUser = Integer.parseInt(req.getParameter("idUsuario"));
+                IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
 
                 //RESTABLECER A PREDETERMINADO
-                if(userdao.resetearContrasena(idUser)){
-                    System.out.println("Se ha resetado la contraseña del User con ID: " + idUser);
+                if(userdao.resetearContrasena(IdUsuario)){
+                    System.out.println("Se ha resetado la contraseña del User con ID: " + IdUsuario);
                 }else {
                     System.out.printf("Ocurrió un error al restablecer la contrasena");
                 }
 
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
-            /*case "delete":
-                int idUser = Integer.parseInt(req.getParameter("idUser"));
-                userdao.updateStatus(idUser, "Inactivo");
-                System.out.println("Usuario inactivado: ID: "+idUser);
-                resp.sendRedirect("menu.jsp?view=usuarios");
+            case "inactivate":
+                IdUsuario = Integer.parseInt(req.getParameter("idUser"));
+                boolean inactivado = userdao.bloquearUsuario(IdUsuario);
+
+                if (inactivado) {
+                    System.out.println("Usuario inactivado: ID: " + IdUsuario);
+                    resp.sendRedirect(req.getContextPath() + "/app/usuarios");
+                } else {
+                    System.err.println("No se pudo bloquear/inactivar el usuario: ID: " + IdUsuario);
+                }
                 break;
             case "activate":
-                int idU = Integer.parseInt(req.getParameter("idUser"));
-                userdao.updateStatus(idU, "Activo");
-                System.out.println("Usuario activado: ID: "+idU);
-                resp.sendRedirect("menu.jsp?view=usuarios");
+                IdUsuario = Integer.parseInt(req.getParameter("idUser"));
+                boolean activado = userdao.activarUsuario(IdUsuario);
+
+                if (activado) {
+                    System.out.println("Usuario activado: ID: " + IdUsuario);
+                    resp.sendRedirect(req.getContextPath() + "/app/usuarios");
+                } else {
+                    System.err.println("No se pudo activar el usuario: ID: " + IdUsuario);
+                }
                 break;
+            /*
             case "updatePassword": //CAMBIAR CONTRASEÑA A NUEVA
                 String newPassword = req.getParameter("newpassword");
                 HttpSession sessionActual = req.getSession();

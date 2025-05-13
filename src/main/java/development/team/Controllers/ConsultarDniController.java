@@ -12,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @WebServlet("/consultarDni")
-public class ConsultarDniServlet extends HttpServlet {
+public class ConsultarDniController extends HttpServlet {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final String TOKEN = "apis-token-14917.dA68liFCZjzW0OEyeMQTZKPvMhWbqXtv"; // Reemplaza por tu token o usa una variable segura
 

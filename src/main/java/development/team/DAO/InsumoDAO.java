@@ -18,13 +18,34 @@ public class InsumoDAO {
             ps.setString(1, insumo.getNombre());
             ps.setString(2, insumo.getDescripcion());
             ps.setInt(3, insumo.getCantidadStock());
-            ps.setDouble(4, insumo.getPrecioUnitario());
+            ps.setBigDecimal(4, insumo.getPrecioUnitario());
             ps.setString(5, insumo.getUnidadMedida());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static boolean existeInsumo(int IdInsumo) {
+        String sql = "SELECT COUNT(*) FROM insumos WHERE id_insumo = ?";
+        boolean existe = false;
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, IdInsumo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    existe = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al verificar si existe el insumo ID: " + IdInsumo + " - " + e.getMessage());
+        }
+
+        return existe;
     }
 
     public Insumo obtenerInsumoPorId(int id) {
@@ -67,7 +88,7 @@ public class InsumoDAO {
             ps.setString(1, insumo.getNombre());
             ps.setString(2, insumo.getDescripcion());
             ps.setInt(3, insumo.getCantidadStock());
-            ps.setDouble(4, insumo.getPrecioUnitario());
+            ps.setBigDecimal(4, insumo.getPrecioUnitario());
             ps.setString(5, insumo.getUnidadMedida());
             ps.setInt(6, insumo.getIdInsumo());
             return ps.executeUpdate() > 0;
@@ -77,7 +98,7 @@ public class InsumoDAO {
         }
     }
 
-    public boolean eliminarInsumo(int id) {
+    /*public boolean eliminarInsumo(int id) {
         String sql = "DELETE FROM insumos WHERE id_insumo = ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -87,15 +108,14 @@ public class InsumoDAO {
             e.printStackTrace();
             return false;
         }
-    }
-
+    }*/
     private Insumo mapearInsumo(ResultSet rs) throws SQLException {
         Insumo insumo = new Insumo();
         insumo.setIdInsumo(rs.getInt("id_insumo"));
         insumo.setNombre(rs.getString("nombre"));
         insumo.setDescripcion(rs.getString("descripcion"));
         insumo.setCantidadStock(rs.getInt("cantidad_stock"));
-        insumo.setPrecioUnitario(rs.getDouble("precio_unitario"));
+        insumo.setPrecioUnitario(rs.getBigDecimal("precio_unitario"));
         insumo.setUnidadMedida(rs.getString("unidad_medida"));
         return insumo;
     }

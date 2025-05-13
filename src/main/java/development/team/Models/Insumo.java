@@ -1,11 +1,13 @@
 package development.team.Models;
 
+import java.math.BigDecimal;
+
 public class Insumo {
     private int idInsumo;
     private String nombre;
     private String descripcion;
     private int cantidadStock;
-    private double precioUnitario;
+    private BigDecimal precioUnitario;
     private String unidadMedida;
 
     public Insumo() {}
@@ -42,13 +44,10 @@ public class Insumo {
         this.cantidadStock = cantidadStock;
     }
 
-    public double getPrecioUnitario() {
-        return precioUnitario;
+    public BigDecimal getPrecioUnitario() {return precioUnitario;
     }
 
-    public void setPrecioUnitario(double precioUnitario) {
-        this.precioUnitario = precioUnitario;
-    }
+    public void setPrecioUnitario(BigDecimal precioUnitario) {this.precioUnitario = precioUnitario;}
 
     public String getUnidadMedida() {
         return unidadMedida;

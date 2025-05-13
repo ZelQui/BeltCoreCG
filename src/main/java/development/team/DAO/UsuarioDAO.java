@@ -307,41 +307,45 @@ import java.util.List;
         return usuarioActualizado;
     }
 
-    public static void activarUsuario(int usuarioId) {
+    public static boolean activarUsuario(int usuarioId) {
         String sql = "UPDATE usuarios SET estado = 1 WHERE id_usuario = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, usuarioId);
-
             int rowsAffected = ps.executeUpdate();
+
             if (rowsAffected > 0) {
                 System.out.println("Usuario " + usuarioId + " actualizado correctamente.");
+                return true;
             } else {
                 System.err.println("Error al activar usuario con ID: " + usuarioId);
+                return false;
             }
         } catch (SQLException e) {
             System.err.println("Error SQLException al activar usuario " + usuarioId + ": " + e.getMessage());
+            return false;
         }
     }
 
-    public static void bloquearUsuario(int usuarioId) {
+    public static boolean bloquearUsuario(int usuarioId) {
         String sql = "UPDATE usuarios SET estado = 0 WHERE id_usuario = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, usuarioId);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Usuario " + usuarioId + " actualizado correctamente.");
+                System.out.println("Usuario " + usuarioId + " bloqueado correctamente.");
+                return true;
             } else {
-                System.err.println("Error al bloquear usuario con ID: " + usuarioId);
+                System.err.println("No se pudo bloquear el usuario con ID: " + usuarioId);
+                return false;
             }
         } catch (SQLException e) {
             System.err.println("Error SQLException al bloquear usuario " + usuarioId + ": " + e.getMessage());
+            return false;
         }
     }
 }
