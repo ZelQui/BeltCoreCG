@@ -125,13 +125,12 @@
                 <input type="hidden" name="accion" value="Registrar">
                 <!-- Contenido de campos -->
                 <div class="form-row">
-                    <div class="form-group">
+                    <div class="dni-group">
                         <label for="dni">DNI</label>
                         <input type="text" id="dni" name="dni" maxlength="8" required>
                     </div>
                     <div class="form-group">
-                        <label></label>
-                        <button type="button" class="btn buscardni" id="buscarDniBtn">Buscar</button>
+                        <button type="button" class="btn buscar" id="buscarDniBtn">Buscar</button>
                     </div>
                 </div>
 

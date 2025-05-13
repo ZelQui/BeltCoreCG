@@ -58,7 +58,7 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    
+
 }
 
 .add-provider:hover {
@@ -139,6 +139,43 @@ body {
 
 .btn i {
     pointer-events: none;
+}
+
+.form-group .btn.buscar {
+    padding: 10px 16px;
+    font-size: 1rem;
+    background-color: #292929; /* Verde claro */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 100%; /* Coincide con el alto del input */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    align-self: flex-start; /* Asegura que el botón no se estire */
+    font-weight: 600;
+}
+
+.form-group .btn.buscar:hover {
+    background-color: #0e0d0d; /* Verde más oscuro */
+}
+
+.ruc-group {
+    display: flex; /* Flexbox para alinear elementos en fila */
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 10px; /* Espaciado entre el input y el botón */
+    font-weight: 600;
+    color: #333;
+}
+
+.ruc-group input {
+    flex: 1; /* Permite al input ocupar el espacio disponible */
+    height: 40px; /* Altura consistente con el botón */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #ccc; /* Borde */
+    border-radius: 6px; /* Bordes redondeados */
+    font-size: 1rem; /* Tamaño del texto */
+    box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
 }
 
 /* Modal */

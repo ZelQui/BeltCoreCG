@@ -156,11 +156,13 @@
             <form id="addProviderForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
                 <input type="hidden" name="accion" value="registrar">
 
-                <div class="form-group">
-                    <label for="nuevoRuc">RUC</label>
-                    <div style="display: flex; gap: 10px;">
+                <div class="form-row">
+                    <div class="ruc-group">
+                        <label for="nuevoRuc">RUC</label>
                         <input type="text" id="nuevoRuc" name="ruc" required maxlength="11">
-                        <button type="button" onclick="buscarProveedorSUNAT()">Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn buscar" type="button" onclick="buscarProveedorSUNAT()">Buscar</button>
                     </div>
                 </div>
 

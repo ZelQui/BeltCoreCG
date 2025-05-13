@@ -18,31 +18,53 @@
 </head>
 <body>
 
-<div class="container">
-  <h2>Asignar Módulos al Rol: <%= rol.getNombreRol() %></h2><br><br>
+
+<div class="content-container">
+  <h1>Asignar Módulos al Rol: <%= rol.getNombreRol() %></h1>
 
   <form action="<%=request.getContextPath()%>/GuardarAsignacionController" method="post">
     <input type="hidden" name="idRol" value="<%= rol.getIdRol() %>">
 
-    <div class="checkboxes-container">
-      <% for (Modulo modulo : modulos) {
-        boolean asignado = modulosAsignados.contains(modulo.getIdModulo());
-      %>
-      <div class="checkbox-item">
-        <input type="checkbox"
-               id="modulo_<%= modulo.getIdModulo() %>"
-               name="modulos"
-               value="<%= modulo.getIdModulo() %>"
-          <%= asignado ? "checked" : "" %>>
-        <label for="modulo_<%= modulo.getIdModulo() %>"><%= modulo.getNombre() %></label>
-      </div>
-      <% } %>
+    <div class="table-container">
+      <table class="user-table">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Nombre del Módulo</th>
+          <th>Asignar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% int index = 1;
+          for (Modulo modulo : modulos) {
+            boolean asignado = modulosAsignados.contains(modulo.getIdModulo());
+        %>
+        <tr>
+          <td><%= index++ %></td>
+          <td><%= modulo.getNombre() %></td>
+          <td>
+            <label class="toggle-switch">
+              <input type="checkbox"
+                     id="modulo_<%= modulo.getIdModulo() %>"
+                     name="modulos"
+                     value="<%= modulo.getIdModulo() %>"
+                <%= asignado ? "checked" : "" %>>
+              <span class="slider"></span>
+            </label>
+          </td>
+        </tr>
+        <% } %>
+        </tbody>
+      </table>
     </div>
+
     <div class="form-actions">
+      <button type="button" class="btn cancel" onclick="window.location.href='<%=request.getContextPath()%>/app/roles'">Volver</button>
       <button type="submit" class="btn primary">Guardar Asignación</button>
     </div>
   </form>
 </div>
+
 
 <script>
   history.replaceState({}, "", "<%=request.getContextPath()%>/app/asignarModulos");

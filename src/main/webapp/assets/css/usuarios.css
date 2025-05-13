@@ -119,6 +119,10 @@ body {
   background-color: #22c55e; /* Verde claro */
 }
 
+btn buscardni {
+  background-color: #22c55e; /* Verde claro */
+}
+
 /* Badges para rol y estado */
 .role-badge {
   padding: 4px 8px;
@@ -154,6 +158,46 @@ body {
 
 .btn.primary:hover {
   background-color: #0e0d0d;
+}
+
+/* Ajusta el botón "Buscar" */
+.form-group .btn.buscar {
+  padding: 10px 16px;
+  font-size: 1rem;
+  background-color: #292929; /* Verde claro */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 100%; /* Coincide con el alto del input */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-self: flex-start; /* Asegura que el botón no se estire */
+  font-weight: 600;
+}
+
+/* Hover para el botón "Buscar" */
+.form-group .btn.buscar:hover {
+  background-color: #0e0d0d; /* Verde más oscuro */
+}
+
+.dni-group {
+  display: flex; /* Flexbox para alinear elementos en fila */
+  align-items: center; /* Alinea verticalmente los elementos */
+  gap: 10px; /* Espaciado entre el input y el botón */
+  font-weight: 600;
+  color: #333;
+}
+
+/* Estilo para el input DNI */
+.dni-group input {
+  flex: 1; /* Permite al input ocupar el espacio disponible */
+  height: 40px; /* Altura consistente con el botón */
+  padding: 10px; /* Espaciado interno */
+  border: 1px solid #ccc; /* Borde */
+  border-radius: 6px; /* Bordes redondeados */
+  font-size: 1rem; /* Tamaño del texto */
+  box-sizing: border-box; /* Incluye padding y borde en el tamaño total */
 }
 
 /* Modal general */
@@ -207,7 +251,7 @@ body {
 .form-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
@@ -222,12 +266,6 @@ body {
   font-weight: 600;
   color: #333;
 }
-/*.from-groupdni {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}*/
 
 .form-group input,
 .form-group select,
@@ -285,14 +323,5 @@ body {
 }
 
 .form-actions .btn.primary:hover {
-  background-color: #1d4ed8;
-}
-
-.btn.buscardni {
-  background-color: #2563eb;
-  color: white;
-}
-
-.btn.buscardni:hover {
   background-color: #1d4ed8;
 }
