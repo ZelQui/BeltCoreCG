@@ -1,3 +1,4 @@
+// -------------------------------------------------------------------------------------------------------------------
 function buscarProveedorSUNAT() {
   const inputElement = document.getElementById('nuevoRuc');
 
@@ -60,6 +61,43 @@ function buscarProveedorSUNAT() {
       });
 }
 
+// -------------------------------------------------------------------------------------------------------------------
+// VERIFICAR CAMPOS VACIOS EN REGISTRAR PROVEEDOR
+document.getElementById("addProviderForm").addEventListener("submit", function (e) {
+  // Obtener los valores de los campos
+  const nuevoRuc = document.getElementById("nuevoRuc").value.trim();
+  const nuevoNombre = document.getElementById("nuevoNombre").value.trim();
+  const estadoRuc = document.getElementById("estadoRuc").value.trim();
+  const nuevaDireccion = document.getElementById("nuevaDireccion").value.trim();
+  const nuevoTelefono = document.getElementById("nuevoTelefono").value.trim();
+  const tipoCuenta = document.getElementById("tipoCuenta").value.trim();
+  const nuevaCuenta = document.getElementById("nuevaCuenta").value.trim();
+
+  // Verificar si algún campo está vacío
+  if (
+      nuevoRuc === "" ||
+      nuevoNombre === "" ||
+      estadoRuc === "" ||
+      nuevaDireccion === "" ||
+      nuevoTelefono === "" ||
+      tipoCuenta === "" ||
+      nuevaCuenta === ""
+  ) {
+    // Detener el envío del formulario
+    e.preventDefault();
+
+    // Mostrar alerta con SweetAlert2
+    Swal.fire({
+      title: "¡Atención!",
+      text: "Por favor, rellene todos los campos.",
+      icon: "warning",
+      confirmButtonText: "Aceptar"
+    });
+  }
+});
+
+
+// -------------------------------------------------------------------------------------------------------------------
 // Habilita el campo y ajusta su maxlength al seleccionar un tipo de cuenta
 function habilitarYValidarCuenta() {
   const tipoCuenta = document.getElementById('tipoCuenta');
@@ -151,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-
+// -------------------------------------------------------------------------------------------------------------------
 // Validar teléfono (9 dígitos y debe comenzar con 9)
 document.getElementById('nuevoTelefono').addEventListener('input', function(event) {
   const telefono = event.target.value;
@@ -166,6 +204,7 @@ document.getElementById('nuevoTelefono').addEventListener('input', function(even
   }
 });
 
+// -------------------------------------------------------------------------------------------------------------------
 // Validación antes de enviar el formulario - Registrar
 document.getElementById('addProviderForm').addEventListener('submit', function(event) {
   const telefono = document.getElementById('nuevoTelefono').value;
@@ -179,6 +218,7 @@ document.getElementById('addProviderForm').addEventListener('submit', function(e
   }
 });
 
+// -------------------------------------------------------------------------------------------------------------------
 // Validación antes de enviar el formulario - Editar
 document.getElementById('providerForm').addEventListener('submit', function(event) {
   const telefono = document.getElementById('editTelefono').value;
@@ -192,9 +232,9 @@ document.getElementById('providerForm').addEventListener('submit', function(even
   }
 });
 
-
+// -------------------------------------------------------------------------------------------------------------------
+// VER PROVEEDOR
 document.addEventListener("DOMContentLoaded", () => {
-  // Ver proveedor con SweetAlert (mejorado sin mensaje al copiar)
   document.querySelectorAll(".btn.view").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
@@ -262,25 +302,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Editar Proveedor
+  // -------------------------------------------------------------------------------------------------------------------
+  // EDITAR PROVEEDOR
+  let valoresOriginales = {};
+
   document.querySelectorAll(".btn.edit").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
       const idProveedor = row.dataset.id;
 
-      // Obtener los datos de las celdas
       const ruc = row.children[1].textContent.trim();
       const nombre = row.children[2].textContent.trim();
       const estado = row.children[3].textContent.trim();
       const direccionFiscal = row.children[4].textContent.trim();
       const telefono = row.children[5].textContent.trim();
 
-      // Obtener datos ocultos
       const domicilioAlterna = row.querySelector(".direccionAlterna-hidden").value;
       const tipoCuenta = row.querySelector(".tipo-hidden").value;
       const numeroCuenta = row.querySelector(".cuenta-hidden").value;
 
-      // Llenar los campos del modal
+      // Guardar valores originales
+      valoresOriginales = {
+        telefono,
+        domicilioAlterna
+      };
+
+      // Llenar campos del modal
       document.getElementById("providerId").value = idProveedor;
       document.getElementById("editRuc").value = ruc;
       document.getElementById("editName").value = nombre;
@@ -295,8 +342,48 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("providerModal").style.display = "block";
     });
   });
+
+// Interceptar envío del formulario
+  document.getElementById("providerForm").addEventListener("submit", function (e) {
+    const nuevoTelefono = document.getElementById("editTelefono").value.trim();
+    const nuevaDireccion = document.getElementById("editDireccionAlterna").value.trim();
+
+    // Verificar si los campos están vacíos
+    if (nuevoTelefono === "") {
+      e.preventDefault(); // Detener el envío
+
+      Swal.fire({
+        title: "Campos Vacíos",
+        text: "El telefono no puede estar vacio.",
+        icon: "warning",
+        confirmButtonText: "Aceptar"
+      });
+
+      return;
+    }
+
+    // Comparar con los valores originales
+    if (
+        nuevoTelefono === valoresOriginales.telefono &&
+        nuevaDireccion === valoresOriginales.domicilioAlterna
+    ) {
+      e.preventDefault(); // Detener el envío
+
+      Swal.fire({
+        title: "Sin cambios detectados",
+        text: "No se editó ningún campo.",
+        icon: "warning",
+        confirmButtonText: "Aceptar"
+      });
+
+      return;
+    }
+
+    // Si se ha editado algo, se envía el formulario normalmente
+  });
 });
 
+// -------------------------------------------------------------------------------------------------------------------
 // Buscar proveedores por razon social o ruc
 document.addEventListener("DOMContentLoaded", () => {
   function applyFilters() {
@@ -320,6 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelector(".search-provider").addEventListener("input", applyFilters);
 });
 
+// -------------------------------------------------------------------------------------------------------------------
 // MODALS
 document.addEventListener("DOMContentLoaded", () => {
   // ----- MODAL PARA AÑADIR PROVEEDOR -----

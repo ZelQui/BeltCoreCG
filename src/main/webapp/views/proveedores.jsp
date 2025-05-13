@@ -127,7 +127,7 @@
                 <td><%= proveedorList.getTelefono() %></td>
 
                 <!-- Campos ocultos -->
-                <input type="hidden" class="direccionAlterna-hidden" value="<%= proveedorList.getDomicilioAlterna() %>">
+                <input type="hidden" class="direccionAlterna-hidden" value="<%= proveedorList.getDomicilioAlterna() != null ? proveedorList.getDomicilioAlterna() : "" %>">
                 <input type="hidden" class="tipo-hidden" value="<%= proveedorList.getTipoCuentaBancaria() %>">
                 <input type="hidden" class="cuenta-hidden" value="<%= proveedorList.getNumeroCuenta() %>">
 
@@ -166,7 +166,7 @@
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
-                    <input type="text" id="nuevoNombre" name="nombreRazonSocial" required readonly>
+                    <input type="text" id="nuevoNombre" name="nombreRazonSocial"  readonly>
                 </div>
 
                 <div class="form-group">
@@ -176,7 +176,7 @@
 
                 <div class="form-group">
                     <label for="nuevaDireccion">Domicilio Fiscal</label>
-                    <input type="text" id="nuevaDireccion" name="domicilioFiscal" required>
+                    <input type="text" id="nuevaDireccion" name="domicilioFiscal">
                 </div>
 
                 <div class="form-group">
@@ -186,12 +186,12 @@
 
                 <div class="form-group">
                     <label for="nuevoTelefono">Teléfono</label>
-                    <input type="tel" id="nuevoTelefono" name="telefono" required maxlength="9">
+                    <input type="tel" id="nuevoTelefono" name="telefono"  maxlength="9">
                 </div>
 
                 <div class="form-group">
                     <label for="tipoCuenta">Tipo de Cuenta Bancaria</label>
-                    <select id="tipoCuenta" name="idCuentaBancaria" required onchange="habilitarYValidarCuenta()">
+                    <select id="tipoCuenta" name="idCuentaBancaria"  onchange="habilitarYValidarCuenta()">
                         <option value="">Seleccione una cuenta</option>
                         <%
                             List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
@@ -210,7 +210,7 @@
 
                 <div class="form-group">
                     <label for="nuevaCuenta">Número de Cuenta</label>
-                    <input type="text" id="nuevaCuenta" name="numeroCuenta" required disabled>
+                    <input type="text" id="nuevaCuenta" name="numeroCuenta"  disabled>
                 </div>
 
                 <div class="modal-footer">

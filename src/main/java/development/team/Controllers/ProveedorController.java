@@ -102,9 +102,11 @@ public class ProveedorController extends HttpServlet {
 
         // Buscar Usuario id para verificar los datos para editar
         Proveedor proveedorActual = ProveedorDAO.buscarProveedor(idProveedor);
+        String actualTelefono = proveedorActual.getTelefono() != null ? proveedorActual.getTelefono() : "";
+        String actualDomicilioAlterna = proveedorActual.getDomicilioAlterna() != null ? proveedorActual.getDomicilioAlterna() : "";
 
         // Si no se edita nada, no se actualizara
-        if (telefono.equals(proveedorActual.getTelefono()) && domicilioAlterna.equals(proveedorActual.getDomicilioAlterna())) {
+        if (telefono.equals(actualTelefono) && domicilioAlterna.equals(actualDomicilioAlterna)) {
             mensaje = "No se edito ningun campo correspondiente";
             icon = "warning";
             session.setAttribute("mensajeEditado", mensaje);
@@ -115,7 +117,7 @@ public class ProveedorController extends HttpServlet {
 
         // Si algun campo esta vacio se mantiene los datos del Usuario
         if (domicilioAlterna.isEmpty()) {
-            domicilioAlterna = proveedorActual.getNombre();
+            domicilioAlterna = proveedorActual.getDomicilioAlterna();
         }
         if (telefono.isEmpty()) {
             telefono = proveedorActual.getTelefono();
