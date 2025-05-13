@@ -154,5 +154,26 @@ public class ProveedorDAO {
         return null;
     }
 
+    // CONSULTAR PROVEEDOR POR RUC
+    public static boolean buscarProveedorRuc(String numeroRuc) {
+        String sql = "SELECT * FROM proveedores WHERE numero_ruc = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, numeroRuc);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al obtener el proveedor con ruc: " + e.getMessage());
+        }
+
+        return false;
+
+    }
 
 }

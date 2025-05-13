@@ -1,9 +1,11 @@
 package development.team.Controllers;
 
+import development.team.DAO.ProveedorDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +21,7 @@ public class ApiController extends HttpServlet {
         String ruc = request.getParameter("ruc");
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InJpdmFkZW5leXJhY2FybG9zMzc5QGdtYWlsLmNvbSJ9._DR-NPku71iZ2ImK8FATT-VNBgEy6dpgghAJsw7NZqE";
 
+        // Validar RUC
         if (ruc == null || ruc.length() != 11) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
@@ -26,6 +29,15 @@ public class ApiController extends HttpServlet {
             return;
         }
 
+        // Verificar si el proveedor ya existe en la base de datos
+        if (ProveedorDAO.buscarProveedorRuc(ruc)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"Proveedor ya registrado\"}");
+            return;
+        }
+
+        // Realizar la consulta a la API de SUNAT
         String apiUrl = "https://dniruc.apisperu.com/api/v1/ruc/" + ruc + "?token=" + token;
 
         try {

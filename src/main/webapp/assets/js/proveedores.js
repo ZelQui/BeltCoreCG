@@ -1,4 +1,3 @@
-
 function buscarProveedorSUNAT() {
   const inputElement = document.getElementById('nuevoRuc');
 
@@ -14,44 +13,184 @@ function buscarProveedorSUNAT() {
     return;
   }
 
-  
   const url = BASE_URL + "/apiController?ruc=" + ruc;
 
   console.log("RUC enviado:", ruc);
   console.log("URL final para la consulta:", url);
 
   fetch(url)
-      .then(response => {
-        if (!response.ok) throw new Error('Error en la consulta');
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
-        if (!data || data.error || !data.razonSocial) throw new Error('RUC no encontrado');
+        if (data.error) {
+          // Si ya existe el proveedor
+          if (data.error === "Proveedor ya registrado") {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Proveedor ya registrado',
+              text: 'Este proveedor ya está registrado en la base de datos.',
+            });
+            return;
+          }
 
+          // Si el RUC no fue encontrado o hubo otro error
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: data.error || 'No se pudo obtener información para el RUC ingresado',
+          });
+
+          document.getElementById('nuevoNombre').value = '';
+          document.getElementById('nuevaDireccion').value = '';
+          document.getElementById('estadoRuc').value = 'No encontrado';
+          return;
+        }
+
+        // Si no hubo errores, llenar los campos con la información de la SUNAT
         document.getElementById('nuevoNombre').value = data.razonSocial || '';
         document.getElementById('nuevaDireccion').value = data.direccion || '';
         document.getElementById('estadoRuc').value = data.estado || '';
       })
       .catch(error => {
         console.error('Error:', error);
-        alert('No se pudo obtener información para el RUC ingresado');
-        document.getElementById('nuevoNombre').value = '';
-        document.getElementById('nuevaDireccion').value = '';
-        document.getElementById('estadoRuc').value = 'No encontrado';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ocurrió un error al realizar la consulta.',
+        });
       });
 }
 
-function habilitarCuenta() {
-  const select = document.getElementById("tipoCuenta");
-  const inputCuenta = document.getElementById("nuevaCuenta");
+// Habilita el campo y ajusta su maxlength al seleccionar un tipo de cuenta
+function habilitarYValidarCuenta() {
+  const tipoCuenta = document.getElementById('tipoCuenta');
+  const tipoCuentaTexto = tipoCuenta.options[tipoCuenta.selectedIndex].text;
+  const numeroCuenta = document.getElementById('nuevaCuenta');
 
-  if (select.value !== "") {
-    inputCuenta.disabled = false;
-  } else {
-    inputCuenta.disabled = true;
-    inputCuenta.value = "";
+  // Habilitar o deshabilitar el campo según si se ha seleccionado una opción válida
+  numeroCuenta.disabled = tipoCuenta.value === "";
+  numeroCuenta.value = ''; // Limpiar el valor cada vez que se cambia de tipo
+
+  // Asignar maxlength
+  let maxLength = 0;
+  if (tipoCuentaTexto === 'Banco de la Nacion') {
+    maxLength = 20;
+  } else if (tipoCuentaTexto === 'BCP' || tipoCuentaTexto === 'BBVA') {
+    maxLength = 12;
+  } else if (tipoCuentaTexto === 'Interbank') {
+    maxLength = 13;
+  } else if (tipoCuentaTexto === 'Yape/Plin') {
+    maxLength = 9;
+  } else if (tipoCuentaTexto === 'Otro (CCI)') {
+    maxLength = 20;
   }
+
+  numeroCuenta.setAttribute('maxlength', maxLength);
 }
+
+// Mostrar error con SweetAlert
+function mostrarError(tipo, digitos) {
+  Swal.fire({
+    icon: 'error',
+    title: 'Número no válido',
+    text: `El número de cuenta para ${tipo} debe tener ${digitos} dígitos y ser solo numérico.`,
+  });
+}
+
+// Validar cuenta bancaria antes de enviar el formulario
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('addProviderForm');
+
+  form.addEventListener('submit', function (event) {
+    const tipoCuenta = document.getElementById('tipoCuenta');
+    const tipoCuentaTexto = tipoCuenta.options[tipoCuenta.selectedIndex].text;
+    const numeroCuenta = document.getElementById('nuevaCuenta');
+    const cuenta = numeroCuenta.value.trim();
+
+    // Validar si se seleccionó tipo de cuenta
+    if (tipoCuenta.value === "") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Tipo de cuenta no seleccionado',
+        text: 'Debe seleccionar un tipo de cuenta antes de continuar.',
+      });
+      event.preventDefault();
+      return;
+    }
+
+    // Validaciones según tipo de cuenta
+    if (tipoCuentaTexto === 'Banco de la Nacion') {
+      if (cuenta.length !== 20 || !/^\d+$/.test(cuenta)) {
+        mostrarError('Banco de la Nación', '20');
+        event.preventDefault();
+      }
+    } else if (tipoCuentaTexto === 'BCP' || tipoCuentaTexto === 'BBVA') {
+      if (cuenta.length !== 12 || !/^\d+$/.test(cuenta)) {
+        mostrarError(tipoCuentaTexto, '12');
+        event.preventDefault();
+      }
+    } else if (tipoCuentaTexto === 'Interbank') {
+      if (cuenta.length !== 13 || !/^\d+$/.test(cuenta)) {
+        mostrarError('Interbank', '13');
+        event.preventDefault();
+      }
+    } else if (tipoCuentaTexto === 'Yape/Plin') {
+      if (cuenta.length !== 9 || !cuenta.startsWith('9') || !/^\d+$/.test(cuenta)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Número no válido',
+          text: 'El número para Yape/Plin debe tener 9 dígitos, empezar con 9 y ser numérico.',
+        });
+        event.preventDefault();
+      }
+    } else if (tipoCuentaTexto === 'Otro (CCI)') {
+      if (cuenta.length !== 20 || !/^\d+$/.test(cuenta)) {
+        mostrarError('CCI', '20');
+        event.preventDefault();
+      }
+    }
+  });
+});
+
+
+// Validar teléfono (9 dígitos y debe comenzar con 9)
+document.getElementById('nuevoTelefono').addEventListener('input', function(event) {
+  const telefono = event.target.value;
+
+  // Validar que tenga 9 dígitos y empiece con '9'
+  if (telefono.length === 9 && telefono[0] === '9' && !/^\d+$/.test(telefono)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Número no válido',
+      text: 'El número de teléfono debe ser válido y empezar con 9.',
+    });
+  }
+});
+
+// Validación antes de enviar el formulario - Registrar
+document.getElementById('addProviderForm').addEventListener('submit', function(event) {
+  const telefono = document.getElementById('nuevoTelefono').value;
+  if (telefono.length !== 9 || telefono[0] !== '9') {
+    event.preventDefault(); // Prevenir envío si el teléfono no es válido
+    Swal.fire({
+      icon: 'error',
+      title: 'Número no válido',
+      text: 'El número de teléfono debe tener 9 dígitos y empezar con 9.',
+    });
+  }
+});
+
+// Validación antes de enviar el formulario - Editar
+document.getElementById('providerForm').addEventListener('submit', function(event) {
+  const telefono = document.getElementById('editTelefono').value;
+  if (telefono.length !== 9 || telefono[0] !== '9') {
+    event.preventDefault(); // Prevenir envío si el teléfono no es válido
+    Swal.fire({
+      icon: 'error',
+      title: 'Número no válido',
+      text: 'El número de teléfono debe tener 9 dígitos y empezar con 9.',
+    });
+  }
+});
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,25 +198,29 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".btn.view").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
-      const nombre = row.children[1].textContent.trim();
-      const telefono = row.children[2].textContent.trim();
-      const correo = row.children[3].textContent.trim();
-      const ruc = row.children[4].textContent.trim();
-      const direccion = row.querySelector(".direccion-hidden").value;
-      const cci = row.querySelector(".cci-hidden").value;
+      const ruc = row.children[1].textContent.trim();
+      const razonSocial  = row.children[2].textContent.trim();
+      const estadoContribuyente = row.children[3].textContent.trim();
+      const domicilioFiscal = row.children[4].textContent.trim();
+      const telefono = row.children[5].textContent.trim();
+      const direccionAlterna = row.querySelector(".direccionAlterna-hidden").value;
+      const tipoCuenta = row.querySelector(".tipo-hidden").value;
+      const numeroCuenta = row.querySelector(".cuenta-hidden").value;
 
       Swal.fire({
         title: 'Detalles del Proveedor',
         html: `
-        <p><strong>Nombre:</strong> ${nombre}</p>
-        <p><strong>Teléfono:</strong> ${telefono}</p>
-        <p><strong>Correo:</strong> ${correo}</p>
-        <p><strong>Dirección:</strong> ${direccion}</p>
-        <p><strong>🧾 RUC:</strong> ${ruc}</p>
+        <p><strong>Ruc:</strong> ${ruc}</p>
+        <p><strong>Nombre o Razon Social:</strong> ${razonSocial}</p>
+        <p><strong>Estado Contribuyente:</strong> ${estadoContribuyente}</p>
+        <p><strong>Domicilio Fiscal:</strong> ${domicilioFiscal}</p>
+        <p><strong>Telefono:</strong> ${telefono}</p>
+        <p><strong>Domicilio Alterna:</strong> ${direccionAlterna}</p>
+        <p><strong>Tipo de Cuenta:</strong> ${tipoCuenta}</p>
         <p>
-          <strong>CCI:</strong> 
-          <span id="cciText">${cci}</span>
-          <button id="copyCCIButton" title="Copiar CCI" class="btn-copy-cci">
+          <strong>Numero de Cuenta:</strong> 
+          <span id="cuentaText">${numeroCuenta}</span>
+          <button id="copyCuentaButton" title="Copiar Cuenta" class="btn-copy-cuenta" style="border: none; background: transparent; padding: 0; cursor: pointer;">
             <i class="fas fa-copy"></i>
           </button>
         </p>
@@ -88,9 +231,31 @@ document.addEventListener("DOMContentLoaded", () => {
           popup: 'swal2-border-radius'
         },
         didRender: () => {
-          const btnCopy = Swal.getHtmlContainer().querySelector("#copyCCIButton");
+          const btnCopy = Swal.getHtmlContainer().querySelector("#copyCuentaButton");
           btnCopy.addEventListener("click", () => {
-            navigator.clipboard.writeText(cci).catch(() => {});
+            navigator.clipboard.writeText(numeroCuenta)
+                .then(() => {
+                  Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Número de cuenta copiado',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
+                })
+                .catch(() => {
+                  Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'No se pudo copiar',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
+                });
           });
         }
       });
@@ -111,9 +276,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const telefono = row.children[5].textContent.trim();
 
       // Obtener datos ocultos
-      const domicilioAlterna = row.querySelector(".direccion-hidden").value;
+      const domicilioAlterna = row.querySelector(".direccionAlterna-hidden").value;
       const tipoCuenta = row.querySelector(".tipo-hidden").value;
-      const numeroCuenta = row.querySelector(".cci-hidden").value;
+      const numeroCuenta = row.querySelector(".cuenta-hidden").value;
 
       // Llenar los campos del modal
       document.getElementById("providerId").value = idProveedor;
@@ -130,62 +295,29 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("providerModal").style.display = "block";
     });
   });
-
-
-  // Cambiar Estados Proveedor
-  document.querySelectorAll(".btn.toggle").forEach((button) => {
-    button.addEventListener("click", function (e) {
-      e.preventDefault();  // Evita que el formulario se envíe antes de confirmar
-
-      const form = this.closest("form");  // Obtén el formulario contenedor
-      const icon = this.querySelector("i");  // El ícono que cambia
-      const estadoSpan = this.querySelector("span");  // El texto del estado
-      const esActivo = icon.classList.contains("fa-user-check");  // Si el proveedor está activo
-      const accion = esActivo ? "desactivar" : "activar";  // Acción según el estado
-      const nombreProveedor = this.closest("tr").children[1].textContent;  // Nombre del proveedor
-
-      Swal.fire({
-        title: `¿Deseas ${accion} al proveedor "${nombreProveedor}"?`,
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonText: `Sí, ${accion}`,
-        cancelButtonText: "Cancelar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Actualiza el estado visual en el frontend
-          icon.classList.toggle("fa-user-check");
-          icon.classList.toggle("fa-user-slash");
-          estadoSpan.classList.toggle("text-success");
-          estadoSpan.classList.toggle("text-danger");
-          estadoSpan.textContent = esActivo ? "Inactivo" : "Activo";
-
-          // Envía el formulario después de la confirmación
-          form.submit();
-        }
-      });
-    });
-  });
-
 });
+
+// Buscar proveedores por razon social o ruc
 document.addEventListener("DOMContentLoaded", () => {
-  // Buscar proveedores por nombre
   function applyFilters() {
     const searchValue = document.querySelector(".search-provider").value.toLowerCase();
     const rows = document.querySelectorAll(".provider-table tbody tr");
 
     rows.forEach(row => {
-      const nombre = row.children[1].textContent.toLowerCase();
-      const matchesSearch = !searchValue || nombre.includes(searchValue);
+      const ruc = row.children[1].textContent.toLowerCase();
+      const nombre = row.children[2].textContent.toLowerCase();
 
-      row.style.display = matchesSearch ? "" : "none";
+      // Mostrar la fila si el término de búsqueda coincide con el RUC o el Nombre
+      if (ruc.includes(searchValue) || nombre.includes(searchValue)) {
+        row.style.display = "";
+      } else {
+        row.style.display = "none";
+      }
     });
   }
 
   // Evento en tiempo real al escribir
   document.querySelector(".search-provider").addEventListener("input", applyFilters);
-
-  // Evento al presionar botón "Buscar"
-  document.getElementById("applyFilters").addEventListener("click", applyFilters);
 });
 
 // MODALS

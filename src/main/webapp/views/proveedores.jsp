@@ -66,6 +66,29 @@
 </script>
 <%  }%>
 
+<!-- Ruc Proveedor: Mensaje Ruc -->
+<%
+    String mensajeRuc = (String) session.getAttribute("mensajeRuc");
+    String iconRuc = (String) session.getAttribute("iconRuc");
+    if (mensajeRuc != null || iconRuc != null) {
+
+        // Eliminar mensaje de la sesion para que no aparesca al recargar la pagina
+        session.removeAttribute("mensajeRuc");
+        session.removeAttribute("iconRuc");
+%>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        Swal.fire({
+            title: "<%= mensajeRuc%>",
+            icon: "<%= iconRuc%>",
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
+</script>
+<%  }%>
+
+
 <div class="content-container">
     <h1>Gestión de Proveedores</h1>
     <button class="add-provider">Añadir Proveedor</button>
@@ -75,7 +98,6 @@
                 <input type="text" class="search-provider" placeholder="Buscar proveedor...">
             </label>
         </div>
-        <button class="btn filter" id="applyFilters">Buscar</button>
     </div>
 
     <div class="table-container">
@@ -105,9 +127,9 @@
                 <td><%= proveedorList.getTelefono() %></td>
 
                 <!-- Campos ocultos -->
-                <input type="hidden" class="direccion-hidden" value="<%= proveedorList.getDomicilioAlterna() %>">
+                <input type="hidden" class="direccionAlterna-hidden" value="<%= proveedorList.getDomicilioAlterna() %>">
                 <input type="hidden" class="tipo-hidden" value="<%= proveedorList.getTipoCuentaBancaria() %>">
-                <input type="hidden" class="cci-hidden" value="<%= proveedorList.getNumeroCuenta() %>">
+                <input type="hidden" class="cuenta-hidden" value="<%= proveedorList.getNumeroCuenta() %>">
 
                 <td>
                     <button class="btn view" title="Ver"><i class="fas fa-eye fa-sm"></i></button>
@@ -137,14 +159,14 @@
                 <div class="form-group">
                     <label for="nuevoRuc">RUC</label>
                     <div style="display: flex; gap: 10px;">
-                        <input type="text" id="nuevoRuc" name="ruc" required>
+                        <input type="text" id="nuevoRuc" name="ruc" required maxlength="11">
                         <button type="button" onclick="buscarProveedorSUNAT()">Buscar</button>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
-                    <input type="text" id="nuevoNombre" name="nombreRazonSocial" required>
+                    <input type="text" id="nuevoNombre" name="nombreRazonSocial" required readonly>
                 </div>
 
                 <div class="form-group">
@@ -159,17 +181,17 @@
 
                 <div class="form-group">
                     <label for="nuevaDireccion">Domicilio Alterna</label>
-                    <input type="text" id="nuevaDireccionAlterna" name="domicilioAlterna" required>
+                    <input type="text" id="nuevaDireccionAlterna" name="domicilioAlterna">
                 </div>
 
                 <div class="form-group">
                     <label for="nuevoTelefono">Teléfono</label>
-                    <input type="tel" id="nuevoTelefono" name="telefono" required>
+                    <input type="tel" id="nuevoTelefono" name="telefono" required maxlength="9">
                 </div>
 
                 <div class="form-group">
                     <label for="tipoCuenta">Tipo de Cuenta Bancaria</label>
-                    <select id="tipoCuenta" name="idCuentaBancaria" required onchange="habilitarCuenta()">
+                    <select id="tipoCuenta" name="idCuentaBancaria" required onchange="habilitarYValidarCuenta()">
                         <option value="">Seleccione una cuenta</option>
                         <%
                             List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
@@ -240,7 +262,7 @@
 
                 <div class="form-group">
                     <label for="editTelefono">Teléfono</label>
-                    <input type="tel" id="editTelefono" name="telefono">
+                    <input type="tel" id="editTelefono" name="telefono" maxlength="9">
                 </div>
 
                 <div class="form-group">

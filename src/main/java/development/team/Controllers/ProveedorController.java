@@ -5,7 +5,6 @@ import development.team.DAO.ProveedorDAO;
 import development.team.Models.Proveedor;
 import development.team.Models.ProveedorCuenta;
 import development.team.Models.TipoDocumento;
-import development.team.Models.Usuario;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -47,7 +46,13 @@ public class ProveedorController extends HttpServlet {
         String nombre = request.getParameter("nombreRazonSocial");
         String telefono = request.getParameter("telefono");
         String domicilioFiscal = request.getParameter("domicilioFiscal");
+
+        // Verificamos si el campo "Domicilio Alterna" está vacío y asignamos null si es así
         String domicilioAlterna = request.getParameter("domicilioAlterna");
+        if (domicilioAlterna == null || domicilioAlterna.trim().isEmpty()) {
+            domicilioAlterna = null;  // Si está vacío o es null, lo dejamos como null
+        }
+
         int idCuentaBancaria = Integer.parseInt(request.getParameter("idCuentaBancaria"));
         String estadoContribuyente = request.getParameter("estadoContribuyente");
         String numeroCuenta = request.getParameter("numeroCuenta");
