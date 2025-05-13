@@ -50,8 +50,9 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Nombre completo</th>
-                <th>Email</th>
+                <th>Nombres</th>
+                <th>Apellido Paterno</th>
+                <th>Apellido Materno</th>
                 <th>Rol</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -63,8 +64,14 @@
                 for (UsuarioRolDTO usuarioList : usuarios) { %>
             <tr data-id="<%= usuarioList.getIdUsuario() %>">
                 <td><%= i %></td>
-                <td><span class="user-fullname"><%= usuarioList.getNombreUsuario()%></span></td>
-                <td><span class="user-email"><%= usuarioList.getCorreo() %></span></td>
+                <td><span class="user-fullname"><%= usuarioList.getNombreUsuario()%> </span></td>
+                <td><span class="user-apepaterno"><%= usuarioList.getApellidoPaternoUsr()%> </span></td>
+                <td><span class="user-apematerno"><%= usuarioList.getApellidoMaternoUsr()%> </span></td>
+                <!-- Campos ocultos -->
+                <input type="hidden" class="user-dni" value="<%= usuarioList.getDNI() %>">
+                <input type="hidden" class="user-telefono" value="<%= usuarioList.getTelefono() %>">
+                <input type="hidden" class="user-correo" value="<%= usuarioList.getCorreo() %>">
+
                 <td>
                     <span class="user-rol role-badge role-blue" data-rol-id="<%= usuarioList.getIdRol() %>">
                         <%= usuarioList.getNombreRol() %>
@@ -121,24 +128,39 @@
                     <div class="form-group">
                         <label for="dni">DNI</label>
                         <input type="text" id="dni" name="dni" maxlength="8" required>
-                        <button type="button" id="buscarDniBtn">Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label></label>
+                        <button type="button" class="btn buscardni" id="buscarDniBtn">Buscar</button>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="fullName">Nombre Completo</label>
+                        <label for="fullName">Nombres</label>
                         <input type="text" id="fullName" name="fullName" required>
                     </div>
                 </div>
-
                 <div class="form-row">
+                    <div class="form-group">
+                        <label for="ApePaterno">Apellido Paterno</label>
+                        <input type="text" id="ApePaterno" name="ApePaterno" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ApeMaterno">Apellido Materno</label>
+                        <input type="text" id="ApeMaterno" name="ApeMaterno" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="role">Rol</label>
@@ -174,17 +196,9 @@
                 <input type="hidden" id="idUsuarioEdit" name="idUsuario">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="fullNameEdit">Nombre Completo</label>
-                        <input type="text" id="fullNameEdit" name="fullNameEdit" required>
+                        <label for="dniEdit">DNI</label>
+                        <input type="text" id="dniEdit" name="dniEdit" maxlength="8" readonly>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="emailEdit">Email</label>
-                    <input type="email" id="emailEdit" name="emailEdit" required readonly>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
                         <label for="roleEdit">Rol</label>
                         <select id="roleEdit" name="roleEdit" required>
@@ -193,6 +207,32 @@
                             <option value="<%= rolList.getIdRol() %>"><%= rolList.getNombreRol() %></option>
                             <% } %>
                         </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullNameEdit">Nombres</label>
+                        <input type="text" id="fullNameEdit" name="fullNameEdit" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ApePaternoEdit">Apellido Paterno</label>
+                        <input type="text" id="ApePaternoEdit" name="ApePaternoEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ApeMaternoEdit">Apellido Materno</label>
+                        <input type="text" id="ApeMaternoEdit" name="ApeMaternoEdit" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="telefonoEdit">Telefono</label>
+                        <input type="tel" id="telefonoEdit" name="telefonoEdit">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailEdit">Email</label>
+                        <input type="email" id="emailEdit" name="emailEdit" required readonly>
                     </div>
                 </div>
 

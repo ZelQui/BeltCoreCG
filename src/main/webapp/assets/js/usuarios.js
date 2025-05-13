@@ -18,9 +18,16 @@ document.getElementById('buscarDniBtn').addEventListener('click', function () {
             console.log('Resultado de la API:', data); // Solo consola por ahora
 
             // Opcional: rellenar campo nombre completo
-            var fullName = data.nombres + ' ' + data.apellidoPaterno + ' ' + data.apellidoMaterno;
-            console.log('fullName:', fullName);
+            var fullName = data.nombres;
+            var ApePaterno = data.apellidoPaterno;
+            var ApeMaterno = data.apellidoMaterno;
             document.getElementById('fullName').value = fullName;
+            document.getElementById('ApePaterno').value = ApePaterno;
+            document.getElementById('ApeMaterno').value = ApeMaterno;
+            // Hacer los campos solo lectura
+            document.getElementById('fullName').readOnly = true;
+            document.getElementById('ApePaterno').readOnly = true;
+            document.getElementById('ApeMaterno').readOnly = true;
         })
         .catch(error => {
             console.error('Error al consultar DNI:', error);
@@ -56,9 +63,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Cerrar modal de agregar
-    closeAddBtn.addEventListener("click", () => addModal.style.display = "none");
+    closeAddBtn.addEventListener("click", () => {
+        addModal.style.display = "none";
+        document.getElementById('fullName').readOnly = false;
+        document.getElementById('ApePaterno').readOnly = false;
+        document.getElementById('ApeMaterno').readOnly = false;
+    });
+
     // Botón Cancelar de agregar
-    cancelAddBtn.addEventListener("click", () => addModal.style.display = "none");
+    cancelAddBtn.addEventListener("click", () => {
+        addModal.style.display = "none";
+        document.getElementById('fullName').readOnly = false;
+        document.getElementById('ApePaterno').readOnly = false;
+        document.getElementById('ApeMaterno').readOnly = false;
+    });
 
     // Cerrar modal de editar
     closeEditBtn.addEventListener("click", () => editModal.style.display = "none");
@@ -73,13 +91,21 @@ document.addEventListener("DOMContentLoaded", () => {
             // Obtener valores de la fila
             const idUsuario = btn.dataset.id; // <- Aquí obtenemos el ID desde el data-id
             const fullName = row.querySelector(".user-fullname").textContent.trim();
-            const email = row.querySelector(".user-email").textContent.trim();
+            const apePaterno = row.querySelector(".user-apepaterno").textContent.trim();
+            const apeMaterno = row.querySelector(".user-apematerno").textContent.trim();
+            const dni = row.querySelector(".user-dni").value;
+            const telefono = row.querySelector(".user-telefono").value;
+            const correo = row.querySelector(".user-correo").value;
             const rolId = row.querySelector(".user-rol").dataset.rolId;
 
             // Asignar valores al formulario
             editForm.querySelector("#idUsuarioEdit").value = idUsuario;
+            editForm.querySelector("#dniEdit").value = dni;
             editForm.querySelector("#fullNameEdit").value = fullName;
-            editForm.querySelector("#emailEdit").value = email;
+            editForm.querySelector("#ApePaternoEdit").value = apePaterno;
+            editForm.querySelector("#ApeMaternoEdit").value = apeMaterno;
+            editForm.querySelector("#telefonoEdit").value = telefono;
+            editForm.querySelector("#emailEdit").value = correo;
             editForm.querySelector("#roleEdit").value = rolId;
 
             // Mostrar el modal
@@ -92,23 +118,32 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", () => {
             const row = btn.closest("tr");
 
+            // Obtener datos visibles
             const idUsuario = row.children[0].textContent.trim();
-            const nombreCompleto = row.children[1].textContent.trim();
-            const email = row.children[2].textContent.trim();
-            const rol = row.querySelector(".role-badge").textContent.trim();
-            const estado = row.querySelectorAll(".role-badge")[1]?.textContent.trim() || "Desconocido";
+            const nombre = row.querySelector(".user-fullname").textContent.trim();
+            const apePaterno = row.querySelector(".user-apepaterno").textContent.trim();
+            const apeMaterno = row.querySelector(".user-apematerno").textContent.trim();
+            const nombreCompleto = `${nombre} ${apePaterno} ${apeMaterno}`;
+            const dni = row.querySelector(".user-dni")?.value || "No registrado";
+            const telefono = row.querySelector(".user-telefono")?.value || "No registrado";
+            const rol = row.querySelector(".user-rol").textContent.trim();
+            const estado = row.querySelector(".user-estado")?.textContent.trim() || "Desconocido";
+
+            // Obtener datos ocultos
+            const email = row.querySelector(".user-correo")?.value || "No registrado";
 
             // Mostrar SweetAlert con los detalles del usuario
             Swal.fire({
-                title: `Detalles del Usuario:`,
+                title: `Detalles del Usuario`,
                 html: `
-                    <strong># ${idUsuario}</strong><br>
-                    <strong>Nombre Completo:</strong> ${nombreCompleto} <br>
-                    <strong>Email:</strong> ${email} <br>
-                    <strong>Contraseña:</strong> ***** <br>
-                    <strong>Rol:</strong> ${rol} <br>
-                    <strong>Estado:</strong> ${estado} <br>
-                `,
+                <p><strong>ID:</strong> ${idUsuario}</p>
+                <p><strong>Nombre Completo:</strong> ${nombreCompleto}</p>
+                <p><strong>DNI:</strong> ${dni}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Telefono:</strong> ${telefono}</p>
+                <p><strong>Rol:</strong> ${rol}</p>
+                <p><strong>Estado:</strong> ${estado}</p>
+            `,
                 icon: 'info',
                 confirmButtonText: 'Cerrar',
                 confirmButtonColor: '#3085d6',

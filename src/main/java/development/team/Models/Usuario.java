@@ -3,8 +3,8 @@ package development.team.Models;
 public class Usuario {
     private int idUsuario;
     private String nombre;
-    private String apellido_paterno;
-    private String apellido_materno;
+    private String apellidoPaterno;
+    private String apellidoMaterno;
     private String telefono;
     private String correo;
     private String contrasena;
@@ -14,11 +14,11 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellido_paterno, String apellido_materno, String telefono, String correo, String contrasena, Rol rol, int estado) {
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String contrasena, Rol rol, int estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
-        this.apellido_paterno = apellido_paterno;
-        this.apellido_materno = apellido_materno;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.correo = correo;
         this.contrasena = contrasena;
@@ -42,20 +42,20 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellido_paterno() {
-        return apellido_paterno;
+    public String getApellidoPaterno() {
+        return apellidoPaterno;
     }
 
-    public void setApellido_paterno(String apellido_paterno) {
-        this.apellido_paterno = apellido_paterno;
+    public void setApellidoPaterno(String apellidoPaterno) {
+        this.apellidoPaterno = apellidoPaterno;
     }
 
-    public String getApellido_materno() {
-        return apellido_materno;
+    public String getApellidoMaterno() {
+        return apellidoMaterno;
     }
 
-    public void setApellido_materno(String apellido_materno) {
-        this.apellido_materno = apellido_materno;
+    public void setApellidoMaterno(String apellidoMaterno) {
+        this.apellidoMaterno = apellidoMaterno;
     }
 
     public String getTelefono() {
@@ -103,8 +103,8 @@ public class Usuario {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +
                 ", nombre='" + nombre + '\'' +
-                ", apellido_paterno='" + apellido_paterno + '\'' +
-                ", apellido_materno='" + apellido_materno + '\'' +
+                ", apellidoPaterno='" + apellidoPaterno + '\'' +
+                ", apellidoMaterno='" + apellidoMaterno + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
                 ", contrasena='" + contrasena + '\'' +

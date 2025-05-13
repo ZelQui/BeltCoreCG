@@ -107,20 +107,21 @@ import java.util.List;
     //METODOS CRUD
     //CREATE
     public static int registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nombres, correo, contrasena, id_rol) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (nombres, apellido_paterno, apellido_materno, " +
+                "telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
         int usuarioId = -1;
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Importante para obtener ID generado
 
             ps.setString(1, usuario.getNombre());
-
-            ps.setString(2, usuario.getCorreo());
-
+            ps.setString(2, usuario.getApellidoPaterno());
+            ps.setString(3, usuario.getApellidoMaterno());
+            ps.setString(4, usuario.getTelefono());
+            ps.setString(5, usuario.getCorreo());
             String hashedPassword = BCrypt.hashpw(usuario.getContrasena(), BCrypt.gensalt());
-            ps.setString(3, hashedPassword);
-
-            ps.setInt(4, usuario.getRol().getIdRol());
+            ps.setString(6, hashedPassword);
+            ps.setInt(7, usuario.getRol().getIdRol());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -139,7 +140,8 @@ import java.util.List;
     //READ
     public static List<UsuarioRolDTO> obtenerTodosUsuarios() {
 
-        String sql = "SELECT u.id_usuario, u.nombres, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
+                "u.telefono, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 "FROM usuarios as u " +
                 "JOIN roles AS r ON u.id_rol = r.id_rol";
         List<UsuarioRolDTO> usuariosList = new ArrayList<>();
@@ -150,14 +152,18 @@ import java.util.List;
 
             while (rs.next()) {
                 int idUsuario = rs.getInt("id_usuario");
+                String dni = rs.getString("dni");
                 String nombre = rs.getString("nombres");
+                String apellidoPaterno = rs.getString("apellido_paterno");
+                String apellidoMaterno = rs.getString("apellido_materno");
+                String telefono = rs.getString("telefono");
                 String correo = rs.getString("correo");
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");
                 String descripcionRol = rs.getString("descripcion");
                 int estado = rs.getInt("estado");
 
-                usuariosList.add(new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol, estado));
+                usuariosList.add(new UsuarioRolDTO(idUsuario, dni, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, "***", idRol, nombreRol, descripcionRol, estado));
             }
 
         } catch (SQLException e) {
@@ -167,7 +173,8 @@ import java.util.List;
         return usuariosList;
     }
     public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
-        String sql = "SELECT u.id_usuario, u.nombres, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+        String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
+                " u.telefono, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 " FROM usuarios as u " +
                 " JOIN roles AS r ON u.id_rol = r.id_rol " +
                 " WHERE id_usuario = ?";
@@ -181,14 +188,18 @@ import java.util.List;
 
             if (rs.next()) {
                 int idUsuario = rs.getInt("id_usuario");
+                String dni = rs.getString("dni");
                 String nombre = rs.getString("nombres");
+                String apellidoPaterno = rs.getString("apellido_paterno");
+                String apellidoMaterno = rs.getString("apellido_materno");
+                String telefono = rs.getString("telefono");
                 String correo = rs.getString("correo");
                 int idRol = rs.getInt("id_rol");
                 String nombreRol = rs.getString("nombre_rol");
                 String descripcionRol = rs.getString("descripcion");
                 int estado = rs.getInt("estado");
 
-                new UsuarioRolDTO(idUsuario, nombre, correo, "***", idRol, nombreRol, descripcionRol, estado);
+                new UsuarioRolDTO(idUsuario, dni, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, "***", idRol, nombreRol, descripcionRol, estado);
             }
         } catch (SQLException e) {
             System.err.println("Error SQLException al obtener usuario por ID: " + usuarioId + ": " + e.getMessage());

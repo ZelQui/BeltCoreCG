@@ -222,6 +222,12 @@ body {
   font-weight: 600;
   color: #333;
 }
+/*.from-groupdni {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}*/
 
 .form-group input,
 .form-group select,
@@ -279,5 +285,14 @@ body {
 }
 
 .form-actions .btn.primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn.buscardni {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn.buscardni:hover {
   background-color: #1d4ed8;
 }

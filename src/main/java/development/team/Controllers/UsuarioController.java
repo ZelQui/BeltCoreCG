@@ -54,7 +54,11 @@ public class UsuarioController extends HttpServlet {
                 break;
             case "Registrar":
                 //Para validar datos de inicio de sesión
+                String dni = req.getParameter("dni"); //falta en DAO y Model
                 String nombre = req.getParameter("fullName");
+                String ApePaterno = req.getParameter("ApePaterno");
+                String ApeMaterno = req.getParameter("ApeMaterno");
+                String telefono = req.getParameter("telefono");
                 String correo = req.getParameter("email");
                 String password = "123456";
                 int idRol = Integer.parseInt(req.getParameter("role"));
@@ -64,6 +68,9 @@ public class UsuarioController extends HttpServlet {
                 } else {
                     //AGREGAR A USUARIOS
                     user.setNombre(nombre);
+                    user.setApellidoPaterno(ApePaterno);
+                    user.setApellidoMaterno(ApeMaterno);
+                    user.setTelefono(telefono);
                     user.setCorreo(correo);
                     user.setContrasena(password);
                     //AGREGAR EL ROL ASIGNADO
