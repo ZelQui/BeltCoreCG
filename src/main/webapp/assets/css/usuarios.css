@@ -164,21 +164,30 @@ btn buscardni {
 .form-group .btn.buscar {
   padding: 10px 16px;
   font-size: 1rem;
-  background-color: #292929; /* Verde claro */
+  background-color: #292929;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   height: 100%; /* Coincide con el alto del input */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   align-self: flex-start; /* Asegura que el botón no se estire */
   font-weight: 600;
 }
 
+/* Estilo cuando el botón "Buscar" está deshabilitado */
+.form-group .btn.buscar:disabled {
+  background-color: #bcbcbc; /* Gris claro */
+  color: #6b6b6b;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
+}
+
 /* Hover para el botón "Buscar" */
 .form-group .btn.buscar:hover {
-  background-color: #0e0d0d; /* Verde más oscuro */
+  background-color: #0e0d0d;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .dni-group {
@@ -324,4 +333,12 @@ btn buscardni {
 
 .form-actions .btn.primary:hover {
   background-color: #1d4ed8;
+}
+
+.form-actions .btn.primary:disabled {
+  background-color: #bcbcbc; /* Gris claro */
+  color: #6b6b6b;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
 }

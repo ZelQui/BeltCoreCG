@@ -241,19 +241,20 @@
                 <input type="hidden" name="accion" value="editar">
                 <input type="hidden" id="providerId" name="idProveedor">
 
-                <div class="form-group">
-                    <label for="editRuc">RUC</label>
-                    <input type="text" id="editRuc" name="ruc" disabled>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editRuc">RUC</label>
+                        <input type="text" id="editRuc" name="ruc" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="editEstado">Estado SUNAT</label>
+                        <input type="text" id="editEstado" name="estadoContribuyente" disabled>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="editName">Nombre o Razón Social</label>
                     <input type="text" id="editName" name="nombreRazonSocial" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="editEstado">Estado SUNAT</label>
-                    <input type="text" id="editEstado" name="estadoContribuyente" disabled>
                 </div>
 
                 <div class="form-group">
@@ -266,19 +267,19 @@
                     <input type="text" id="editDireccionAlterna" name="domicilioAlterna">
                 </div>
 
-                <div class="form-group">
-                    <label for="editTelefono">Teléfono</label>
-                    <input type="tel" id="editTelefono" name="telefono" maxlength="9">
-                </div>
-
-                <div class="form-group">
-                    <label for="editTipoCuenta">Tipo de Cuenta</label>
-                    <input type="text" id="editTipoCuenta" name="tipoCuenta" disabled>
-                </div>
-
-                <div class="form-group">
-                    <label for="editNumeroCuenta">Número de Cuenta</label>
-                    <input type="text" id="editNumeroCuenta" name="numeroCuenta" disabled>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTelefono">Teléfono</label>
+                        <input type="tel" id="editTelefono" name="telefono" maxlength="9">
+                    </div>
+                    <div class="form-group">
+                        <label for="editTipoCuenta">Tipo de Cuenta</label>
+                        <input type="text" id="editTipoCuenta" name="tipoCuenta" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="editNumeroCuenta">Número de Cuenta</label>
+                        <input type="text" id="editNumeroCuenta" name="numeroCuenta" disabled>
+                    </div>
                 </div>
 
                 <div class="modal-footer">

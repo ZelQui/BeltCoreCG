@@ -10,18 +10,16 @@ public class Auth {
 
     /**
      * Inicia sesión y almacena el usuario en la sesión HTTP.
-     * @param correo Nombre de usuario.
-     * @param password Contraseña del usuario.
+     * @param userLogin Nombre de usuario.
+     * @param contrasena Contraseña del usuario.
      * @param request Petición HTTP.
      * @return true si las credenciales son correctas, false si son incorrectas.
      */
-    public boolean login(String correo, String password, HttpServletRequest request) {
+    public boolean login(String userLogin, String contrasena, HttpServletRequest request) {
         // Validar credenciales
-        Boolean validar = userdao.validarCredenciales (correo, password);
-        System.out.println("Auth: validar: " + validar);
+        Boolean validar = userdao.validarCredenciales (userLogin, contrasena);
         if (validar) {
-            Usuario user = userdao.obtenerUsuarioSesion(correo);
-            System.out.println("user: " + user);
+            Usuario user = userdao.obtenerUsuarioSesion(userLogin);
 
             if (userdao.verificarEstadoActivo(user)) {
                 HttpSession session = request.getSession();
@@ -29,7 +27,6 @@ public class Auth {
 
                 // SETTEAR USUARIO EN BASE DE DATOS, PARA QUE PUEDA USAR SQL
                 if (userdao.SettearUsuario(user.getIdUsuario())) {
-                    System.out.println("Auth exitoso");
                     return true; // Inicio de sesión exitoso
                 }
                 return false; // Falló al settear usuario

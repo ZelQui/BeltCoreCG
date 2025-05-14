@@ -29,13 +29,13 @@ import java.util.List;
             return false;
         }
 
-        public static boolean validarCredenciales(String correo, String contrasena) {
-            String sql = "SELECT contrasena FROM usuarios WHERE correo = ?";
+        public static boolean validarCredenciales(String userLogin, String contrasena) {
+            String sql = "SELECT contrasena FROM usuarios WHERE user_login = ?";
 
             try (Connection con = dataSource.getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
 
-                ps.setString(1, correo);
+                ps.setString(1, userLogin);
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
                         String storedHash = rs.getString("contrasena");
@@ -44,7 +44,7 @@ import java.util.List;
                     }
                 }
             } catch (SQLException e) {
-                System.err.println("Error SQLException al validar las credenciales para el usuario: " + correo + " - " + e.getMessage());
+                System.err.println("Error SQLException al validar las credenciales para el usuario: " + userLogin + " - " + e.getMessage());
             }
             return false;
         }
@@ -71,14 +71,15 @@ import java.util.List;
             return estadoActivo;
         }
 
-        public static Usuario obtenerUsuarioSesion(String correo) {
+        public static Usuario obtenerUsuarioSesion(String userLogin) {
             Usuario usuario = null;
-            String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = ?";
+            String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, " +
+                    " correo, user_login, contrasena, id_rol, estado FROM usuarios WHERE user_login = ?";
 
             try (Connection con = dataSource.getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
 
-                ps.setString(1, correo);
+                ps.setString(1, userLogin);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -92,11 +93,12 @@ import java.util.List;
                                 rs.getString("apellido_materno"),
                                 rs.getString("telefono"),
                                 rs.getString("correo"),
+                                rs.getString("user_login"),
                                 rs.getString("contrasena"),
                                 rol,
                                 rs.getInt("estado")
                         );
-                        System.out.println(usuario.getNombre() + " inició sesión.");
+                        System.out.println(usuario.getNombres() + " inició sesión.");
                     }
                 }
             } catch (SQLException e) {
@@ -109,21 +111,22 @@ import java.util.List;
     //CREATE
     public static int registrarUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuarios (dni, nombres, apellido_paterno, apellido_materno, " +
-                "telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "telefono, correo, user_login, contrasena, id_rol) VALUES (?,?,?,?,?,?,?,?,?)";
         int usuarioId = -1;
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Importante para obtener ID generado
 
-            ps.setString(1, usuario.getDNI());
-            ps.setString(2, usuario.getNombre());
+            ps.setString(1, usuario.getDni());
+            ps.setString(2, usuario.getNombres());
             ps.setString(3, usuario.getApellidoPaterno());
             ps.setString(4, usuario.getApellidoMaterno());
             ps.setString(5, usuario.getTelefono());
             ps.setString(6, usuario.getCorreo());
+            ps.setString(7, usuario.getUserLogin());
             String hashedPassword = BCrypt.hashpw(usuario.getContrasena(), BCrypt.gensalt());
-            ps.setString(7, hashedPassword);
-            ps.setInt(8, usuario.getRol().getIdRol());
+            ps.setString(8, hashedPassword);
+            ps.setInt(9, usuario.getRol().getIdRol());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -143,9 +146,10 @@ import java.util.List;
     public static List<UsuarioRolDTO> obtenerTodosUsuarios() {
 
         String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
-                "u.telefono, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
-                "FROM usuarios as u " +
-                "JOIN roles AS r ON u.id_rol = r.id_rol";
+                "u.telefono, u.correo, u.user_login, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+                "FROM usuarios AS u " +
+                "JOIN roles AS r ON u.id_rol = r.id_rol " +
+                "ORDER BY u.id_usuario DESC;";
         List<UsuarioRolDTO> usuariosList = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
@@ -153,19 +157,21 @@ import java.util.List;
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                int idUsuario = rs.getInt("id_usuario");
-                String dni = rs.getString("dni");
-                String nombre = rs.getString("nombres");
-                String apellidoPaterno = rs.getString("apellido_paterno");
-                String apellidoMaterno = rs.getString("apellido_materno");
-                String telefono = rs.getString("telefono");
-                String correo = rs.getString("correo");
-                int idRol = rs.getInt("id_rol");
-                String nombreRol = rs.getString("nombre_rol");
-                String descripcionRol = rs.getString("descripcion");
-                int estado = rs.getInt("estado");
-
-                usuariosList.add(new UsuarioRolDTO(idUsuario, dni, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, "***", idRol, nombreRol, descripcionRol, estado));
+                usuariosList.add(new UsuarioRolDTO(
+                        rs.getInt("id_usuario"),
+                        rs.getString("dni"),
+                        rs.getString("nombres"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno"),
+                        rs.getString("telefono"),
+                        rs.getString("correo"),
+                        rs.getString("user_login"),
+                        "***",
+                        rs.getInt("id_rol"),
+                        rs.getString("nombre_rol"),
+                        rs.getString("descripcion"),
+                        rs.getInt("estado")
+                ));
             }
 
         } catch (SQLException e) {
@@ -174,45 +180,52 @@ import java.util.List;
 
         return usuariosList;
     }
-    public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
-        String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
-                " u.telefono, u.correo, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
-                " FROM usuarios as u " +
-                " JOIN roles AS r ON u.id_rol = r.id_rol " +
-                " WHERE id_usuario = ?";
-        UsuarioRolDTO usuarioDTO = null;
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
+            String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
+                    " u.telefono, u.correo, u.user_login, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+                    " FROM usuarios AS u " +
+                    " JOIN roles AS r ON u.id_rol = r.id_rol " +
+                    " WHERE u.id_usuario = ?";
 
-            ps.setInt(1, usuarioId);
-            ResultSet rs = ps.executeQuery();
+            UsuarioRolDTO usuarioDTO = null;
 
-            if (rs.next()) {
-                int idUsuario = rs.getInt("id_usuario");
-                String dni = rs.getString("dni");
-                String nombre = rs.getString("nombres");
-                String apellidoPaterno = rs.getString("apellido_paterno");
-                String apellidoMaterno = rs.getString("apellido_materno");
-                String telefono = rs.getString("telefono");
-                String correo = rs.getString("correo");
-                int idRol = rs.getInt("id_rol");
-                String nombreRol = rs.getString("nombre_rol");
-                String descripcionRol = rs.getString("descripcion");
-                int estado = rs.getInt("estado");
+            try (Connection con = dataSource.getConnection();
+                 PreparedStatement ps = con.prepareStatement(sql)) {
 
-                new UsuarioRolDTO(idUsuario, dni, nombre, apellidoPaterno, apellidoMaterno, telefono, correo, "***", idRol, nombreRol, descripcionRol, estado);
+                ps.setInt(1, usuarioId);
+                ResultSet rs = ps.executeQuery();
+                System.out.println("[DEBUG] Ejecutando consulta para ID: " + usuarioId);
+
+                if (rs.next()) {
+                    usuarioDTO = new UsuarioRolDTO(
+                            rs.getInt("id_usuario"),
+                            rs.getString("dni"),
+                            rs.getString("nombres"),
+                            rs.getString("apellido_paterno"),
+                            rs.getString("apellido_materno"),
+                            rs.getString("telefono"),
+                            rs.getString("correo"),
+                            rs.getString("user_login"),
+                            "***",  // Contraseña oculta
+                            rs.getInt("id_rol"),
+                            rs.getString("nombre_rol"),
+                            rs.getString("descripcion"),
+                            rs.getInt("estado")
+                    );
+                }
+
+            } catch (SQLException e) {
+                System.err.println("Error al obtener usuario por ID (" + usuarioId + "): " + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            System.err.println("Error SQLException al obtener usuario por ID: " + usuarioId + ": " + e.getMessage());
+
+            return usuarioDTO;
         }
 
-        return usuarioDTO;
-    }
-    public static boolean existeUsuario(String correo) {
+        public static boolean existeUsuario(String correo) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE correo = ?";
         boolean existe = false;
-        System.out.println("ExisteUsuario: correo: "+correo);
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -233,13 +246,13 @@ import java.util.List;
 
     //UPDATE
     public static boolean actualizarUsuario(Usuario nuevoUsuario) {
-        String sql = "UPDATE usuarios SET nombres = ?, correo = ? , id_rol = ? WHERE id_usuario = ?";
+        String sql = "UPDATE usuarios SET telefono = ?, correo = ? , id_rol = ? WHERE id_usuario = ?";
         boolean result = false;
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, nuevoUsuario.getNombre());
+            ps.setString(1, nuevoUsuario.getTelefono());
             ps.setString(2, nuevoUsuario.getCorreo());
             ps.setInt(3, nuevoUsuario.getRol().getIdRol());
             ps.setInt(4, nuevoUsuario.getIdUsuario());
@@ -258,9 +271,12 @@ import java.util.List;
         return result;
     }
 
-    public boolean resetearContrasena(int usuarioId) {
+    public boolean resetearContrasena(UsuarioRolDTO userReset) {
         String sql = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
-        String nuevaContrasenaPorDefecto = "123456";
+
+        //Por defecto es DNI, hasta que lo restablezca
+        String nuevaContrasenaPorDefecto = userReset.getDni();
+        int usuarioId = userReset.getIdUsuario();
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

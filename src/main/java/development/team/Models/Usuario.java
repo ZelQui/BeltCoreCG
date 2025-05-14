@@ -2,12 +2,13 @@ package development.team.Models;
 
 public class Usuario {
     private int idUsuario;
-    private String DNI;
-    private String nombre;
+    private String dni;
+    private String nombres;
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String telefono;
     private String correo;
+    private String userLogin;
     private String contrasena;
     private Rol rol;
     private int estado;
@@ -15,14 +16,15 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String DNI, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String contrasena, Rol rol, int estado) {
+    public Usuario(int idUsuario, String dni, String nombres, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String userLogin, String contrasena, Rol rol, int estado) {
         this.idUsuario = idUsuario;
-        this.DNI = DNI;
-        this.nombre = nombre;
+        this.dni = dni;
+        this.nombres = nombres;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.telefono = telefono;
         this.correo = correo;
+        this.userLogin = userLogin;
         this.contrasena = contrasena;
         this.rol = rol;
         this.estado = estado;
@@ -36,16 +38,20 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public String getDNI() {return DNI;}
-
-    public void setDNI(String DNI) {this.DNI = DNI;}
-
-    public String getNombre() {
-        return nombre;
+    public String getDni() {
+        return dni;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getNombres() {
+        return nombres;
+    }
+
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public String getApellidoPaterno() {
@@ -80,6 +86,14 @@ public class Usuario {
         this.correo = correo;
     }
 
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
     public String getContrasena() {
         return contrasena;
     }
@@ -108,12 +122,13 @@ public class Usuario {
     public String toString() {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +
-                ", DNI='" + DNI + '\'' +
-                ", nombre='" + nombre + '\'' +
+                ", dni='" + dni + '\'' +
+                ", nombres='" + nombres + '\'' +
                 ", apellidoPaterno='" + apellidoPaterno + '\'' +
                 ", apellidoMaterno='" + apellidoMaterno + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
+                ", userLogin='" + userLogin + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", rol=" + rol +
                 ", estado=" + estado +

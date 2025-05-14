@@ -4,12 +4,13 @@ package development.team.DTO;
 
 public class UsuarioRolDTO {
     private int idUsuario;
-    private String DNI;
+    private String dni;
     private String nombreUsuario;
     private String apellidoPaternoUsr;
     private String apellidoMaternoUsr;
     private String telefono;
     private String correo;
+    private String userLogin;
     private String contrasena;
     private int idRol;
     private String nombreRol;
@@ -19,14 +20,15 @@ public class UsuarioRolDTO {
     public UsuarioRolDTO() {
     }
 
-    public UsuarioRolDTO(int idUsuario, String DNI, String nombreUsuario, String apellidoPaternoUsr, String apellidoMaternoUsr, String telefono, String correo, String contrasena, int idRol, String nombreRol, String descripcion, int estado) {
+    public UsuarioRolDTO(int idUsuario, String dni, String nombreUsuario, String apellidoPaternoUsr, String apellidoMaternoUsr, String telefono, String correo, String userLogin, String contrasena, int idRol, String nombreRol, String descripcion, int estado) {
         this.idUsuario = idUsuario;
-        this.DNI = DNI;
+        this.dni = dni;
         this.nombreUsuario = nombreUsuario;
         this.apellidoPaternoUsr = apellidoPaternoUsr;
         this.apellidoMaternoUsr = apellidoMaternoUsr;
         this.telefono = telefono;
         this.correo = correo;
+        this.userLogin = userLogin;
         this.contrasena = contrasena;
         this.idRol = idRol;
         this.nombreRol = nombreRol;
@@ -34,64 +36,121 @@ public class UsuarioRolDTO {
         this.estado = estado;
     }
 
-    public int getIdUsuario() {return idUsuario;}
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
-    public void setIdUsuario(int idUsuario) {this.idUsuario = idUsuario;}
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-    public String getDNI() {return DNI;}
+    public String getDni() {
+        return dni;
+    }
 
-    public void setDNI(String DNI) {this.DNI = DNI;}
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
 
-    public String getNombreUsuario() {return nombreUsuario;    }
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
 
-    public void setNombreUsuario(String nombreUsuario) {this.nombreUsuario = nombreUsuario;}
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
 
-    public String getApellidoPaternoUsr() {return apellidoPaternoUsr;}
+    public String getApellidoPaternoUsr() {
+        return apellidoPaternoUsr;
+    }
 
-    public void setApellidoPaternoUsr(String apellidoPaternoUsr) {this.apellidoPaternoUsr = apellidoPaternoUsr;}
+    public void setApellidoPaternoUsr(String apellidoPaternoUsr) {
+        this.apellidoPaternoUsr = apellidoPaternoUsr;
+    }
 
-    public String getApellidoMaternoUsr() {return apellidoMaternoUsr;}
+    public String getApellidoMaternoUsr() {
+        return apellidoMaternoUsr;
+    }
 
-    public void setApellidoMaternoUsr(String apellidoMaternoUsr) {this.apellidoMaternoUsr = apellidoMaternoUsr;}
+    public void setApellidoMaternoUsr(String apellidoMaternoUsr) {
+        this.apellidoMaternoUsr = apellidoMaternoUsr;
+    }
 
-    public String getTelefono() {return telefono;}
+    public String getTelefono() {
+        return telefono;
+    }
 
-    public void setTelefono(String telefono) {this.telefono = telefono;}
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
-    public String getCorreo() {return correo;}
+    public String getCorreo() {
+        return correo;
+    }
 
-    public void setCorreo(String correo) {this.correo = correo;}
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-    public String getContrasena() {return contrasena;}
+    public String getUserLogin() {
+        return userLogin;
+    }
 
-    public void setContrasena(String contrasena) {this.contrasena = contrasena;}
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
 
-    public int getIdRol() {return idRol;}
+    public String getContrasena() {
+        return contrasena;
+    }
 
-    public void setIdRol(int idRol) {this.idRol = idRol;}
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 
-    public String getNombreRol() {return nombreRol;}
+    public int getIdRol() {
+        return idRol;
+    }
 
-    public void setNombreRol(String nombreRol) {this.nombreRol = nombreRol;}
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
 
-    public String getDescripcion() {return descripcion;}
+    public String getNombreRol() {
+        return nombreRol;
+    }
 
-    public void setDescripcion(String descripcion) {this.descripcion = descripcion;}
+    public void setNombreRol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
 
-    public int getEstado() {return estado;}
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-    public void setEstado(int estado) {this.estado = estado;}
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
 
     @Override
     public String toString() {
         return "UsuarioRolDTO{" +
                 "idUsuario=" + idUsuario +
-                ", DNI=" + DNI +
+                ", dni='" + dni + '\'' +
                 ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", apellidoPaternoUsr='" + apellidoPaternoUsr + '\'' +
                 ", apellidoMaternoUsr='" + apellidoMaternoUsr + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", correo='" + correo + '\'' +
+                ", userLogin='" + userLogin + '\'' +
                 ", contrasena='" + contrasena + '\'' +
                 ", idRol=" + idRol +
                 ", nombreRol='" + nombreRol + '\'' +

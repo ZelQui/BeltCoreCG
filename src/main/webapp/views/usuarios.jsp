@@ -62,7 +62,12 @@
             <%
                 int i = 1;
                 for (UsuarioRolDTO usuarioList : usuarios) {
-                    boolean esActivo = usuarioList.getEstado() == 1;  // <--- Aquí lo movemos
+
+                    // Omitir al usuario con ID 1
+                    if (usuarioList.getIdUsuario() == 1) {
+                        continue;
+                    }
+                    boolean esActivo = usuarioList.getEstado() == 1;
                     String claseEstado = esActivo ? "role-green" : "role-red";
                     String textoEstado = esActivo ? "Activo" : "Inactivo";
                     String botonEstado = esActivo ? "btn deactivate" : "btn activate";
@@ -74,9 +79,10 @@
                 <td><span class="user-apepaterno"><%= usuarioList.getApellidoPaternoUsr()%> </span></td>
                 <td><span class="user-apematerno"><%= usuarioList.getApellidoMaternoUsr()%> </span></td>
                 <!-- Campos ocultos -->
-                <input type="hidden" class="user-dni" value="<%= usuarioList.getDNI() %>">
+                <input type="hidden" class="user-dni" value="<%= usuarioList.getDni() %>">
                 <input type="hidden" class="user-telefono" value="<%= usuarioList.getTelefono() %>">
                 <input type="hidden" class="user-correo" value="<%= usuarioList.getCorreo() %>">
+                <input type="hidden" class="user-login" value="<%= usuarioList.getUserLogin() %>">
 
                 <td>
                     <span class="user-rol role-badge role-blue" data-rol-id="<%= usuarioList.getIdRol() %>">
@@ -129,30 +135,47 @@
                         <input type="text" id="dni" name="dni" maxlength="8" required>
                     </div>
                     <div class="form-group">
-                        <button type="button" class="btn buscar" id="buscarDniBtn">Buscar</button>
+                        <button type="button" class="btn buscar" id="buscarDniBtn" disabled>Buscar</button>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullName">Nombres</label>
-                        <input type="text" id="fullName" name="fullName" required>
+                        <input type="text" id="fullName" name="fullName" required
+                               pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                               title="Solo letras y espacios"
+                               maxlength="50"
+                               placeholder="Nombres">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="ApePaterno">Apellido Paterno</label>
-                        <input type="text" id="ApePaterno" name="ApePaterno" required>
+                        <input type="text" id="ApePaterno" name="ApePaterno" required
+                               pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                               title="Solo letras y espacios"
+                               maxlength="30"
+                               placeholder="Apellido paterno">
                     </div>
                     <div class="form-group">
                         <label for="ApeMaterno">Apellido Materno</label>
-                        <input type="text" id="ApeMaterno" name="ApeMaterno" required>
+                        <input type="text" id="ApeMaterno" name="ApeMaterno" required
+                               pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                               title="Solo letras y espacios"
+                               maxlength="30"
+                               placeholder="Apellido materno">
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="telefono">Teléfono</label>
-                        <input type="tel" id="telefono" name="telefono" required>
+                        <input type="tel" id="telefono" name="telefono" required
+                               pattern="[0-9]{9}"
+                               title="Ingrese un número de 9 dígitos"
+                               maxlength="9"
+                               placeholder="Teléfono">
+                        <span id="telefonoError" style="color:red; font-size: 0.9em;"></span>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
@@ -174,7 +197,7 @@
                 <!-- Botones del formulario -->
                 <div class="form-actions">
                     <button type="button" class="btn cancel" id="cancelAdd">Cancelar</button>
-                    <button type="submit" class="btn primary">Guardar</button>
+                    <button type="submit" class="btn primary" id="GuardarNuevoUsuario" disabled>Guardar</button>
                 </div>
             </form>
         </div>
@@ -210,27 +233,27 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullNameEdit">Nombres</label>
-                        <input type="text" id="fullNameEdit" name="fullNameEdit" required>
+                        <input type="text" id="fullNameEdit" name="fullNameEdit" required readonly>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="ApePaternoEdit">Apellido Paterno</label>
-                        <input type="text" id="ApePaternoEdit" name="ApePaternoEdit" required>
+                        <input type="text" id="ApePaternoEdit" name="ApePaternoEdit" required readonly>
                     </div>
                     <div class="form-group">
                         <label for="ApeMaternoEdit">Apellido Materno</label>
-                        <input type="text" id="ApeMaternoEdit" name="ApeMaternoEdit" required>
+                        <input type="text" id="ApeMaternoEdit" name="ApeMaternoEdit" required readonly>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label for="telefonoEdit">Telefono</label>
-                        <input type="tel" id="telefonoEdit" name="telefonoEdit">
+                        <input type="tel" maxlength="9" id="telefonoEdit" name="telefonoEdit">
                     </div>
                     <div class="form-group">
                         <label for="emailEdit">Email</label>
-                        <input type="email" id="emailEdit" name="emailEdit" required readonly>
+                        <input type="email" id="emailEdit" name="emailEdit" required>
                     </div>
                 </div>
 

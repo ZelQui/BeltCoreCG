@@ -42,14 +42,14 @@
                 <div class="input-icon">
                     <i class="fas fa-user"></i>
                 </div>
-                <input type="text" placeholder="Correo" name="correo" required>
+                <input type="text" placeholder="Ingrese su usuario" name="userLogin" required>
             </div>
 
             <div class="input-group">
                 <div class="input-icon">
                     <i class="fas fa-lock"></i>
                 </div>
-                <input type="password" id="passwordField" name="password" placeholder="Contraseña" required>
+                <input type="password" id="passwordField" name="contrasena" placeholder="Ingrese su contraseña" required>
                 <div class="password-toggle" id="togglePassword">
                     <i class="far fa-eye" id="eyeIcon"></i>
                 </div>

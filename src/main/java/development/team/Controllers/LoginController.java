@@ -19,19 +19,18 @@ public class LoginController extends HttpServlet {
     private Auth authService = new Auth(); // Instanciamos la clase Auth
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String correo = request.getParameter("correo");
-        String password = request.getParameter("password");
+        String userLogin = request.getParameter("userLogin");
+        String contrasena = request.getParameter("contrasena");
 
-        if (authService.login(correo, password, request)) {
+        if (authService.login(userLogin, contrasena, request)) {
+
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             int idRol = user.getRol().getIdRol(); // Obtener del modelo de usuario autenticado
-            System.out.println("LoginController: idRol: " + idRol);
             ModuloDAO moduloDAO = new ModuloDAO();
             List<Modulo> modulosUsuario = moduloDAO.obtenerModulosPorRol(user.getRol().getIdRol());
             request.getSession().setAttribute("modulos_usuario", modulosUsuario);
-
-            System.out.println("Éxito: redirigir al dashboard");
             response.sendRedirect(request.getContextPath() + "/app/inicio");
+
         } else {
             System.out.println("Error: mensaje Credenciales incorrectas");
             // Error: mensaje Credenciales incorrectas

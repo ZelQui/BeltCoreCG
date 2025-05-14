@@ -53,50 +53,55 @@ public class UsuarioController extends HttpServlet {
                 req.setAttribute("usuarios", lista);
                 break;
             case "Registrar":
-                //Para validar datos de inicio de sesión
-                String dni = req.getParameter("dni"); //falta en DAO y Model
-                String nombre = req.getParameter("fullName");
-                String ApePaterno = req.getParameter("ApePaterno");
-                String ApeMaterno = req.getParameter("ApeMaterno");
+                // Obtener parámetros del formulario
+                String dni = req.getParameter("dni");
+                String nombres = req.getParameter("fullName");
+                String apellidoPaterno = req.getParameter("ApePaterno");
+                String apellidoMaterno = req.getParameter("ApeMaterno");
                 String telefono = req.getParameter("telefono");
                 String correo = req.getParameter("email");
-                String password = "123456";
                 int idRol = Integer.parseInt(req.getParameter("role"));
 
-                System.out.println("dni es: "+dni);
+                // Generar login automáticamente: inicial + apellido + últimos 3 dígitos del DNI
+                String userLogin = generarUserLogin(nombres, apellidoPaterno, dni);
 
+                // Validar si ya existe el usuario
                 if (userdao.existeUsuario(correo)) {
                     System.out.println("El correo ya está registrado.");
                 } else {
-                    //AGREGAR A USUARIOS
-                    user.setDNI(dni);
-                    user.setNombre(nombre);
-                    user.setApellidoPaterno(ApePaterno);
-                    user.setApellidoMaterno(ApeMaterno);
-                    user.setTelefono(telefono);
-                    user.setCorreo(correo);
-                    user.setContrasena(password);
-                    //AGREGAR EL ROL ASIGNADO
-                    rol = roldao.obtenerRolPorId(idRol);
-                    user.setRol(rol);
-                    user.setEstado(1);
-                    int IdUsuario = userdao.registrarUsuario(user);
-                    user.setIdUsuario(IdUsuario);
-                    System.out.printf("Se ha registrado el User con ID: " + IdUsuario);
+                    // Crear usuario y asignar sus datos
+                    Usuario usuario = new Usuario();
+                    usuario.setDni(dni);
+                    usuario.setNombres(nombres);
+                    usuario.setApellidoPaterno(apellidoPaterno);
+                    usuario.setApellidoMaterno(apellidoMaterno);
+                    usuario.setTelefono(telefono);
+                    usuario.setCorreo(correo);
+                    usuario.setUserLogin(userLogin);
+                    usuario.setContrasena(dni); // Puedes encriptar esto si aún no lo haces
+                    usuario.setEstado(1);
+
+                    // Asignar rol
+                    Rol rol = roldao.obtenerRolPorId(idRol);
+                    usuario.setRol(rol);
+                    // Registrar usuario
+                    int idUsuario = userdao.registrarUsuario(usuario);
+                    usuario.setIdUsuario(idUsuario);
+
+                    System.out.println("Se ha registrado el usuario con ID: " + idUsuario);
                 }
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
             case "Actualizar":
-                System.out.println("Entra a Actualizar");
                 IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
-                String nombreEdit = req.getParameter("fullNameEdit");
+                String telefonoEdit = req.getParameter("telefonoEdit");
                 String correoEdit = req.getParameter("emailEdit");
                 int idRolEdit = Integer.parseInt(req.getParameter("roleEdit"));
 
                 //ACTUALIZAR USUARIO
                 Usuario userEdit = new Usuario();
                 userEdit.setIdUsuario(IdUsuario);
-                userEdit.setNombre(nombreEdit);
+                userEdit.setTelefono(telefonoEdit);
                 userEdit.setCorreo(correoEdit);
                 //ACTUALIZAR EL ROL ASIGNADO
                 Rol rolEdit = roldao.obtenerRolPorId(idRolEdit);
@@ -111,13 +116,30 @@ public class UsuarioController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
                 return;
             case "restartPass":
-                IdUsuario = Integer.parseInt(req.getParameter("idUsuario"));
+                System.out.println("[INFO] Entra a restartPass");
 
-                //RESTABLECER A PREDETERMINADO
-                if(userdao.resetearContrasena(IdUsuario)){
-                    System.out.println("Se ha resetado la contraseña del User con ID: " + IdUsuario);
-                }else {
-                    System.out.printf("Ocurrió un error al restablecer la contrasena");
+                try {
+                    int idUsuario = Integer.parseInt(req.getParameter("idUsuario"));
+                    System.out.println("[DEBUG] ID del usuario recibido: " + idUsuario);
+
+                    UsuarioRolDTO userReset = userdao.obtenerUsuarioPorId(idUsuario);
+
+                    if (userReset == null) {
+                        System.out.println("[ERROR] No se encontró al usuario con ID: " + idUsuario);
+                    } else {
+                        boolean resultado = userdao.resetearContrasena(userReset);
+                        if (resultado) {
+                            System.out.println("[SUCCESS] Se ha reseteado la contraseña del usuario con ID: " + idUsuario);
+                        } else {
+                            System.out.println("[ERROR] Falló el restablecimiento de la contraseña.");
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("[ERROR] ID de usuario inválido: " + req.getParameter("idUsuario"));
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    System.out.println("[ERROR] Excepción inesperada en restartPass:");
+                    e.printStackTrace();
                 }
 
                 resp.sendRedirect(req.getContextPath() + "/app/usuarios");
@@ -156,6 +178,13 @@ public class UsuarioController extends HttpServlet {
             default:
                 break;
         }
+    }
+
+    private String generarUserLogin(String nombres, String apellidoPaterno, String dni) {
+        String inicial = nombres.trim().substring(0, 1).toLowerCase();
+        String apellido = apellidoPaterno.trim().toLowerCase();
+        String ultimosDni = dni.length() >= 3 ? dni.substring(dni.length() - 3) : dni;
+        return inicial + apellido + ultimosDni;
     }
 }
 

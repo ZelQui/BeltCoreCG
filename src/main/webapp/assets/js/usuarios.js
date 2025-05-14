@@ -36,6 +36,75 @@ document.getElementById('buscarDniBtn').addEventListener('click', function () {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    // Función para validar solo letras y convertir a mayúsculas
+    function soloLetras(input) {
+        input.addEventListener('input', function () {
+            const valor = this.value.normalize("NFD").replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, '');
+            this.value = valor.toUpperCase();
+            validarFormulario();
+        });
+    }
+
+    // Función para validar teléfono
+    function soloNumerosYValidarTelefono(input) {
+        input.addEventListener('input', function () {
+            this.value = this.value.replace(/\D/g, '').slice(0, 9);
+
+            const telefonoValido = /^9\d{8}$/;
+            const errorSpan = document.getElementById('telefonoError');
+
+            if (this.value.length === 9 && !telefonoValido.test(this.value)) {
+                errorSpan.textContent = "El teléfono debe empezar con 9 y tener 9 dígitos.";
+            } else {
+                errorSpan.textContent = "";
+            }
+
+            validarFormulario();
+        });
+    }
+
+    // Función para validar el DNI
+    const dniInput = document.getElementById('dni');
+    const buscarBtn = document.getElementById('buscarDniBtn');
+
+    dniInput.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '').slice(0, 8);
+        buscarBtn.disabled = this.value.length !== 8;
+        validarFormulario();
+    });
+
+    // Función para validar todos los campos
+    function validarFormulario() {
+        const fullName = document.getElementById('fullName').value.trim();
+        const apePaterno = document.getElementById('ApePaterno').value.trim();
+        const apeMaterno = document.getElementById('ApeMaterno').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const dni = dniInput.value.trim();
+
+        const telefonoValido = /^9\d{8}$/;
+
+        const botonGuardar = document.getElementById('GuardarNuevoUsuario');
+
+        if (
+            fullName !== '' &&
+            apePaterno !== '' &&
+            apeMaterno !== '' &&
+            telefonoValido.test(telefono) &&
+            dni.length === 8
+        ) {
+            botonGuardar.disabled = false;
+        } else {
+            botonGuardar.disabled = true;
+        }
+    }
+
+    // Inicializa las validaciones
+    soloLetras(document.getElementById('fullName'));
+    soloLetras(document.getElementById('ApePaterno'));
+    soloLetras(document.getElementById('ApeMaterno'));
+    soloNumerosYValidarTelefono(document.getElementById('telefono'));
+
     // MODALES y FORMULARIOS
     const addModal = document.getElementById("addUserModal");
     const editModal = document.getElementById("editUserModal");
@@ -119,7 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = btn.closest("tr");
 
             // Obtener datos visibles
-            const idUsuario = row.children[0].textContent.trim();
             const nombre = row.querySelector(".user-fullname").textContent.trim();
             const apePaterno = row.querySelector(".user-apepaterno").textContent.trim();
             const apeMaterno = row.querySelector(".user-apematerno").textContent.trim();
@@ -131,14 +199,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Obtener datos ocultos
             const email = row.querySelector(".user-correo")?.value || "No registrado";
+            const userLogin = row.querySelector(".user-login")?.value || "No registrado";
 
             // Mostrar SweetAlert con los detalles del usuario
             Swal.fire({
                 title: `Detalles del Usuario`,
                 html: `
-                <p><strong>ID:</strong> ${idUsuario}</p>
                 <p><strong>Nombre Completo:</strong> ${nombreCompleto}</p>
                 <p><strong>DNI:</strong> ${dni}</p>
+                <p><strong>Usuario:</strong> ${userLogin}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Telefono:</strong> ${telefono}</p>
                 <p><strong>Rol:</strong> ${rol}</p>
@@ -156,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.addEventListener("click", function () {
             const row = this.closest("tr");
             const idUsuario = row.dataset.id;
+            console.log("el idUsuario es: "+idUsuario);
 
             Swal.fire({
                 title: "¿Estás seguro?",
