@@ -98,31 +98,39 @@ document.getElementById("addProviderForm").addEventListener("submit", function (
 
 
 // -------------------------------------------------------------------------------------------------------------------
-// Habilita el campo y ajusta su maxlength al seleccionar un tipo de cuenta
 function habilitarYValidarCuenta() {
   const tipoCuenta = document.getElementById('tipoCuenta');
-  const tipoCuentaTexto = tipoCuenta.options[tipoCuenta.selectedIndex].text;
+  const tipoCuentaTexto = tipoCuenta.options[tipoCuenta.selectedIndex].text.trim();
   const numeroCuenta = document.getElementById('nuevaCuenta');
+  const labelCuenta = document.getElementById('labelCuenta');
 
   // Habilitar o deshabilitar el campo según si se ha seleccionado una opción válida
   numeroCuenta.disabled = tipoCuenta.value === "";
   numeroCuenta.value = ''; // Limpiar el valor cada vez que se cambia de tipo
 
-  // Asignar maxlength
+  // Asignar maxlength y texto del label
   let maxLength = 0;
+  let labelTexto = "Número de Cuenta";
+
   if (tipoCuentaTexto === 'Banco de la Nacion') {
     maxLength = 20;
+    labelTexto = "N° de Cuenta (Ej: 48753311548862134698)";
   } else if (tipoCuentaTexto === 'BCP' || tipoCuentaTexto === 'BBVA') {
     maxLength = 12;
+    labelTexto = "N° de Cuenta (Ej: 486132322789)";
   } else if (tipoCuentaTexto === 'Interbank') {
     maxLength = 13;
+    labelTexto = "N° de Cuenta (Ej: 7845131314645)";
   } else if (tipoCuentaTexto === 'Yape/Plin') {
     maxLength = 9;
+    labelTexto = "N° de Celular (Ej: 951875964)";
   } else if (tipoCuentaTexto === 'Otro (CCI)') {
     maxLength = 20;
+    labelTexto = "N° de CCI (Ej: 54875613215454895262)";
   }
 
   numeroCuenta.setAttribute('maxlength', maxLength);
+  labelCuenta.textContent = labelTexto;
 }
 
 // Mostrar error con SweetAlert

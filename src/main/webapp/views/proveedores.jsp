@@ -156,63 +156,67 @@
             <form id="addProviderForm" method="post" action="<%=request.getContextPath()%>/ProveedorController">
                 <input type="hidden" name="accion" value="registrar">
 
-                <div class="form-row">
+                <div class="form-row" style="margin-bottom: 1.5rem;">
                     <div class="ruc-group">
                         <label for="nuevoRuc">RUC</label>
                         <input type="text" id="nuevoRuc" name="ruc" required maxlength="11">
-                    </div>
-                    <div class="form-group">
-                        <button class="btn buscar" type="button" onclick="buscarProveedorSUNAT()">Buscar</button>
+                        <button class="btn buscar" type="button" onclick="buscarProveedorSUNAT()"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="nuevoNombre">Nombre</label>
-                    <input type="text" id="nuevoNombre" name="nombreRazonSocial"  readonly>
+                    <input type="text" id="nuevoNombre" name="nombreRazonSocial"  readonly required>
                 </div>
 
-                <div class="form-group">
-                    <label for="estadoRuc">Estado SUNAT</label>
-                    <input type="text" id="estadoRuc" name="estadoContribuyente" readonly>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="estadoRuc">Estado SUNAT</label>
+                        <input type="text" id="estadoRuc" name="estadoContribuyente" readonly required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nuevaDireccion">Domicilio Fiscal</label>
+                        <input type="text" id="nuevaDireccion" name="domicilioFiscal" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="nuevaDireccion">Domicilio Fiscal</label>
-                    <input type="text" id="nuevaDireccion" name="domicilioFiscal">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nuevaDireccionAlterna">Domicilio Alterna (No Obligatorio)</label>
+                        <input type="text" id="nuevaDireccionAlterna" name="domicilioAlterna">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nuevoTelefono">Teléfono (Ej: 954135647)</label>
+                        <input type="tel" id="nuevoTelefono" name="telefono"  maxlength="9" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="nuevaDireccion">Domicilio Alterna</label>
-                    <input type="text" id="nuevaDireccionAlterna" name="domicilioAlterna">
-                </div>
-
-                <div class="form-group">
-                    <label for="nuevoTelefono">Teléfono</label>
-                    <input type="tel" id="nuevoTelefono" name="telefono"  maxlength="9">
-                </div>
-
-                <div class="form-group">
-                    <label for="tipoCuenta">Tipo de Cuenta Bancaria</label>
-                    <select id="tipoCuenta" name="idCuentaBancaria"  onchange="habilitarYValidarCuenta()">
-                        <option value="">Seleccione una cuenta</option>
-                        <%
-                            List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
-                            if (cuentasBancarias != null) {
-                                for (CuentaBancaria cuenta : cuentasBancarias) {
-                        %>
-                        <option value="<%= cuenta.getIdCuentaBancaria() %>">
-                            <%= cuenta.getTipoCuentaBancaria() %>
-                        </option>
-                        <%
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tipoCuenta">Tipo de Metodo de Pago</label>
+                        <select id="tipoCuenta" name="idCuentaBancaria"  onchange="habilitarYValidarCuenta()">
+                            <option value="">Seleccione una cuenta</option>
+                            <%
+                                List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
+                                if (cuentasBancarias != null) {
+                                    for (CuentaBancaria cuenta : cuentasBancarias) {
+                            %>
+                            <option value="<%= cuenta.getIdCuentaBancaria() %>">
+                                <%= cuenta.getTipoCuentaBancaria() %>
+                            </option>
+                            <%
+                                    }
                                 }
-                            }
-                        %>
-                    </select>
-                </div>
+                            %>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="nuevaCuenta">Número de Cuenta</label>
-                    <input type="text" id="nuevaCuenta" name="numeroCuenta"  disabled>
+                    <div class="form-group">
+                        <label for="nuevaCuenta" id="labelCuenta">Cuenta</label>
+                        <input type="text" id="nuevaCuenta" name="numeroCuenta" required disabled>
+                    </div>
                 </div>
 
                 <div class="modal-footer">
