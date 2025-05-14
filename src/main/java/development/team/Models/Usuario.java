@@ -2,6 +2,7 @@ package development.team.Models;
 
 public class Usuario {
     private int idUsuario;
+    private String DNI;
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -14,8 +15,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String contrasena, Rol rol, int estado) {
+    public Usuario(int idUsuario, String DNI, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String correo, String contrasena, Rol rol, int estado) {
         this.idUsuario = idUsuario;
+        this.DNI = DNI;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -33,6 +35,10 @@ public class Usuario {
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public String getDNI() {return DNI;}
+
+    public void setDNI(String DNI) {this.DNI = DNI;}
 
     public String getNombre() {
         return nombre;
@@ -102,6 +108,7 @@ public class Usuario {
     public String toString() {
         return "Usuario{" +
                 "idUsuario=" + idUsuario +
+                ", DNI='" + DNI + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidoPaterno='" + apellidoPaterno + '\'' +
                 ", apellidoMaterno='" + apellidoMaterno + '\'' +

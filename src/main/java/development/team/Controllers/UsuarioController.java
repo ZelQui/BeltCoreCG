@@ -63,10 +63,13 @@ public class UsuarioController extends HttpServlet {
                 String password = "123456";
                 int idRol = Integer.parseInt(req.getParameter("role"));
 
+                System.out.println("dni es: "+dni);
+
                 if (userdao.existeUsuario(correo)) {
                     System.out.println("El correo ya está registrado.");
                 } else {
                     //AGREGAR A USUARIOS
+                    user.setDNI(dni);
                     user.setNombre(nombre);
                     user.setApellidoPaterno(ApePaterno);
                     user.setApellidoMaterno(ApeMaterno);

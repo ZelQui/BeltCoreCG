@@ -73,7 +73,7 @@ import java.util.List;
 
         public static Usuario obtenerUsuarioSesion(String correo) {
             Usuario usuario = null;
-            String sql = "SELECT id_usuario, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = ?";
+            String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, correo, contrasena, id_rol, estado FROM usuarios WHERE correo = ?";
 
             try (Connection con = dataSource.getConnection();
                  PreparedStatement ps = con.prepareStatement(sql)) {
@@ -86,6 +86,7 @@ import java.util.List;
                         Rol rol = rolDAO.obtenerRolPorId(rs.getInt("id_rol"), con);
                         usuario = new Usuario(
                                 rs.getInt("id_usuario"),
+                                rs.getString("dni"),
                                 rs.getString("nombres"),
                                 rs.getString("apellido_paterno"),
                                 rs.getString("apellido_materno"),
@@ -107,21 +108,22 @@ import java.util.List;
     //METODOS CRUD
     //CREATE
     public static int registrarUsuario(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nombres, apellido_paterno, apellido_materno, " +
-                "telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usuarios (dni, nombres, apellido_paterno, apellido_materno, " +
+                "telefono, correo, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         int usuarioId = -1;
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) { // Importante para obtener ID generado
 
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getApellidoPaterno());
-            ps.setString(3, usuario.getApellidoMaterno());
-            ps.setString(4, usuario.getTelefono());
-            ps.setString(5, usuario.getCorreo());
+            ps.setString(1, usuario.getDNI());
+            ps.setString(2, usuario.getNombre());
+            ps.setString(3, usuario.getApellidoPaterno());
+            ps.setString(4, usuario.getApellidoMaterno());
+            ps.setString(5, usuario.getTelefono());
+            ps.setString(6, usuario.getCorreo());
             String hashedPassword = BCrypt.hashpw(usuario.getContrasena(), BCrypt.gensalt());
-            ps.setString(6, hashedPassword);
-            ps.setInt(7, usuario.getRol().getIdRol());
+            ps.setString(7, hashedPassword);
+            ps.setInt(8, usuario.getRol().getIdRol());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected > 0) {
@@ -210,6 +212,7 @@ import java.util.List;
     public static boolean existeUsuario(String correo) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE correo = ?";
         boolean existe = false;
+        System.out.println("ExisteUsuario: correo: "+correo);
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
