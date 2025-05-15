@@ -9,8 +9,27 @@ function buscarProveedorSUNAT() {
 
   const ruc = inputElement.value.trim();
 
-  if (!ruc || !/^\d{11}$/.test(ruc)) {
-    alert('Por favor ingrese un RUC válido de 11 dígitos');
+  function esRucValido(ruc) {
+    if (!/^\d{11}$/.test(ruc)) return false;
+
+    const coeficientes = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+    const suma = ruc
+        .substring(0, 10)
+        .split('')
+        .reduce((acc, val, i) => acc + (parseInt(val, 10) * coeficientes[i]), 0);
+
+    const resto = suma % 11;
+    const digitoVerificador = (11 - resto) === 10 ? 0 : (11 - resto) === 11 ? 1 : 11 - resto;
+
+    return digitoVerificador === parseInt(ruc[10], 10);
+  }
+
+  if (!ruc || !/^\d{11}$/.test(ruc) || !esRucValido(ruc)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'RUC inválido',
+      text: 'Por favor ingrese un RUC válido de 11 dígitos según SUNAT.',
+    });
     return;
   }
 
@@ -22,22 +41,22 @@ function buscarProveedorSUNAT() {
   fetch(url)
       .then(response => response.json())
       .then(data => {
-        if (data.error) {
-          // Si ya existe el proveedor
-          if (data.error === "Proveedor ya registrado") {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Proveedor ya registrado',
-              text: 'Este proveedor ya está registrado en la base de datos.',
-            });
-            return;
-          }
+        // Si el proveedor ya está registrado
+        if (data.error === "Proveedor ya registrado") {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Proveedor ya registrado',
+            text: 'Este proveedor ya está registrado en la base de datos.',
+          });
+          return;
+        }
 
-          // Si el RUC no fue encontrado o hubo otro error
+        // Si el RUC no fue encontrado o está dado de baja
+        if (data.success === false) {
           Swal.fire({
             icon: 'error',
-            title: 'Error',
-            text: data.error || 'No se pudo obtener información para el RUC ingresado',
+            title: 'RUC no encontrado',
+            text: data.message || 'No se encontraron resultados para el RUC ingresado.',
           });
 
           document.getElementById('nuevoNombre').value = '';
@@ -197,25 +216,31 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// -------------------------------------------------------------------------------------------------------------------
-// Validar teléfono (9 dígitos y debe comenzar con 9)
-document.getElementById('nuevoTelefono').addEventListener('input', function(event) {
-  const telefono = event.target.value;
+// -----------------------------------------------------------------------------------------------
+// VALIDACIONES - REGISTRAR
+const telefonoInput = document.getElementById('nuevoTelefono');
+const errorSpan = document.getElementById('telefonoError');
 
-  // Validar que tenga 9 dígitos y empiece con '9'
-  if (telefono.length === 9 && telefono[0] === '9' && !/^\d+$/.test(telefono)) {
-    Swal.fire({
-      icon: 'error',
-      title: 'Número no válido',
-      text: 'El número de teléfono debe ser válido y empezar con 9.',
-    });
+// Solo permitir números mientras se escribe
+telefonoInput.addEventListener('input', function () {
+  // Eliminar cualquier carácter que no sea número
+  this.value = this.value.replace(/\D/g, '');
+
+  const telefono = this.value;
+
+  if (!telefono.startsWith('9')) {
+    errorSpan.textContent = 'El número debe comenzar con 9.';
+  } else if (telefono.length > 0 && telefono.length < 9) {
+    errorSpan.textContent = 'El número debe tener 9 dígitos.';
+  } else {
+    errorSpan.textContent = ''; // Sin errores
   }
 });
 
-// -------------------------------------------------------------------------------------------------------------------
-// Validación antes de enviar el formulario - Registrar
+// Validación antes de enviar el formulario
 document.getElementById('addProviderForm').addEventListener('submit', function(event) {
-  const telefono = document.getElementById('nuevoTelefono').value;
+  const telefono = telefonoInput.value;
+
   if (telefono.length !== 9 || telefono[0] !== '9') {
     event.preventDefault(); // Prevenir envío si el teléfono no es válido
     Swal.fire({
@@ -223,6 +248,36 @@ document.getElementById('addProviderForm').addEventListener('submit', function(e
       title: 'Número no válido',
       text: 'El número de teléfono debe tener 9 dígitos y empezar con 9.',
     });
+  }
+});
+
+// Permitir solo letras (para campos de texto)
+function soloLetrasInput(event) {
+  const input = event.target;
+  input.value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+}
+
+// Permitir solo números (para campos tel o numéricos)
+function soloNumerosInput(event) {
+  const input = event.target;
+  input.value = input.value.replace(/\D/g, ''); // Elimina cualquier cosa que no sea dígito
+}
+
+// Campos solo letras
+const camposTexto = ['nuevoNombre', 'estadoRuc', 'nuevaDireccion', 'nuevaDireccionAlterna'];
+camposTexto.forEach(id => {
+  const input = document.getElementById(id);
+  if (input) {
+    input.addEventListener('input', soloLetrasInput);
+  }
+});
+
+// Campos solo números
+const camposNumericos = ['nuevoRuc', 'nuevoTelefono', 'nuevaCuenta'];
+camposNumericos.forEach(id => {
+  const input = document.getElementById(id);
+  if (input) {
+    input.addEventListener('input', soloNumerosInput);
   }
 });
 
