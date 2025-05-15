@@ -31,6 +31,13 @@ body {
     align-items: center;
 }
 
+#statusFilter {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
 .btn.filter {
     background-color: #292929;
     padding: 8px 12px;
@@ -66,7 +73,6 @@ body {
 }
 
 /* ---------------------------------------------------------------------*/
-
 /* Tabla */
 .table-container {
     overflow-x: auto;

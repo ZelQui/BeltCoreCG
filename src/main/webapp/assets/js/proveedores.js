@@ -330,6 +330,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // EDITAR PROVEEDOR
   let valoresOriginales = {};
 
+  function actualizarLabelEditCuenta(tipoCuentaTexto) {
+    const numeroCuenta = document.getElementById('editNumeroCuenta');
+    const labelCuenta = document.getElementById('editLabelCuenta');
+
+    let maxLength = 0;
+    let labelTexto = "Número de Cuenta";
+
+    if (tipoCuentaTexto === 'Banco de la Nacion') {
+      maxLength = 20;
+      labelTexto = "N° de Cuenta";
+    } else if (tipoCuentaTexto === 'BCP' || tipoCuentaTexto === 'BBVA') {
+      maxLength = 12;
+      labelTexto = "N° de Cuenta";
+    } else if (tipoCuentaTexto === 'Interbank') {
+      maxLength = 13;
+      labelTexto = "N° de Cuenta";
+    } else if (tipoCuentaTexto === 'Yape/Plin') {
+      maxLength = 9;
+      labelTexto = "N° de Celular";
+    } else if (tipoCuentaTexto === 'Otro (CCI)') {
+      maxLength = 20;
+      labelTexto = "N° de CCI";
+    }
+
+    numeroCuenta.setAttribute('maxlength', maxLength);
+    labelCuenta.textContent = labelTexto;
+  }
+
   document.querySelectorAll(".btn.edit").forEach((button) => {
     button.addEventListener("click", () => {
       const row = button.closest("tr");
@@ -361,6 +389,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("editDireccionAlterna").value = domicilioAlterna;
       document.getElementById("editTipoCuenta").value = tipoCuenta;
       document.getElementById("editNumeroCuenta").value = numeroCuenta;
+
+      // Actualizar label y maxlength en base al tipo de cuenta
+      actualizarLabelEditCuenta(tipoCuenta);
 
       // Mostrar el modal
       document.getElementById("providerModal").style.display = "block";
@@ -408,18 +439,23 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // -------------------------------------------------------------------------------------------------------------------
-// Buscar proveedores por razon social o ruc
+// Buscar proveedores por razón social o RUC y/o por estado
 document.addEventListener("DOMContentLoaded", () => {
   function applyFilters() {
-    const searchValue = document.querySelector(".search-provider").value.toLowerCase();
+    const searchValue = document.querySelector(".search-provider").value.toLowerCase().trim();
+    const statusFilterValue = document.getElementById("statusFilter").value.toLowerCase().trim();
     const rows = document.querySelectorAll(".provider-table tbody tr");
 
     rows.forEach(row => {
       const ruc = row.children[1].textContent.toLowerCase();
       const nombre = row.children[2].textContent.toLowerCase();
+      const estado = row.querySelector(".proveedor-estado").textContent.toLowerCase().trim();
 
-      // Mostrar la fila si el término de búsqueda coincide con el RUC o el Nombre
-      if (ruc.includes(searchValue) || nombre.includes(searchValue)) {
+      const matchesSearch = !searchValue || ruc.includes(searchValue) || nombre.includes(searchValue);
+      const matchesStatus = !statusFilterValue || estado === statusFilterValue;
+
+      // Mostrar si cumple con cualquiera de los filtros activos
+      if (matchesSearch && matchesStatus) {
         row.style.display = "";
       } else {
         row.style.display = "none";
@@ -427,8 +463,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Evento en tiempo real al escribir
+  // Eventos para activar filtro en tiempo real
   document.querySelector(".search-provider").addEventListener("input", applyFilters);
+  document.getElementById("statusFilter").addEventListener("change", applyFilters);
 });
 
 // -------------------------------------------------------------------------------------------------------------------

@@ -92,12 +92,20 @@
 <div class="content-container">
     <h1>Gestión de Proveedores</h1>
     <button class="add-provider">Añadir Proveedor</button>
+
     <div class="header-controls">
         <div class="search-container">
             <label>
                 <input type="text" class="search-provider" placeholder="Buscar por (RUC o Nombre) ...">
             </label>
         </div>
+
+        <select id="statusFilter">
+            <option value="">Todos los estados</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+        </select>
+
     </div>
 
     <div class="table-container">
@@ -290,7 +298,7 @@
                         <input type="text" id="editTipoCuenta" name="tipoCuenta" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="editNumeroCuenta">Número de Cuenta</label>
+                        <label for="editNumeroCuenta" id="editLabelCuenta">Número de Cuenta</label>
                         <input type="text" id="editNumeroCuenta" name="numeroCuenta" disabled>
                     </div>
                 </div>
