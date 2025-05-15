@@ -339,43 +339,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>
           <strong>${cuentaLabel}</strong> 
           <span id="cuentaText">${numeroCuenta}</span>
-          <button id="copyCuentaButton" title="Copiar Cuenta" class="btn-copy-cuenta" style="border: none; background: transparent; padding: 0; cursor: pointer;">
-            <i class="fas fa-copy"></i>
-          </button>
         </p>
       `,
         icon: 'info',
         confirmButtonText: 'Cerrar',
         customClass: {
           popup: 'swal2-border-radius'
-        },
-        didRender: () => {
-          const btnCopy = Swal.getHtmlContainer().querySelector("#copyCuentaButton");
-          btnCopy.addEventListener("click", () => {
-            navigator.clipboard.writeText(numeroCuenta)
-                .then(() => {
-                  Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'Número de cuenta copiado',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                  });
-                })
-                .catch(() => {
-                  Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'No se pudo copiar',
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                  });
-                });
-          });
         }
       });
     });
