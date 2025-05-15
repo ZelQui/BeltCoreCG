@@ -12,11 +12,12 @@ public class ProveedorCuentasBancarias {
     private String numeroCuenta;
     private int idCuentaBancaria;
     private String tipoCuentaBancaria;
+    private int estado;
 
     public ProveedorCuentasBancarias() {
     }
 
-    public ProveedorCuentasBancarias(int idProveedor, String nombreRazonSocial, String telefono, String domicilioFiscal, String domicilioAlterna, String estadoContribuyente, String numeroRuc, String numeroCuenta, int idCuentaBancaria, String tipoCuentaBancaria) {
+    public ProveedorCuentasBancarias(int idProveedor, String nombreRazonSocial, String telefono, String domicilioFiscal, String domicilioAlterna, String estadoContribuyente, String numeroRuc, String numeroCuenta, int idCuentaBancaria, String tipoCuentaBancaria, int estado) {
         this.idProveedor = idProveedor;
         this.nombreRazonSocial = nombreRazonSocial;
         this.telefono = telefono;
@@ -27,6 +28,7 @@ public class ProveedorCuentasBancarias {
         this.numeroCuenta = numeroCuenta;
         this.idCuentaBancaria = idCuentaBancaria;
         this.tipoCuentaBancaria = tipoCuentaBancaria;
+        this.estado = estado;
     }
 
     public int getIdProveedor() {
@@ -109,6 +111,14 @@ public class ProveedorCuentasBancarias {
         this.tipoCuentaBancaria = tipoCuentaBancaria;
     }
 
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "ProveedorCuentasBancarias{" +
@@ -120,6 +130,9 @@ public class ProveedorCuentasBancarias {
                 ", estadoContribuyente='" + estadoContribuyente + '\'' +
                 ", numeroRuc='" + numeroRuc + '\'' +
                 ", numeroCuenta='" + numeroCuenta + '\'' +
+                ", idCuentaBancaria=" + idCuentaBancaria +
+                ", tipoCuentaBancaria='" + tipoCuentaBancaria + '\'' +
+                ", estado=" + estado +
                 '}';
     }
 }

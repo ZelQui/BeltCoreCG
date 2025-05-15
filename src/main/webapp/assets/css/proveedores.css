@@ -65,6 +65,8 @@ body {
     background-color: #16a34a;
 }
 
+/* ---------------------------------------------------------------------*/
+
 /* Tabla */
 .table-container {
     overflow-x: auto;
@@ -112,6 +114,29 @@ td.acciones {
     background-color: #f9fafb;
 }
 
+/* ---------------------------------------------------------------------*/
+/* CAMBIAR ESTADO */
+.role-badge {
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.role-green {
+    background-color: #22c55e; /* verde */
+}
+
+.role-red {
+    background-color: #ef4444; /* rojo */
+}
+
+/* ---------------------------------------------------------------------*/
 /* Botones */
 .btn {
     border: none;
@@ -350,3 +375,41 @@ td.acciones {
 .btn-copy-cci:hover {
     color: #0097a7;
 }
+
+/* ----------------------------------------------------------------------*/
+/* PAGINACION */
+.pagination-controls {
+    margin-top: 25px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.pagination-controls button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-controls button:hover:not(.disabled):not(.active) {
+    background-color: #0056b3;
+}
+
+.pagination-controls button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    color: #666;
+}
+
+.pagination-controls button.active {
+    background-color: #28a745;
+    font-weight: bold;
+}
+
+
+/* ----------------------------------------------------------------------*/

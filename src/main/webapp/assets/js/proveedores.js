@@ -252,8 +252,24 @@ document.addEventListener("DOMContentLoaded", () => {
       const domicilioFiscal = row.children[4].textContent.trim();
       const telefono = row.children[5].textContent.trim();
       const direccionAlterna = row.querySelector(".direccionAlterna-hidden").value;
-      const tipoCuenta = row.querySelector(".tipo-hidden").value;
+      const tipoCuenta = row.querySelector(".tipo-hidden").value.trim().toLowerCase();;
       const numeroCuenta = row.querySelector(".cuenta-hidden").value;
+
+      let cuentaLabel = "Número de Cuenta:";
+
+      if (tipoCuenta === "banco de la nacion") {
+        cuentaLabel = "N° de Cuenta:";
+      } else if (tipoCuenta === "bcp") {
+        cuentaLabel = "N° de Cuenta:";
+      } else if (tipoCuenta === "bbva") {
+        cuentaLabel = "N° de Cuenta:";
+      } else if (tipoCuenta === "interbank") {
+        cuentaLabel = "N° de Cuenta:";
+      } else if (tipoCuenta === "yape/plin") {
+        cuentaLabel = "N° de Celular:";
+      } else if (tipoCuenta === "otro (cci)") {
+        cuentaLabel = "N° de CCI:";
+      }
 
       Swal.fire({
         title: 'Detalles del Proveedor',
@@ -266,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Domicilio Alterna:</strong> ${direccionAlterna}</p>
         <p><strong>Tipo de Cuenta:</strong> ${tipoCuenta}</p>
         <p>
-          <strong>Numero de Cuenta:</strong> 
+          <strong>${cuentaLabel}</strong> 
           <span id="cuentaText">${numeroCuenta}</span>
           <button id="copyCuentaButton" title="Copiar Cuenta" class="btn-copy-cuenta" style="border: none; background: transparent; padding: 0; cursor: pointer;">
             <i class="fas fa-copy"></i>
@@ -485,3 +501,105 @@ function closeAddProviderModal() {
   document.getElementById('addProviderModal').style.display = 'none';
 }
 
+
+// Acción Activar o Desactivar Proveedor
+document.querySelectorAll(".btn-toggle-status").forEach(btn => {
+  btn.addEventListener("click", function () {
+    const row = this.closest("tr");
+    const idProveedor = row.dataset.id;
+    const esActivo = row.dataset.activo === "true";
+    const accion = esActivo ? "inactivate" : "activate";
+
+    Swal.fire({
+      title: `¿Estás seguro de ${esActivo ? "desactivar" : "activar"} este proveedor?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: esActivo ? "Sí, desactivar" : "Sí, activar",
+      cancelButtonText: "Cancelar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${location.origin}/BeltCoreCG_war_exploded/ProveedorController`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: `accion=${accion}&idProveedor=${encodeURIComponent(idProveedor)}`
+        })
+            .then(response => {
+              if (response.ok) {
+                Swal.fire("¡Éxito!", `Proveedor ${esActivo ? "desactivado" : "activado"} correctamente.`, "success")
+                    .then(() => location.reload());
+              } else {
+                Swal.fire("Error", "No se pudo completar la acción.", "error");
+              }
+            })
+            .catch(() => {
+              Swal.fire("Error", "Ocurrió un error en la solicitud.", "error");
+            });
+      }
+    });
+  });
+});
+
+// --------------------------------------------------------------------------------------------------------------------
+// PAGINACION
+document.addEventListener("DOMContentLoaded", function () {
+  const table = document.querySelector(".provider-table tbody");
+  const rows = Array.from(table.querySelectorAll("tr"));
+  const rowsPerPage = 5;
+  let currentPage = 1;
+
+  function displayTablePage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    rows.forEach((row, index) => {
+      row.style.display = index >= start && index < end ? "" : "none";
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const totalPages = Math.ceil(rows.length / rowsPerPage);
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    const prevBtn = document.createElement("button");
+    prevBtn.textContent = "Anterior";
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.className = currentPage === 1 ? "disabled" : "";
+    prevBtn.onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        displayTablePage(currentPage);
+      }
+    };
+    pagination.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement("button");
+      pageBtn.textContent = i;
+      pageBtn.className = i === currentPage ? "active" : "";
+      pageBtn.onclick = () => {
+        currentPage = i;
+        displayTablePage(currentPage);
+      };
+      pagination.appendChild(pageBtn);
+    }
+
+    const nextBtn = document.createElement("button");
+    nextBtn.textContent = "Siguiente";
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.className = currentPage === totalPages ? "disabled" : "";
+    nextBtn.onclick = () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayTablePage(currentPage);
+      }
+    };
+    pagination.appendChild(nextBtn);
+  }
+
+  displayTablePage(currentPage);
+});

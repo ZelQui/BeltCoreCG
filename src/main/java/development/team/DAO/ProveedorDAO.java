@@ -85,6 +85,7 @@ public class ProveedorDAO {
                 "    p.telefono,\n" +
                 "    p.domicilio_alterna,\n" +
                 "    p.numero_cuenta,\n" +
+                "    p.estado,\n" +
                 "    cb.id_cuenta_bancaria,\n" +
                 "    cb.tipo_cuenta_bancaria \n" +
                 "FROM proveedores p\n" +
@@ -106,11 +107,12 @@ public class ProveedorDAO {
                 String estadoContribuyente = rs.getString("estado_contribuyente");
                 String numeroRuc = rs.getString("numero_ruc");
                 String numeroCuenta = rs.getString("numero_cuenta");
+                int estado = rs.getInt("estado");
 
                 int idCuentaBancaria = rs.getInt("id_cuenta_bancaria");
                 String tipoCuentaBancaria = rs.getString("tipo_cuenta_bancaria");
 
-                proveedoresList.add(new ProveedorCuentasBancarias(idProveedor, nombreRazonSocial, telefono, domicilioFiscal, domicilioAlterna, estadoContribuyente, numeroRuc, numeroCuenta, idCuentaBancaria, tipoCuentaBancaria));
+                proveedoresList.add(new ProveedorCuentasBancarias(idProveedor, nombreRazonSocial, telefono, domicilioFiscal, domicilioAlterna, estadoContribuyente, numeroRuc, numeroCuenta, idCuentaBancaria, tipoCuentaBancaria, estado));
             }
 
         } catch (SQLException e) {
@@ -174,7 +176,50 @@ public class ProveedorDAO {
         }
 
         return false;
+    }
 
+    // ACTIVAR PROVEEDOR
+    public static boolean activarProveedor(int idProveedor) {
+        String sql = "UPDATE proveedores SET estado = 1 WHERE id_proveedor = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idProveedor);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Proveedor " + idProveedor + " actualizado correctamente.");
+                return true;
+            } else {
+                System.err.println("Error al activar proveedor con ID: " + idProveedor);
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al activar proveedor " + idProveedor + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    // BLOQUEAR PROVEEDOR
+    public static boolean bloquearProveedor(int idProveedor) {
+        String sql = "UPDATE proveedores SET estado = 0 WHERE id_proveedor = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idProveedor);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Proveedor " + idProveedor + " bloqueado correctamente.");
+                return true;
+            } else {
+                System.err.println("No se pudo bloquear el proveedor con ID: " + idProveedor);
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al bloquear proveedor " + idProveedor + ": " + e.getMessage());
+            return false;
+        }
     }
 
 }

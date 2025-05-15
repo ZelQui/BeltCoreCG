@@ -95,7 +95,7 @@
     <div class="header-controls">
         <div class="search-container">
             <label>
-                <input type="text" class="search-provider" placeholder="Buscar proveedor...">
+                <input type="text" class="search-provider" placeholder="Buscar por (RUC o Nombre) ...">
             </label>
         </div>
     </div>
@@ -110,6 +110,7 @@
                 <th>Estado Contribuyente</th>
                 <th>Domicilio Fiscal</th>
                 <th>Telefono</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -117,14 +118,22 @@
             <%
                 int i = 1;
                 for (ProveedorCuentasBancarias proveedorList : proveedores) {
+                    boolean esActivo = proveedorList.getEstado() == 1;
+                    String claseEstado = esActivo ? "role-green" : "role-red";
+                    String textoEstado = esActivo ? "Activo" : "Inactivo";
+                    String botonEstado = esActivo ? "btn deactivate" : "btn activate";
+                    String tituloEstado = esActivo ? "Desactivar" : "Activar";
             %>
-            <tr data-id="<%= proveedorList.getIdProveedor() %>">
+            <tr data-id="<%= proveedorList.getIdProveedor() %>" data-activo="<%= esActivo %>">
                 <td><%= i %></td>
                 <td><%= proveedorList.getNumeroRuc() %></td>
                 <td><%= proveedorList.getNombreRazonSocial() %></td>
                 <td><%= proveedorList.getEstadoContribuyente() %></td>
                 <td><%= proveedorList.getDomicilioFiscal() %></td>
                 <td><%= proveedorList.getTelefono() %></td>
+                <td>
+                    <span class="proveedor-estado role-badge <%= claseEstado %>"><%= textoEstado %></span>
+                </td>
 
                 <!-- Campos ocultos -->
                 <input type="hidden" class="direccionAlterna-hidden" value="<%= proveedorList.getDomicilioAlterna() != null ? proveedorList.getDomicilioAlterna() : "" %>">
@@ -134,6 +143,9 @@
                 <td class="acciones">
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
                     <button class="btn edit" title="Editar"><i class="fas fa-edit"></i></button>
+                    <button class="btn-toggle-status <%= botonEstado %>" title="<%= tituloEstado %>">
+                        <i class="fas fa-user-<%= esActivo ? "slash" : "check" %>"></i>
+                    </button>
                 </td>
             </tr>
             <%
@@ -142,6 +154,7 @@
             %>
             </tbody>
         </table>
+        <div id="pagination" class="pagination-controls"></div>
     </div>
 </div>
 

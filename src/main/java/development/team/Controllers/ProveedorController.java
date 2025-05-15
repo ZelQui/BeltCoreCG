@@ -30,7 +30,11 @@ public class ProveedorController extends HttpServlet {
             case "editar":
                 editarProveedor(request, response);
                 break;
-            case "cambiarEstado":
+            case "inactivate":
+                bloquearProveedor(request, response);
+                break;
+            case "activate":
+                activarProveedor(request, response);
                 break;
         }
     }
@@ -142,15 +146,32 @@ public class ProveedorController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/app/proveedores");
     }
 
-    /* ESTADOS PROVEEDOR
-    private void estadoProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    // BLOQUEAR PROVEEDOR
+    private void bloquearProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
-        int nuevoEstado = Integer.parseInt(request.getParameter("nuevoEstado"));
+        boolean inactivado = ProveedorDAO.bloquearProveedor(idProveedor);
 
-        ProveedorDAO.cambiarEstadoProveedor(idProveedor, nuevoEstado);
-        response.sendRedirect(request.getContextPath() + "/app/proveedores");
+        if (inactivado) {
+            System.out.println("Proveedor inactivado: ID: " + idProveedor);
+            response.sendRedirect(request.getContextPath() + "/app/proveedores");
+        } else {
+            System.err.println("No se pudo bloquear/inactivar el proveedor: ID: " + idProveedor);
+        }
     }
-    */
+
+    // ACTIVAR PROVEEDOR
+    private void activarProveedor(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idProveedor = Integer.parseInt(request.getParameter("idProveedor"));
+        boolean activado = ProveedorDAO.activarProveedor(idProveedor);
+
+        if (activado) {
+            System.out.println("Proveedor activado: ID: " + idProveedor);
+            response.sendRedirect(request.getContextPath() + "/app/proveedores");
+        } else {
+            System.err.println("No se pudo activar el proveedor: ID: " + idProveedor);
+        }
+    }
+
 
         // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
