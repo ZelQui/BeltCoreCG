@@ -10,102 +10,102 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-    public class UsuarioDAO {
-        private static final DataSource dataSource = DataBaseUtil.getDataSource();
-        private static final RolDAO rolDAO = new RolDAO();
+public class UsuarioDAO {
+    private static final DataSource dataSource = DataBaseUtil.getDataSource();
+    private static final RolDAO rolDAO = new RolDAO();
 
-        public static boolean SettearUsuario( int usuarioId) {
-            String setUsuarioSql = "SET @usuario_id = ?";
+    public static boolean SettearUsuario( int usuarioId) {
+        String setUsuarioSql = "SET @usuario_id = ?";
 
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement psSetUsuario = con.prepareStatement(setUsuarioSql)) {
-                    psSetUsuario.setInt(1, usuarioId);
-                    psSetUsuario.execute();
-                    return true;
-                }
-                catch (SQLException e) {
-                    System.err.println("Error SQLException al registrar proveedor: " + e.getMessage());
-                }
-            return false;
-        }
-
-        public static boolean validarCredenciales(String userLogin, String contrasena) {
-            String sql = "SELECT contrasena FROM usuarios WHERE user_login = ?";
-
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
-
-                ps.setString(1, userLogin);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        String storedHash = rs.getString("contrasena");
-                        storedHash = storedHash.trim();
-                        return BCrypt.checkpw(contrasena, storedHash);
-                    }
-                }
-            } catch (SQLException e) {
-                System.err.println("Error SQLException al validar las credenciales para el usuario: " + userLogin + " - " + e.getMessage());
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement psSetUsuario = con.prepareStatement(setUsuarioSql)) {
+                psSetUsuario.setInt(1, usuarioId);
+                psSetUsuario.execute();
+                return true;
             }
-            return false;
-        }
+            catch (SQLException e) {
+                System.err.println("Error SQLException al registrar proveedor: " + e.getMessage());
+            }
+        return false;
+    }
 
-        public static boolean verificarEstadoActivo(Usuario usuario) {
-            boolean estadoActivo = false;
-            String sql = "SELECT estado FROM usuarios WHERE id_usuario = ?";
+    public static boolean validarCredenciales(String userLogin, String contrasena) {
+        String sql = "SELECT contrasena FROM usuarios WHERE user_login = ?";
 
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-                ps.setInt(1, usuario.getIdUsuario());
-                ResultSet rs = ps.executeQuery();
-
+            ps.setString(1, userLogin);
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    int estado = rs.getInt("estado");
-                    estadoActivo = (estado == 1);
+                    String storedHash = rs.getString("contrasena");
+                    storedHash = storedHash.trim();
+                    return BCrypt.checkpw(contrasena, storedHash);
                 }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al validar las credenciales para el usuario: " + userLogin + " - " + e.getMessage());
+        }
+        return false;
+    }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+    public static boolean verificarEstadoActivo(Usuario usuario) {
+        boolean estadoActivo = false;
+        String sql = "SELECT estado FROM usuarios WHERE id_usuario = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, usuario.getIdUsuario());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int estado = rs.getInt("estado");
+                estadoActivo = (estado == 1);
             }
 
-            return estadoActivo;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        public static Usuario obtenerUsuarioSesion(String userLogin) {
-            Usuario usuario = null;
-            String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, " +
-                    " correo, user_login, contrasena, id_rol, estado FROM usuarios WHERE user_login = ?";
+        return estadoActivo;
+    }
 
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
+    public static Usuario obtenerUsuarioSesion(String userLogin) {
+        Usuario usuario = null;
+        String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, " +
+                " correo, user_login, contrasena, id_rol, estado FROM usuarios WHERE user_login = ?";
 
-                ps.setString(1, userLogin);
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        // Pasamos la MISMA conexión al rolDAO
-                        Rol rol = rolDAO.obtenerRolPorId(rs.getInt("id_rol"), con);
-                        usuario = new Usuario(
-                                rs.getInt("id_usuario"),
-                                rs.getString("dni"),
-                                rs.getString("nombres"),
-                                rs.getString("apellido_paterno"),
-                                rs.getString("apellido_materno"),
-                                rs.getString("telefono"),
-                                rs.getString("correo"),
-                                rs.getString("user_login"),
-                                rs.getString("contrasena"),
-                                rol,
-                                rs.getInt("estado")
-                        );
-                        System.out.println(usuario.getNombres() + " inició sesión.");
-                    }
+            ps.setString(1, userLogin);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Pasamos la MISMA conexión al rolDAO
+                    Rol rol = rolDAO.obtenerRolPorId(rs.getInt("id_rol"), con);
+                    usuario = new Usuario(
+                            rs.getInt("id_usuario"),
+                            rs.getString("dni"),
+                            rs.getString("nombres"),
+                            rs.getString("apellido_paterno"),
+                            rs.getString("apellido_materno"),
+                            rs.getString("telefono"),
+                            rs.getString("correo"),
+                            rs.getString("user_login"),
+                            rs.getString("contrasena"),
+                            rol,
+                            rs.getInt("estado")
+                    );
+                    System.out.println(usuario.getNombres() + " inició sesión.");
                 }
-            } catch (SQLException e) {
-                System.err.println("Error SQLException al obtener el usuario: " + e.getMessage());
             }
-            return usuario;
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al obtener el usuario: " + e.getMessage());
         }
+        return usuario;
+    }
 
     //METODOS CRUD
     //CREATE
@@ -144,12 +144,11 @@ import java.util.List;
 
     //READ
     public static List<UsuarioRolDTO> obtenerTodosUsuarios() {
-
         String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
                 "u.telefono, u.correo, u.user_login, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
                 "FROM usuarios AS u " +
                 "JOIN roles AS r ON u.id_rol = r.id_rol " +
-                "ORDER BY u.id_usuario DESC;";
+                "ORDER BY u.estado DESC, u.id_rol ASC, u.nombres ASC;";
         List<UsuarioRolDTO> usuariosList = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
@@ -181,49 +180,70 @@ import java.util.List;
         return usuariosList;
     }
 
-        public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
-            String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
-                    " u.telefono, u.correo, u.user_login, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
-                    " FROM usuarios AS u " +
-                    " JOIN roles AS r ON u.id_rol = r.id_rol " +
-                    " WHERE u.id_usuario = ?";
+    public static UsuarioRolDTO obtenerUsuarioPorId(int usuarioId) {
+        String sql = "SELECT u.id_usuario, u.dni, u.nombres, u.apellido_paterno, u.apellido_materno, " +
+                " u.telefono, u.correo, u.user_login, u.estado, r.id_rol, r.nombre_rol, r.descripcion " +
+                " FROM usuarios AS u " +
+                " JOIN roles AS r ON u.id_rol = r.id_rol " +
+                " WHERE u.id_usuario = ?";
 
-            UsuarioRolDTO usuarioDTO = null;
+        UsuarioRolDTO usuarioDTO = null;
 
-            try (Connection con = dataSource.getConnection();
-                 PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-                ps.setInt(1, usuarioId);
-                ResultSet rs = ps.executeQuery();
-                System.out.println("[DEBUG] Ejecutando consulta para ID: " + usuarioId);
+            ps.setInt(1, usuarioId);
+            ResultSet rs = ps.executeQuery();
+            System.out.println("[DEBUG] Ejecutando consulta para ID: " + usuarioId);
 
-                if (rs.next()) {
-                    usuarioDTO = new UsuarioRolDTO(
-                            rs.getInt("id_usuario"),
-                            rs.getString("dni"),
-                            rs.getString("nombres"),
-                            rs.getString("apellido_paterno"),
-                            rs.getString("apellido_materno"),
-                            rs.getString("telefono"),
-                            rs.getString("correo"),
-                            rs.getString("user_login"),
-                            "***",  // Contraseña oculta
-                            rs.getInt("id_rol"),
-                            rs.getString("nombre_rol"),
-                            rs.getString("descripcion"),
-                            rs.getInt("estado")
-                    );
-                }
-
-            } catch (SQLException e) {
-                System.err.println("Error al obtener usuario por ID (" + usuarioId + "): " + e.getMessage());
-                e.printStackTrace();
+            if (rs.next()) {
+                usuarioDTO = new UsuarioRolDTO(
+                        rs.getInt("id_usuario"),
+                        rs.getString("dni"),
+                        rs.getString("nombres"),
+                        rs.getString("apellido_paterno"),
+                        rs.getString("apellido_materno"),
+                        rs.getString("telefono"),
+                        rs.getString("correo"),
+                        rs.getString("user_login"),
+                        "***",  // Contraseña oculta
+                        rs.getInt("id_rol"),
+                        rs.getString("nombre_rol"),
+                        rs.getString("descripcion"),
+                        rs.getInt("estado")
+                );
             }
 
-            return usuarioDTO;
+        } catch (SQLException e) {
+            System.err.println("Error al obtener usuario por ID (" + usuarioId + "): " + e.getMessage());
+            e.printStackTrace();
         }
 
-        public static boolean existeUsuario(String correo) {
+        return usuarioDTO;
+    }
+
+    public static boolean existeUsuarioPorDni(String dni) {
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE dni = ?";
+        boolean existe = false;
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dni);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    existe = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al verificar si existe el usuario por DNI: " + dni + " - " + e.getMessage());
+        }
+
+        return existe;
+    }
+
+    public static boolean existeUsuario(String correo) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE correo = ?";
         boolean existe = false;
 

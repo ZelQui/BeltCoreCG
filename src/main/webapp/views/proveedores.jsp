@@ -186,18 +186,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="nuevoNombre">Nombre (*)</label>
+                    <label for="nuevoNombre">Nombre <span class="required-star">*</span></label>
                     <input type="text" id="nuevoNombre" name="nombreRazonSocial"  readonly required>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="estadoRuc">Estado SUNAT (*)</label>
+                        <label for="estadoRuc">Estado SUNAT <span class="required-star">*</span></label>
                         <input type="text" id="estadoRuc" name="estadoContribuyente" readonly required>
                     </div>
 
                     <div class="form-group">
-                        <label for="nuevaDireccion">Domicilio Fiscal (*)</label>
+                        <label for="nuevaDireccion">Domicilio Fiscal <span class="required-star">*</span></label>
                         <input type="text" id="nuevaDireccion" name="domicilioFiscal" required>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nuevoTelefono">Teléfono (*) (Ej: 954135647)</label>
+                        <label for="nuevoTelefono">Teléfono <span class="required-star">*</span> (Ej: 954135647)</label>
                         <input type="tel" id="nuevoTelefono" name="telefono"  maxlength="9" required>
                         <span id="telefonoError" style="color:red; font-size: 0.9em;"></span>
                     </div>
@@ -217,7 +217,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="tipoCuenta">Tipo de Metodo de Pago (*)</label>
+                        <label for="tipoCuenta">Tipo de Metodo de Pago <span class="required-star">*</span></label>
                         <select id="tipoCuenta" name="idCuentaBancaria"  onchange="habilitarYValidarCuenta()">
                             <option value="">Seleccione una cuenta</option>
                             <%

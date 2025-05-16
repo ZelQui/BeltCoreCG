@@ -3,35 +3,71 @@ document.getElementById('buscarDniBtn').addEventListener('click', function () {
     const dni = document.getElementById('dni').value;
 
     if (dni.length !== 8 || isNaN(dni)) {
-        alert("Ingrese un DNI válido de 8 dígitos.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'DNI no válido',
+            text: 'Ingrese un DNI válido de 8 dígitos.',
+            confirmButtonText: 'Entendido'
+        });
         return;
     }
 
     fetch(BASE_URL + "/consultarDni?dni=" + dni)
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al consultar el DNI');
+            if (response.status === 400) {
+                // Si el servidor responde con 400, DNI no válido o no encontrado
+                Swal.fire({
+                    icon: 'error',
+                    title: 'DNI no válido',
+                    text: 'No se pudo obtener los datos del DNI.',
+                    confirmButtonText: 'Cerrar'
+                });
+                return null; // Devolvemos null para evitar continuar el flujo
             }
+
+            if (response.status === 409) {
+                // Aquí manejo el caso cuando el DNI ya está registrado en tu base de datos
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'DNI ya registrado',
+                    text: 'Este DNI ya existe en la base de datos.',
+                    confirmButtonText: 'Cerrar'
+                });
+                return null; // Evito continuar con el flujo
+            }
+
+            if (!response.ok) {
+                throw new Error('Error desconocido al consultar el DNI');
+            }
+
             return response.json();
         })
         .then(data => {
-            console.log('Resultado de la API:', data); // Solo consola por ahora
+            if (!data) return; // Si data es null, salimos
 
-            // Opcional: rellenar campo nombre completo
+            console.log('Resultado de la API:', data);
+
             var fullName = data.nombres;
             var ApePaterno = data.apellidoPaterno;
             var ApeMaterno = data.apellidoMaterno;
+
             document.getElementById('fullName').value = fullName;
             document.getElementById('ApePaterno').value = ApePaterno;
             document.getElementById('ApeMaterno').value = ApeMaterno;
-            // Hacer los campos solo lectura
+
             document.getElementById('fullName').readOnly = true;
             document.getElementById('ApePaterno').readOnly = true;
             document.getElementById('ApeMaterno').readOnly = true;
         })
         .catch(error => {
+            // Solo mostramos el error si no es manejado ya por el código anterior
             console.error('Error al consultar DNI:', error);
-            alert('No se pudo obtener los datos del DNI.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al consultar el DNI.',
+                confirmButtonText: 'Cerrar'
+            });
         });
 });
 

@@ -1,6 +1,7 @@
 package development.team.Controllers;
 
 import development.team.DAO.ModuloDAO;
+import development.team.Models.LoginResult;
 import development.team.Models.Modulo;
 import development.team.Models.Usuario;
 import development.team.Utils.Auth;
@@ -22,8 +23,10 @@ public class LoginController extends HttpServlet {
         String userLogin = request.getParameter("userLogin");
         String contrasena = request.getParameter("contrasena");
 
-        if (authService.login(userLogin, contrasena, request)) {
+        LoginResult resultado = authService.login(userLogin, contrasena, request);
 
+        if (resultado.isSuccess()) {
+            //Si accede correctamente con las credenciales
             Usuario user = (Usuario) request.getSession().getAttribute("usuario");
             int idRol = user.getRol().getIdRol(); // Obtener del modelo de usuario autenticado
             ModuloDAO moduloDAO = new ModuloDAO();
@@ -32,9 +35,10 @@ public class LoginController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/app/inicio");
 
         } else {
-            System.out.println("Error: mensaje Credenciales incorrectas");
-            // Error: mensaje Credenciales incorrectas
-            response.sendRedirect(request.getContextPath() + "/");
+            request.setAttribute("alertIcon", resultado.getIcon());
+            request.setAttribute("alertTitle", resultado.getTitle());
+            request.setAttribute("alertMessage", resultado.getMessage());
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
 

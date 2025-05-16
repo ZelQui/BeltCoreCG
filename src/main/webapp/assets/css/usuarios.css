@@ -98,6 +98,23 @@ body {
   cursor: pointer;
 }
 
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.35rem;
+}
+
+.badge-info {
+  background-color: #0ea5e9; /* celeste */
+}
+
 .btn.view {
   background-color: #0ea5e9; /* celeste */
 }

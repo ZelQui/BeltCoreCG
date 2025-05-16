@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/menu.css" />
 </head>
 <%
+    //Evitar caché del lado del cliente
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
+    response.setHeader("Pragma", "no-cache"); // HTTP 1.0
+    response.setDateHeader("Expires", 0); // Proxies
+
     HttpSession sessionObj = request.getSession(false);
     if (sessionObj == null || sessionObj.getAttribute("usuario") == null) {
         response.sendRedirect("../"); //Mensaje: Inicia sesión primero
@@ -23,9 +28,6 @@
     if (contenidoAttr == null) {
         contenidoAttr = "inicio.jsp";
     }
-/*
-    Usuario usuario = (Usuario) sessionObj.getAttribute("usuario");
-    boolean mostrarModal = BCrypt.checkpw("123456", usuario.getContrasena());*/
 %>
 <body>
 <!-- Sidebar -->
@@ -52,10 +54,23 @@
                 }
             }
         %>
-        <a href="<%= request.getContextPath() %>" class="nav-item logout">
+        <a href="#" class="nav-item logout" onclick="logout();">
             <i class="fas fa-sign-out-alt"></i>
             <span>Cerrar Sesión</span>
         </a>
+
+        <!-- Script para cerrar sesión -->
+        <script>
+            function logout() {
+                fetch('../logout', {method: 'POST'})
+                    .then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        }
+                    })
+                    .catch(error => console.error('Error al cerrar sesión:', error));
+            }
+        </script>
     </div>
 </div>
 
@@ -63,35 +78,6 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
 
-<!-- Modal para cambiar contraseña -->
-<%--<div class="modal" id="modalCambiarPassword" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cambiar Contraseña</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <p>Tu contraseña actual es la predeterminada. Por seguridad, cámbiala ahora.</p>
-                <form id="formCambiarPassword" >
-                    <input type="hidden" name="accion" value="updatePassword">
-                    <div class="mb-3">
-                        <label for="nuevaPassword">Nueva Contraseña</label>
-                        <input type="password" class="form-control" name="newPassword" id="nuevaPassword" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmarPassword">Confirmar Contraseña</label>
-                        <input type="password" class="form-control" id="confirmarPassword" required>
-                    </div>
-                    <div id="errorMensaje" class="alert alert-danger mt-3" role="alert" style="display: none;">
-                        Las contraseñas no coinciden.
-                    </div>
-                    <button type="button" class="btn secondary" >Cancelar</button>
-                    <button type="submit" class="btn primary">Actualizar Contraseña</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>--%>
 <!-- contenedor principal -->
 <div class="main-content" id="contenido">
     <jsp:include page="<%= contenidoAttr %>" />
@@ -108,8 +94,6 @@
         // Redirige a la URL completa para que la página se recargue
         window.location.href = baseApp + pagina;
     }
-
 </script>
-
 </body>
 </html>

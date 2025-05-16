@@ -1,5 +1,6 @@
 package development.team.Controllers;
 
+import development.team.DAO.UsuarioDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,9 +20,19 @@ public class ConsultarDniController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String dni = request.getParameter("dni");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
         if (dni == null || dni.length() != 8) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("{\"error\":\"DNI inválido\"}");
+            return;
+        }
+
+        // ✅ Validar si ya existe en BD
+        if (UsuarioDAO.existeUsuarioPorDni(dni)) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT); // 409 Conflict
+            response.getWriter().write("{\"error\":\"El DNI ya está registrado\"}");
             return;
         }
 

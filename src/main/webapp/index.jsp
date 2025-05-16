@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,6 +8,7 @@
     <title>Inicio de Sesión | BeltCoreGC</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="circles">
@@ -71,6 +73,31 @@
 </div>
 
 <script src="<%=request.getContextPath()%>/assets/js/login.js"></script>
+
+<script>
+    window.history.replaceState(null, "", "<%=request.getContextPath()%>/");
+</script>
+
+<%-- Solo se ejecuta si existe atributos de Error --%>
+<%
+    String icon = (String) request.getAttribute("alertIcon");
+    String title = (String) request.getAttribute("alertTitle");
+    String message = (String) request.getAttribute("alertMessage");
+
+    if (icon != null && title != null && message != null) {
+%>
+<script>
+    Swal.fire({
+        icon: '<%= icon %>',
+        title: '<%= title.replace("'", "\\'") %>',
+        text: '<%= message.replace("'", "\\'") %>'
+    });
+</script>
+<% } %>
+
+
+</body>
+
 </body>
 </html>
 

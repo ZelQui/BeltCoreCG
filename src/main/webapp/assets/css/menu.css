@@ -161,6 +161,13 @@
   cursor: pointer;
 }
 
+.required-star {
+  color: red;
+  font-weight: normal; /* quitar negrita */
+  font-size: 0.75em;   /* más pequeño */
+  vertical-align: super; /* para que suba como exponente */
+}
+
 /* Cuerpo del modal */
 .modal-body {
   margin-top: 15px;

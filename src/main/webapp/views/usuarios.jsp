@@ -3,6 +3,7 @@
 <%@ page import="development.team.DTO.UsuarioRolDTO" %>
 <%@ page import="development.team.Models.Rol" %>
 <%@ page import="development.team.DAO.RolDAO" %>
+<%@ page import="development.team.Models.Usuario" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <head>
     <meta charset="UTF-8">
@@ -14,6 +15,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <%
+    Usuario user = (Usuario) session.getAttribute("usuario");
     List<UsuarioRolDTO> usuarios = UsuarioDAO.obtenerTodosUsuarios();
     List<Rol> roles = RolDAO.obtenerRols();
 %>
@@ -93,6 +95,13 @@
                     <span class="user-estado role-badge <%= claseEstado %>"><%= textoEstado %></span>
                 </td>
                 <td>
+                    <%
+                        if (user != null && user.getIdUsuario() == usuarioList.getIdUsuario()) {
+                    %>
+                    <span class="badge badge-info">Es tu propio usuario</span>
+                    <%
+                    } else {
+                    %>
                     <button class="btn view" title="Ver"><i class="fas fa-eye"></i></button>
 
                     <button class="btn edit"
@@ -107,6 +116,9 @@
                     <button class="btn-toggle-status <%= botonEstado %>" title="<%= tituloEstado %>">
                         <i class="fas fa-user-<%= esActivo ? "slash" : "check" %>"></i>
                     </button>
+                    <%
+                        }
+                    %>
                 </td>
             </tr>
             <%
@@ -131,7 +143,7 @@
                 <!-- Contenido de campos -->
                 <div class="form-row">
                     <div class="dni-group">
-                        <label for="dni">DNI</label>
+                        <label for="dni">DNI <span class="required-star">*</span></label>
                         <input type="text" id="dni" name="dni" maxlength="8" required>
                     </div>
                     <div class="form-group">
@@ -141,7 +153,7 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="fullName">Nombres</label>
+                        <label for="fullName">Nombres <span class="required-star">*</span></label>
                         <input type="text" id="fullName" name="fullName" required
                                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
                                title="Solo letras y espacios"
@@ -151,7 +163,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="ApePaterno">Apellido Paterno</label>
+                        <label for="ApePaterno">Apellido Paterno <span class="required-star">*</span></label>
                         <input type="text" id="ApePaterno" name="ApePaterno" required
                                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
                                title="Solo letras y espacios"
@@ -159,7 +171,7 @@
                                placeholder="Apellido paterno">
                     </div>
                     <div class="form-group">
-                        <label for="ApeMaterno">Apellido Materno</label>
+                        <label for="ApeMaterno">Apellido Materno <span class="required-star">*</span></label>
                         <input type="text" id="ApeMaterno" name="ApeMaterno" required
                                pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
                                title="Solo letras y espacios"
@@ -169,7 +181,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="telefono">Teléfono</label>
+                        <label for="telefono">Teléfono <span class="required-star">*</span></label>
                         <input type="tel" id="telefono" name="telefono" required
                                pattern="[0-9]{9}"
                                title="Ingrese un número de 9 dígitos"
@@ -178,13 +190,13 @@
                         <span id="telefonoError" style="color:red; font-size: 0.9em;"></span>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="required-star">*</span></label>
                         <input type="email" id="email" name="email" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="role">Rol</label>
+                        <label for="role">Rol <span class="required-star">*</span></label>
                         <select id="role" name="role" required>
                             <option value="">Seleccione un rol</option>
                             <% for (Rol rolList : roles) { %>

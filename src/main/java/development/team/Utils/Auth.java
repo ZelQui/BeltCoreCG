@@ -1,6 +1,7 @@
 package development.team.Utils;
 
 import development.team.DAO.UsuarioDAO;
+import development.team.Models.LoginResult;
 import development.team.Models.Usuario;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -15,9 +16,9 @@ public class Auth {
      * @param request Petición HTTP.
      * @return true si las credenciales son correctas, false si son incorrectas.
      */
-    public boolean login(String userLogin, String contrasena, HttpServletRequest request) {
-        // Validar credenciales
-        Boolean validar = userdao.validarCredenciales (userLogin, contrasena);
+    public LoginResult login(String userLogin, String contrasena, HttpServletRequest request) {
+        Boolean validar = userdao.validarCredenciales(userLogin, contrasena);
+
         if (validar) {
             Usuario user = userdao.obtenerUsuarioSesion(userLogin);
 
@@ -25,18 +26,15 @@ public class Auth {
                 HttpSession session = request.getSession();
                 session.setAttribute("usuario", user);
 
-                // SETTEAR USUARIO EN BASE DE DATOS, PARA QUE PUEDA USAR SQL
                 if (userdao.SettearUsuario(user.getIdUsuario())) {
-                    return true; // Inicio de sesión exitoso
+                    return new LoginResult(true, "success", "Bienvenido", "Has iniciado sesión correctamente.");
                 }
-                return false; // Falló al settear usuario
+                return new LoginResult(false, "error", "Error interno", "Error al configurar usuario en la base de datos.");
             } else {
-                System.out.println("Auth: Usuario inactivado");
-                return false;
+                return new LoginResult(false, "warning", "Usuario suspendido", "Comunicate con el administrador.");
             }
         }
-        System.out.println("Auth: Credenciales incorrectas");
-        return false;
+        return new LoginResult(false, "error", "Credenciales incorrectas", "Usuario o contraseña incorrectos.");
     }
 
     /**
