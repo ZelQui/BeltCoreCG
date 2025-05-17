@@ -8,6 +8,7 @@
     <title>Inicio de Sesión | BeltCoreGC</title>
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="<%=request.getContextPath()%>/assets/img/favicon.ico">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
