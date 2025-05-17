@@ -18,6 +18,12 @@ import java.io.IOException;
 public class ProveedorController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("usuario") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
         response.setContentType("text/html;charset=UTF-8");
 
         String accion = request.getParameter("accion");

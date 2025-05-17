@@ -219,7 +219,7 @@
                     <div class="form-group">
                         <label for="tipoCuenta">Tipo de Metodo de Pago <span class="required-star">*</span></label>
                         <select id="tipoCuenta" name="idCuentaBancaria"  onchange="habilitarYValidarCuenta()">
-                            <option value="">Seleccione una cuenta</option>
+                            <option value="">Seleccione un metodo de pago</option>
                             <%
                                 List<CuentaBancaria> cuentasBancarias = CuentaBancariaDAO.obtenerCuentasBancarias();
                                 if (cuentasBancarias != null) {
@@ -289,13 +289,14 @@
                     <input type="text" id="editDireccionAlterna" name="domicilioAlterna">
                 </div>
 
+                <div class="form-group">
+                    <label for="editTelefono">Teléfono</label>
+                    <input type="tel" id="editTelefono" name="telefono" maxlength="9">
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="editTelefono">Teléfono</label>
-                        <input type="tel" id="editTelefono" name="telefono" maxlength="9">
-                    </div>
-                    <div class="form-group">
-                        <label for="editTipoCuenta">Tipo de Cuenta</label>
+                        <label for="editTipoCuenta">Tipo de Metodo de Pagoa</label>
                         <input type="text" id="editTipoCuenta" name="tipoCuenta" disabled>
                     </div>
                     <div class="form-group">

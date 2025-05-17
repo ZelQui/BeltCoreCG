@@ -175,8 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (tipoCuenta.value === "") {
       Swal.fire({
         icon: 'error',
-        title: 'Tipo de cuenta no seleccionado',
-        text: 'Debe seleccionar un tipo de cuenta antes de continuar.',
+        title: 'Tipo de Metodo de Pago no seleccionado',
+        text: 'Debe seleccionar un método de pago antes de continuar.',
       });
       event.preventDefault();
       return;
@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p><strong>Domicilio Fiscal:</strong> ${domicilioFiscal}</p>
         <p><strong>Telefono:</strong> ${telefono}</p>
         <p><strong>Domicilio Alterna:</strong> ${direccionAlterna}</p>
-        <p><strong>Tipo de Cuenta:</strong> ${tipoCuenta}</p>
+        <p><strong>Tipo de Metodo de Pago:</strong> ${tipoCuenta}</p>
         <p>
           <strong>${cuentaLabel}</strong> 
           <span id="cuentaText">${numeroCuenta}</span>
@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const labelCuenta = document.getElementById('editLabelCuenta');
 
     let maxLength = 0;
-    let labelTexto = "Número de Cuenta";
+    let labelTexto = "N° de Cuenta:";
 
     if (tipoCuentaTexto === 'Banco de la Nacion') {
       maxLength = 20;

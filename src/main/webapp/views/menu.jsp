@@ -20,7 +20,7 @@
 
     HttpSession sessionObj = request.getSession(false);
     if (sessionObj == null || sessionObj.getAttribute("usuario") == null) {
-        response.sendRedirect("../"); //Mensaje: Inicia sesión primero
+        response.sendRedirect("../");
         return;
     }
 
@@ -82,6 +82,9 @@
 <div class="main-content" id="contenido">
     <jsp:include page="<%= contenidoAttr %>" />
 </div>
+
+<!-- Carga primero el interceptor -->
+<script src="${pageContext.request.contextPath}/assets/js/session-handler.js"></script>
 
 <script>
     // Obtener el contexto dinámicamente (ej: /BeltCoreCG_war_exploded)
