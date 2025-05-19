@@ -37,7 +37,6 @@
         <tbody>
         <% int index = 1;
           for (Modulo modulo : modulos) {
-            if (modulo.getIdModulo() == 23) continue; // Excluir módulo con ID 23 //Es la misma pagina actual
             boolean asignado = modulosAsignados.contains(modulo.getIdModulo());
         %>
         <tr>

@@ -1,0 +1,288 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 2rem;
+}
+
+/* Contenedor principal */
+.content-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Título */
+.content-container h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Controles superiores */
+.header-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}
+
+.add-provider {
+    margin-bottom: 15px;
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-provider:hover {
+    background-color: #16a34a;
+}
+
+/* Filtros */
+.filter-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.search-container input,
+#roleFilter,
+#statusFilter {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+/* Tabla */
+.table-container {
+    overflow-x: auto;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.provider-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.provider-table th {
+    background-color: #1f2937;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+.provider-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+/* Botones */
+.btn {
+    border: none;
+    padding: 8px;
+    margin: 0 2px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn.view {
+    background-color: #0ea5e9; /* celeste */
+}
+
+.btn.edit {
+    background-color: #facc15; /* amarillo */
+    color: #1f2937;
+}
+
+.btn.reset-password {
+    background-color: #000000; /* Verde */
+}
+
+.btn.deactivate {
+    background-color: #ef4444; /* rojo */
+}
+
+.btn.activate {
+    background-color: #22c55e; /* Verde claro */
+}
+
+/* Botones de acción en la tabla */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+/* Paginación adaptada */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: var(--text-primary, black);
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid var(--gray-medium, #ddd);
+    margin: 0 4px;
+    border-radius: 8px;
+}
+
+.pagination a.active {
+    background-color: var(--primary-color, #111e43);
+    color: white;
+    border: 1px solid var(--primary-color, #111e43);
+}
+
+.pagination a:hover:not(.active) {
+    background-color: var(--gray-medium, #ddd);
+}
+
+.pagination .btn.btn.primary {
+    background-color: #3f3f3f;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+/* Botón aplicar filtros */
+.btn.primary {
+    background-color: #292929;
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
+.btn.primary:hover {
+    background-color: #0e0d0d;
+}
+
+/* Modal general */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor interno del modal */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 700px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Encabezado del modal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.modal-header .close {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Cuerpo del modal */
+.modal-body {
+    margin-top: 15px;
+}
+
+/* Filas y grupos de formulario */
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.form-group small {
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: #777;
+}
+
+/* Botones al pie del formulario */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-footer .btn {
+    padding: 10px 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modal-footer .btn.cancel {
+    background-color: #e5e7eb;
+    color: #333;
+}
+
+.modal-footer .btn.primary {
+    background-color: #2563eb;
+    color: white;
+}
+
+.modal-footer .btn.primary:hover {
+    background-color: #1d4ed8;
+}

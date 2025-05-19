@@ -1,0 +1,350 @@
+.productos-container {
+  max-width: 1200px;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.productos-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #222;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.acciones button {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.acciones button:hover {
+  background-color: #16a34a;
+}
+
+/* Filtros */
+.filter-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.search-container input,
+#roleFilter,
+#statusFilter {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+/* Botón aplicar filtros */
+.btn.primary {
+  background-color: #292929;
+  padding: 8px 12px;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* styles de imagen */
+.product-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor general */
+.table-container {
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Tabla principal */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Encabezado de la tabla */
+.user-table thead {
+  background-color: #1f2b37;
+  color: white;
+}
+
+.user-table th {
+  padding: 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* Cuerpo de la tabla */
+.user-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+/* Imagen del producto */
+.product-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Badges reutilizados para estado */
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  display: inline-block;
+}
+
+.role-green {
+  background-color: #4CAF50;
+}
+
+.role-red {
+  background-color: #F44336;
+}
+
+/* Botones de acciones */
+.user-table .btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.user-table .btn i {
+  pointer-events: none;
+}
+
+/* Colores de botones */
+.user-table .btn.view {
+  background-color: #03A9F4;
+}
+
+.user-table .btn.edit {
+  background-color: #FFEB3B;
+  color: #333;
+}
+
+.user-table .btn.deactivate {
+  background-color: #F44336;
+}
+
+.user-table .btn.activate {
+  background-color: #4CAF50;
+}
+
+.user-table .btn:hover {
+  opacity: 0.85;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.oculto {
+  display: none;
+}
+
+.modal-contenido {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: modalFade 0.3s ease;
+  display: flex;
+  gap: 20px; /* Espacio entre columnas */
+}
+
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.cerrar-modal {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.3s;
+}
+
+.cerrar-modal:hover {
+  color: #000;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario label {
+  font-weight: 600;
+  color: #444;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea {
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.formulario input:focus,
+.formulario select:focus,
+.formulario textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.botones button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botones .cancelar {
+  background-color: #e5e7eb;
+  color: #333;
+}
+
+.botones .cancelar:hover {
+  background-color: #d1d5db;
+}
+
+.botones button[type="submit"] {
+  background-color: #22c55e;
+  color: white;
+}
+
+.botones button[type="submit"]:hover {
+  background-color: #16a34a;
+}
+
+.oculto {
+  display: none;
+}
+
+.formulario-doble-columna {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.formulario-izquierda,
+.formulario-derecha {
+  flex: 1;
+  min-width: 250px;
+}
+
+.tabla-insumos th,
+.tabla-insumos td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+#btn-agregar-insumo {
+  background-color: #2563eb; /* Azul moderno */
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#btn-agregar-insumo:hover {
+  background-color: #1e40af; /* Azul más oscuro al pasar el mouse */
+}

@@ -167,4 +167,35 @@ public class RolDAO {
 
         return rolesList;
     }
+
+    public void actualizarAsignacionModulos(int idRol, List<Integer> modulosSeleccionados) {
+        String eliminarSQL = "DELETE FROM rol_modulo WHERE id_rol = ?";
+        String insertarSQL = "INSERT INTO rol_modulo (id_rol, id_modulo) VALUES (?, ?)";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement eliminarStmt = conn.prepareStatement(eliminarSQL);
+             PreparedStatement insertarStmt = conn.prepareStatement(insertarSQL)) {
+
+            conn.setAutoCommit(false); // Transacción
+
+            // 1. Eliminar asignaciones anteriores
+            eliminarStmt.setInt(1, idRol);
+            eliminarStmt.executeUpdate();
+
+            // 2. Insertar nuevas asignaciones
+            for (Integer idModulo : modulosSeleccionados) {
+                if (idModulo == 23) continue; // Seguridad: excluye módulo 23 si llega
+                insertarStmt.setInt(1, idRol);
+                insertarStmt.setInt(2, idModulo);
+                insertarStmt.addBatch();
+            }
+
+            insertarStmt.executeBatch(); // Ejecutar en lote
+            conn.commit();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Manejar rollback si ocurre error
+        }
+    }
 }
