@@ -37,6 +37,11 @@ public class GuardarAsignacionController extends HttpServlet{
                 idsModulos.add(Integer.parseInt(idModuloStr));
             }
 
+            // Si es rol 1, siempre agregar el módulo 23 si no está ya
+            if (idRol == 1 && !idsModulos.contains(23)) {
+                idsModulos.add(23);
+            }
+
             // Aquí llamas al DAO para guardar
             RolDAO dao = new RolDAO();
             dao.actualizarAsignacionModulos(idRol, idsModulos);

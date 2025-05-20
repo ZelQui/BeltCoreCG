@@ -114,9 +114,9 @@
                 <th>#</th>
                 <th>Ruc</th>
                 <th>Nombre o Razon Social</th>
-                <th>Estado Contribuyente</th>
-                <th>Domicilio Fiscal</th>
-                <th>Telefono</th>
+                <th class="hide-on-small-estadocontrib">Estado Contribuyente</th>
+                <th class="hide-on-small-domicilio">Domicilio Fiscal</th>
+                <th class="hide-on-small-telefono">Telefono</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -132,12 +132,12 @@
                     String tituloEstado = esActivo ? "Desactivar" : "Activar";
             %>
             <tr data-id="<%= proveedorList.getIdProveedor() %>" data-activo="<%= esActivo %>">
-                <td><%= i %></td>
-                <td><%= proveedorList.getNumeroRuc() %></td>
-                <td><%= proveedorList.getNombreRazonSocial() %></td>
-                <td><%= proveedorList.getEstadoContribuyente() %></td>
-                <td><%= proveedorList.getDomicilioFiscal() %></td>
-                <td><%= proveedorList.getTelefono() %></td>
+                <td data-label="#"><%= i %></td>
+                <td data-label="Ruc"><%= proveedorList.getNumeroRuc() %></td>
+                <td data-label="Nombre o Razon Social"><%= proveedorList.getNombreRazonSocial() %></td>
+                <td data-label="Estado Contribuyente" class="hide-on-small-estadocontrib"><%= proveedorList.getEstadoContribuyente() %></td>
+                <td data-label="Domicilio Fiscal" class="hide-on-small-domicilio"><%= proveedorList.getDomicilioFiscal() %></td>
+                <td data-label="Telefono" class="hide-on-small-telefono"><%= proveedorList.getTelefono() %></td>
                 <td>
                     <span class="proveedor-estado role-badge <%= claseEstado %>"><%= textoEstado %></span>
                 </td>

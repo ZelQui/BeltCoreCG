@@ -184,7 +184,6 @@ public class RolDAO {
 
             // 2. Insertar nuevas asignaciones
             for (Integer idModulo : modulosSeleccionados) {
-                if (idModulo == 23) continue; // Seguridad: excluye módulo 23 si llega
                 insertarStmt.setInt(1, idRol);
                 insertarStmt.setInt(2, idModulo);
                 insertarStmt.addBatch();

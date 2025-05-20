@@ -33,8 +33,14 @@
 <body>
 <!-- Sidebar -->
 <div class="sidebar">
+    <!-- Botón hamburguesa para móviles -->
+    <div class="mobile-header">
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
     <div class="logo">
-        <img src="<%= request.getContextPath() %>/assets/img/LogoEmpresa.png" alt="Logo Empresa" style="width: 150px; height: auto;" />
+        <img src="<%= request.getContextPath() %>/assets/img/Confecciones%20Guadalupe%20Oscuro.png" alt="Logo Empresa" />
     </div>
 
     <div class="nav-menu">
@@ -79,6 +85,12 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
 
+<script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('sidebar-expanded');
+    }
+</script>
 <!-- contenedor principal -->
 <div class="main-content" id="contenido">
     <jsp:include page="<%= contenidoAttr %>" />
