@@ -19,6 +19,12 @@ public class DetalleCompra {
         this.total = total;
     }
 
+    public DetalleCompra(Compra compra, Insumo insumo, int cantidad) {
+        this.compra = compra;
+        this.insumo = insumo;
+        this.cantidad = cantidad;
+    }
+
     public int getIdDetalleCompra() {
         return idDetalleCompra;
     }

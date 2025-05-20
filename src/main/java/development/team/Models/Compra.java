@@ -4,22 +4,26 @@ import java.time.LocalDateTime;
 
 public class Compra {
     private int idCompra;
+    private LocalDateTime fechaSolicitud;
     private LocalDateTime fechaCompra;
     private Proveedor proveedor;
     private Usuario usuario;
     private double totalCompra;
     private MetodoPago metodoPago;
+    private String estado;
 
     public Compra() {
     }
 
-    public Compra(int idCompra, LocalDateTime fechaCompra, Proveedor proveedor, Usuario usuario, double totalCompra, MetodoPago metodoPago) {
+    public Compra(int idCompra, LocalDateTime fechaSolicitud, LocalDateTime fechaCompra, Proveedor proveedor, Usuario usuario, double totalCompra, MetodoPago metodoPago, String estado) {
         this.idCompra = idCompra;
+        this.fechaSolicitud = fechaSolicitud;
         this.fechaCompra = fechaCompra;
         this.proveedor = proveedor;
         this.usuario = usuario;
         this.totalCompra = totalCompra;
         this.metodoPago = metodoPago;
+        this.estado = estado;
     }
 
     public int getIdCompra() {
@@ -70,15 +74,33 @@ public class Compra {
         this.metodoPago = metodoPago;
     }
 
+    public LocalDateTime getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(LocalDateTime fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "Compra{" +
                 "idCompra=" + idCompra +
+                ", fechaSolicitud=" + fechaSolicitud +
                 ", fechaCompra=" + fechaCompra +
                 ", proveedor=" + proveedor +
                 ", usuario=" + usuario +
                 ", totalCompra=" + totalCompra +
                 ", metodoPago=" + metodoPago +
+                ", estado='" + estado + '\'' +
                 '}';
     }
 }
