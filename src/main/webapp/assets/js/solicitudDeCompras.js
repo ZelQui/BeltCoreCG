@@ -220,4 +220,20 @@ function anularSolicitud(idCompra) {
     });
 }
 
+// -----------------------------------------------------------------------------------------------------------------
+// Filtro por estados
+function filtrarPorEstado() {
+    const filtro = document.getElementById("filtroEstado").value.toUpperCase();
+    const filas = document.querySelectorAll("#tablaCompras tbody tr");
+
+    filas.forEach(fila => {
+        const estado = fila.querySelector("td:nth-child(3)").textContent.toUpperCase();
+        if (filtro === "" || estado === filtro) {
+            fila.style.display = "";
+        } else {
+            fila.style.display = "none";
+        }
+    });
+}
+
 

@@ -108,5 +108,29 @@ public class DetalleOrdenCompraDAO {
         }
     }
 
+    // ANULAR DETALLES SEGUN EL ORDEN DE COMPRA
+    public static boolean anularDetallesCompra (int idCompra) {
+        String sql = "UPDATE detalle_compra SET estado = ? WHERE id_compra = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setString(1, "ANULADA");
+            ps.setInt(2, idCompra);
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Compra " + idCompra + " anular correctamente.");
+                return true;
+            } else {
+                System.err.println("Error al anular compra con ID: " + idCompra);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al anular compra " + idCompra + ": " + e.getMessage());
+            return false;
+        }
+    }
+
 
 }

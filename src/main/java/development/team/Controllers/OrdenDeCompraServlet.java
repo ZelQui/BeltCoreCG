@@ -203,15 +203,20 @@ public class OrdenDeCompraServlet extends HttpServlet {
     private void anularCompra(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idCompra = Integer.parseInt(request.getParameter("idCompra"));
 
-        boolean actualizado = OrdenDeCompraDAO.anularCompra(idCompra);
+        boolean anuladoCompra = OrdenDeCompraDAO.anularCompra(idCompra);
 
-        if (actualizado) {
-            request.getSession().setAttribute("mensaje", "Compra anulada correctamente.");
+        if (anuladoCompra) {
+
+            boolean anuladoDetalles = DetalleOrdenCompraDAO.anularDetallesCompra(idCompra);
+
+            if (anuladoDetalles) {
+                request.getSession().setAttribute("mensaje", "Compra anulada correctamente.");
+            }
         } else {
             request.getSession().setAttribute("mensaje", "Error al anular la compra.");
         }
 
-        response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra"); // Cambia esto según tu JSP principal
+        response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

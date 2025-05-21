@@ -17,7 +17,17 @@
     <h3>Órdenes de Compra Pendientes</h3>
     <button class="btn btn-primary mb-3" onclick="abrirModalSolicitud()">Nueva Solicitud</button>
 
-    <table class="table table-bordered table-sm">
+    <div class="mb-3">
+        <label for="filtroEstado" class="form-label">Filtrar por estado:</label>
+        <select id="filtroEstado" class="form-select form-select-sm" onchange="filtrarPorEstado()">
+            <option value="">-- Todos --</option>
+            <option value="PENDIENTE">PENDIENTE</option>
+            <option value="ANULADO">ANULADO</option>
+        </select>
+    </div>
+
+
+    <table id="tablaCompras" class="table table-bordered table-sm">
         <thead class="table-light">
         <tr>
             <th>ID</th>
@@ -26,6 +36,7 @@
             <th>Acciones</th>
         </tr>
         </thead>
+        <tbody>
         <%
             List<Compra> ordenes = OrdenDeCompraDAO.obtenerCompras();
             for (Compra orden : ordenes) {
@@ -36,17 +47,19 @@
             <td><%= orden.getEstado() %></td>
             <td>
                 <% if (orden.getEstado().equals("PENDIENTE")) { %>
-                    <button class="btn btn-sm btn-primary" onclick="editarSolicitud(<%= orden.getIdCompra() %>)">Editar</button>
-                    <button class="btn btn-sm btn-info" onclick="anularSolicitud(<%= orden.getIdCompra() %>)">Anular Solicitud</button>
-                <% } else {%>
+                <button class="btn btn-sm btn-primary" onclick="editarSolicitud(<%= orden.getIdCompra() %>)">Editar</button>
+                <button class="btn btn-sm btn-info" onclick="anularSolicitud(<%= orden.getIdCompra() %>)">Anular Solicitud</button>
+                <% } else { %>
                 Sin acciones
-                <%} %>
+                <% } %>
             </td>
         </tr>
         <%
             }
         %>
+        </tbody>
     </table>
+
 
     <!-- Modal Solicitud -->
     <div class="modal fade" id="modalSolicitud" tabindex="-1">
