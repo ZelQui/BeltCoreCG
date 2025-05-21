@@ -12,6 +12,7 @@ public class Compra {
     private MetodoPago metodoPago;
     private String estado;
 
+
     public Compra() {
     }
 

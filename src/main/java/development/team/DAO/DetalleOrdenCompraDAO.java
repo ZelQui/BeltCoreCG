@@ -1,11 +1,13 @@
 package development.team.DAO;
 
+import development.team.DTO.OrdenInsumoDTO;
 import development.team.Models.DetalleCompra;
 import development.team.Utils.DataBaseUtil;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetalleOrdenCompraDAO {
 
@@ -42,9 +44,13 @@ public class DetalleOrdenCompraDAO {
     }
 
     // LISTAR DETALLER POR ORDEN
-    public static ArrayList<DetalleCompra> obtenerDetalleCompra(int idCompra) {
-        String sql = "SELECT * FROM detalle_compra WHERE idCompra = ?";
-        ArrayList<DetalleCompra> detalleCompras = new ArrayList<>();
+    public static List<OrdenInsumoDTO> obtenerDetalleCompra(int idCompra) {
+        String sql = "SELECT d.id_detalle_compra, d.cantidad, i.id_insumo, i.nombre " +
+                "FROM detalle_compra d " +
+                "JOIN insumos i ON d.id_insumo = i.id_insumo " +
+                "WHERE d.id_compra = ?";
+
+        ArrayList<OrdenInsumoDTO> detalleCompras = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)){
@@ -52,13 +58,11 @@ public class DetalleOrdenCompraDAO {
              ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                DetalleCompra detalleCompra = new DetalleCompra();
-                detalleCompra.setIdDetalleCompra(rs.getInt("id_detalle_compra"));
-                detalleCompra.getCompra().setIdCompra(rs.getInt("idCompra"));
-                detalleCompra.getInsumo().setIdInsumo(rs.getInt("idInsumo"));
-                detalleCompra.setCantidad(rs.getInt("cantidad"));
-                detalleCompra.setPrecioUnitario(rs.getDouble("precio_unitario"));
-                detalleCompra.setTotal(rs.getDouble("total"));
+                OrdenInsumoDTO detalleCompra = new OrdenInsumoDTO();
+                detalleCompra.setIdDetalleCompra(rs.getInt("d.id_detalle_compra"));
+                detalleCompra.setCantidad(rs.getInt("d.cantidad"));
+                detalleCompra.setIdInsumo(rs.getInt("i.id_insumo"));
+                detalleCompra.setNombreInsumo(rs.getString("i.nombre"));
                 detalleCompras.add(detalleCompra);
             }
         } catch (SQLException e) {
@@ -67,4 +71,42 @@ public class DetalleOrdenCompraDAO {
 
         return detalleCompras;
     }
+
+    // ELIMINAR DETALLES POR COMPRA
+    public static boolean eliminarDetallePorCompraEInsumo(int idCompra, int idInsumo) {
+        String sql = "DELETE FROM detalle_compra WHERE id_compra = ? AND id_insumo = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCompra);
+            ps.setInt(2, idInsumo);
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean actualizarCantidad(DetalleCompra detalle) {
+        String sql = "UPDATE detalle_compra SET cantidad = ? WHERE id_compra = ? AND id_insumo = ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, detalle.getCantidad());
+            ps.setInt(2, detalle.getCompra().getIdCompra());
+            ps.setInt(3, detalle.getInsumo().getIdInsumo());
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

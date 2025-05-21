@@ -1,6 +1,9 @@
 package development.team.DAO;
 
 import development.team.Models.Compra;
+import development.team.Models.MetodoPago;
+import development.team.Models.Proveedor;
+import development.team.Models.Usuario;
 import development.team.Utils.DataBaseUtil;
 
 import javax.sql.DataSource;
@@ -10,6 +13,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class OrdenDeCompraDAO {
@@ -48,9 +52,9 @@ public class OrdenDeCompraDAO {
     }
 
     // LISTAR ORDENES
-    public static ArrayList<Compra> obtenerCompras() {
+    public static List<Compra> obtenerCompras() {
         String sql = "SELECT * FROM compras";
-        ArrayList<Compra> compras = new ArrayList<>();
+        List<Compra> compras = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -59,16 +63,28 @@ public class OrdenDeCompraDAO {
             while (rs.next()) {
                 Compra compra = new Compra();
                 compra.setIdCompra(rs.getInt("id_compra"));
-                compra.setFechaCompra(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
-                compra.getProveedor().setIdProveedor(rs.getInt("id_proveedor"));
-                compra.getUsuario().setIdUsuario(rs.getInt("id_usuario"));
+                compra.setFechaSolicitud(rs.getTimestamp("fecha_solicitud").toLocalDateTime());
+
+                // Inicializamos los objetos relacionados
+                Proveedor proveedor = new Proveedor();
+                proveedor.setIdProveedor(rs.getInt("id_proveedor"));
+                compra.setProveedor(proveedor);
+
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                compra.setUsuario(usuario);
+
+                MetodoPago metodoPago = new MetodoPago();
+                metodoPago.setIdMetodoPago(rs.getInt("id_metodo_pago"));
+                compra.setMetodoPago(metodoPago);
+
                 compra.setTotalCompra(rs.getInt("total_compra"));
-                compra.getMetodoPago().setIdMetodoPago(rs.getInt("id_metodo_pago"));
                 compra.setEstado(rs.getString("estado"));
+
                 compras.add(compra);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
 
         return compras;
@@ -76,11 +92,11 @@ public class OrdenDeCompraDAO {
 
     // ANULAR COMPRA
     public static boolean anularCompra (int idCompra) {
-        String sql = "UPDATE compras SET estado = ? WHERE idCompra = ?";
+        String sql = "UPDATE compras SET estado = ? WHERE id_compra = ?";
 
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)){
-             ps.setString(1, "PENDIENTE");
+             ps.setString(1, "ANULADA");
              ps.setInt(2, idCompra);
             int rowsAffected = ps.executeUpdate();
 

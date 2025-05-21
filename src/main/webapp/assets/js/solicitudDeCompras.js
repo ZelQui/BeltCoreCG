@@ -25,6 +25,16 @@ function agregarInsumo() {
         return;
     }
 
+    // ✅ Validar si el insumo ya fue agregado
+    const filas = document.querySelectorAll('#tablaInsumos tr');
+    for (let fila of filas) {
+        const idExistente = fila.querySelector('input[name="idInsumo[]"]').value;
+        if (idExistente === insumoId) {
+            Swal.fire('Advertencia', 'Este insumo ya fue agregado.', 'warning');
+            return;
+        }
+    }
+
     const insumoNombre = insumoSelect.options[insumoSelect.selectedIndex].text;
 
     const tableBody = document.getElementById("tablaInsumos");
@@ -64,3 +74,150 @@ document.getElementById("formSolicitud").addEventListener("submit", function (e)
         Swal.fire('Error', 'Agrega al menos un insumo a la solicitud.', 'error');
     }
 });
+
+
+//-------------------------------------------------------------------------------------------------------
+// Función para abrir el modal de editar solicitud y cargar los datos
+function editarSolicitud(idCompra) {
+    fetch(BASE_URL + "/OrdenDeCompraServlet?accion=obtenerDetalles&idCompra=" + idCompra)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("#tablaEditarInsumos");
+            tbody.innerHTML = "";
+
+            data.insumos.forEach(insumo => {
+                const row = document.createElement("tr");
+                row.dataset.idinsumo = insumo.idInsumo;
+                row.innerHTML = `
+                    <td>
+                        ${insumo.nombre}
+                        <input type="hidden" name="idInsumo[]" value="${insumo.idInsumo}" />
+                    </td>
+                    <td>
+                        <input type="number" name="cantidad[]" value="${insumo.cantidad}" class="form-control" required />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Establecer el ID de la compra a editar
+            document.querySelector("#formEditarSolicitud input[name='idCompra']").value = idCompra;
+
+            // Mostrar el modal
+            const modal = new bootstrap.Modal(document.getElementById("modalEditarSolicitud"));
+            modal.show();
+        })
+        .catch(error => {
+            console.error("Error al obtener detalles de la solicitud:", error);
+            Swal.fire("Error", "No se pudieron cargar los datos.", "error");
+        });
+}
+
+//-------------------------------------------------------------------------------------------------------
+// Función para agregar un insumo desde el formulario al modal de edición
+function agregarInsumoEditar() {
+    const selectInsumo = document.getElementById('insumoEditarInput');
+    const inputCantidad = document.getElementById('cantidadEditarInput');
+    const tabla = document.getElementById('tablaEditarInsumos');
+
+    const idInsumo = selectInsumo.value;
+    const nombreInsumo = selectInsumo.options[selectInsumo.selectedIndex]?.text;
+    const cantidad = inputCantidad.value;
+
+    if (!idInsumo || !cantidad || cantidad <= 0) {
+        Swal.fire("Advertencia", "Seleccione un insumo y una cantidad válida.", "warning");
+        return;
+    }
+
+    // Verifica si el insumo ya está en la tabla
+    const filas = tabla.querySelectorAll('tr');
+    for (let fila of filas) {
+        const idExistente = fila.dataset.idinsumo;
+        if (idExistente === idInsumo) {
+            Swal.fire("Advertencia", "Este insumo ya ha sido agregado.", "warning");
+            return;
+        }
+    }
+
+    // Crea una nueva fila
+    const nuevaFila = document.createElement('tr');
+    nuevaFila.dataset.idinsumo = idInsumo;
+    nuevaFila.innerHTML = `
+        <td>
+            ${nombreInsumo}
+            <input type="hidden" name="idInsumo[]" value="${idInsumo}" />
+        </td>
+        <td>
+            ${cantidad}
+            <input type="hidden" name="cantidad[]" value="${cantidad}" />
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button>
+        </td>
+    `;
+
+    tabla.appendChild(nuevaFila);
+
+    // Limpia los campos
+    selectInsumo.value = "";
+    inputCantidad.value = "";
+}
+
+//-------------------------------------------------------------------------------------------------------
+// Función para eliminar una fila del modal y en BD si ya existe
+function eliminarFila(btn) {
+    const row = btn.closest('tr');
+    const idInsumo = row.dataset.idinsumo;
+    const idCompra = document.querySelector("#formEditarSolicitud input[name='idCompra']").value;
+
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Este insumo será eliminado de la solicitud.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then(result => {
+        if (result.isConfirmed) {
+            fetch(`${BASE_URL}/OrdenDeCompraServlet?accion=eliminarInsumo&idCompra=${idCompra}&idInsumo=${idInsumo}`, {
+                method: "POST"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        row.remove();
+                        Swal.fire("Eliminado", "El insumo fue eliminado correctamente.", "success");
+                    } else {
+                        Swal.fire("Error", "No se pudo eliminar el insumo.", "error");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error al eliminar el insumo:", error);
+                    Swal.fire("Error", "Ocurrió un problema al conectar con el servidor.", "error");
+                });
+        }
+    });
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Funcion anular compra
+function anularSolicitud(idCompra) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'La solicitud será anulada y no podrá editarse.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, anular',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redireccionar a un servlet con el ID
+            window.location.href = BASE_URL + "/OrdenDeCompraServlet?accion=anularCompra&idCompra=" + idCompra;
+        }
+    });
+}
+
+
