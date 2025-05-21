@@ -13,7 +13,7 @@ public class DetalleOrdenCompraDAO {
 
     // CREATE
     public static int registrarDetalleCompra(DetalleCompra detalleCompra) {
-        String sql = "INSERT INTO detalle_compra (idCompra, idInsumo, cantidad) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO detalle_compra (id_compra, id_insumo, cantidad) VALUES (?, ?, ?)";
         int idDetalleCompra = -1;
 
         try (Connection con = dataSource.getConnection()) {

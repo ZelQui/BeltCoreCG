@@ -52,28 +52,30 @@ public class OrdenDeCompraServlet extends HttpServlet {
 
             int idCompra = OrdenDeCompraDAO.registrarCompra(compra);
 
-            // Obtener los insumos del request (formato: id:cantidad,id:cantidad)
-            String insumosParam = request.getParameter("insumosJSON");
+            String[] idInsumos = request.getParameterValues("idInsumo[]");
+            String[] cantidades = request.getParameterValues("cantidad[]");
 
-            if (insumosParam != null && !insumosParam.trim().isEmpty()) {
-                String[] pares = insumosParam.split(",");
+            if (idInsumos != null && cantidades != null && idInsumos.length == cantidades.length) {
+                for (int i = 0; i < idInsumos.length; i++) {
+                    int idInsumo = Integer.parseInt(idInsumos[i]);
+                    int cantidad = Integer.parseInt(cantidades[i]);
 
-                for (String par : pares) {
-                    String[] partes = par.split(":");
-                    int idInsumo = Integer.parseInt(partes[0]);
-                    int cantidad = Integer.parseInt(partes[1]);
+                    Insumo insumo = new Insumo();
+                    insumo.setIdInsumo(idInsumo);
 
+                    DetalleCompra detalle = new DetalleCompra();
                     compra.setIdCompra(idCompra);
+                    detalle.setCompra(compra);
 
-                    Insumo insumos = new Insumo();
-                    insumos.setIdInsumo(idInsumo);
+                    detalle.setInsumo(insumo);
+                    detalle.setCantidad(cantidad);
 
-                    DetalleCompra detalle = new DetalleCompra(compra, insumos, cantidad);
                     DetalleOrdenCompraDAO.registrarDetalleCompra(detalle);
                 }
             }
 
-            response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra.jsp");
+
+            response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra");
 
         } catch (Exception e) {
             e.printStackTrace();
