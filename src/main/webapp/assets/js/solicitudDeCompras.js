@@ -1,3 +1,12 @@
+// VALIDAR IMPUTS DE NUMBER
+document.addEventListener('input', function (e) {
+    if (e.target.matches('input[type="number"]')) {
+        if (parseInt(e.target.value) < 1) {
+            e.target.value = '';
+        }
+    }
+});
+
 // Abrir el modal
 function abrirModalSolicitud() {
     const modal = new bootstrap.Modal(document.getElementById('modalSolicitud'));
@@ -25,7 +34,7 @@ function agregarInsumo() {
         return;
     }
 
-    // ✅ Validar si el insumo ya fue agregado
+    // Validar si el insumo ya fue agregado
     const filas = document.querySelectorAll('#tablaInsumos tr');
     for (let fila of filas) {
         const idExistente = fila.querySelector('input[name="idInsumo[]"]').value;
@@ -46,8 +55,7 @@ function agregarInsumo() {
             <input type="hidden" name="idInsumo[]" value="${insumoId}">
         </td>
         <td>
-            ${cantidad}
-            <input type="hidden" name="cantidad[]" value="${cantidad}">
+            <input type="number" name="cantidad[]" class="form-control form-control-sm" value="${cantidad}" min="1" required>
         </td>
         <td>
             <button type="button" class="btn btn-danger btn-sm" onclick="eliminarInsumo(this)">Eliminar</button>

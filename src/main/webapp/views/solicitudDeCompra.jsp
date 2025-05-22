@@ -132,7 +132,7 @@
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" />
+                                <input type="number" id="cantidadInput" class="form-control" placeholder="Cantidad" min="1"/>
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-success w-100" type="button" onclick="agregarInsumo()">Agregar</button>
@@ -190,7 +190,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="cantidadEditarInput">Cantidad<span class="required-star">*</span></label>
-                                <input type="number" id="cantidadEditarInput" name="cantidad" class="form-control" placeholder="Cantidad" />
+                                <input type="number" id="cantidadEditarInput" name="cantidad" class="form-control" placeholder="Cantidad" min="1"/>
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-success w-100" type="button" onclick="agregarInsumoEditar()">Agregar</button>
