@@ -68,6 +68,23 @@ body {
     width: 250px;
   }
   
+  .badge {
+    display: inline-block;
+    padding: 0.35em 0.6em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.35rem;
+  }
+
+  .badge-info {
+    background-color: #d02424ec; /* celeste */
+  }
+
   /* Botón aplicar filtros */
   .btn.primary {
     background-color: #292929;
@@ -150,14 +167,19 @@ body {
     color: white;
     display: inline-block;
   }
-  
+
   .role-green {
     background-color: #4CAF50;
   }
-  
+
   .role-red {
     background-color: #F44336;
   }
+
+  .role-orange {
+    background-color: #FF9800; /* un naranja estándar */
+  }
+
   
   /* Botones de acciones */
   .user-table .btn {
@@ -183,11 +205,11 @@ body {
     color: #1f2937;
   }
   
-  .user-table .btn.deactivate {
+  .user-table .btn.delete{
     background-color: #ef4444;
   }
   
-  .user-table .btn.activate {
+  .user-table .btn.finalize {
     background-color: #22c55e; /* verde */
   }
   
@@ -220,14 +242,79 @@ body {
   .modal-contenido {
     background: white;
     border-radius: 10px;
-    width: 100%;
-    max-width: 500px;
+    width: auto;
+    max-width: 90vw;
+    max-height: 350px;
     padding: 2rem;
+    box-sizing: border-box; /*  */
+
+
   /*   position: relative; */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    animation: modalFade 0.3s ease;
-  }
-  
+    transition: width 0.3s ease;
+    max-height: 80vh;  /* antes tenías 350px, ahora se adapta más al viewport */
+    overflow-y: auto;  /* scroll vertical interno si se excede el alto */
+}
+
+
+/*  */
+
+/* Asegúrate de tener esto ya */
+
+.modal .form-group {
+  margin-bottom: 0.75rem;
+}
+.modal input[readonly] {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.modal h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+  /* agregue */
+        .checkbox-group {
+            margin: 15px 0;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        
+        .checkbox-item input {
+            margin-right: 8px;
+        }
+
+        /* Fija el ancho del modal de finalización */
+        #modalFinalizar .modal-contenido {
+          width: 800px;             /* o el ancho que prefieras */
+          max-width: 100%;           /* opcional, para que en pantallas muy estrechas se adapte */
+          box-sizing: border-box;   /* que incluya padding/bordes en el cálculo del ancho */
+          transition: none;         /* opcional: quita cualquier transición de ancho */
+        }
+
+        /* Asegúrate de que expandido no cambie el width */
+        #modalFinalizar .modal-contenido.expandido {
+          width: 800px;             /* el mismo valor */
+        }
+
+    /* agregue */
+
+
+
   @keyframes modalFade {
     from {
       opacity: 0;
@@ -338,3 +425,86 @@ body {
     display: none;
   }
   
+
+/* Formulario de modal agregar */
+/* Contenedor de las dos columnas */
+.formulario-doble-columna {
+  display: flex;
+  transition: width 0.3s ease;
+  width: 320px; /* ancho inicial con solo la columna izquierda */
+  overflow: hidden;
+}
+
+/* Columna izquierda siempre visible */
+.formulario-izquierda {
+  flex: 1;
+  padding-right: 10px;
+}
+
+/* Columna derecha oculta inicialmente */
+.formulario-derecha {
+  flex: 1;
+  display: none;
+  padding-left: 10px;
+  border-left: 1px solid #ccc;
+}
+
+/* Cuando el modal está expandido, muestra la columna derecha y expande el contenedor */
+.modal-contenido.expandido .formulario-doble-columna {
+  width: 700px; /* ancho expandido, ajusta al que quieras */
+}
+
+.modal-contenido.expandido .formulario-derecha {
+  display: block;
+}
+
+#mensaje-insumos {
+  margin-bottom: 1rem;
+}
+/* .formulario-doble-columna {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.formulario-izquierda,
+.formulario-derecha {
+  flex: 1;
+  min-width: 250px;
+} */
+
+#tabla-insumos-container {
+  min-width: 200px; /* evita que la columna derecha se haga muy pequeña */
+}
+#tabla-insumos {
+  margin-top: 15px;
+  width: 100%;
+  border-collapse: collapse;
+  display: table;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
+
+/* #tabla-insumos th, */
+#tabla-insumos td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+#tabla-insumos th {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  text-align: left;
+  background-color: #1F2937;
+  color: #fffbfb;
+  font-weight: bold;
+}
+
+#tabla-insumos tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tabla-insumos tbody tr:hover {
+  background-color: #e6f7ff;
+}
