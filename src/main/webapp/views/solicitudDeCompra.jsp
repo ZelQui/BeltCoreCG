@@ -13,6 +13,46 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
+<!-- MENSAJE REGISTRO DE SOLICITUD DE COMPRA -->
+<%
+    String mensaje = (String) session.getAttribute("mensajeExito");
+    if (mensaje != null) {
+%>
+<script>
+    Swal.fire('Éxito', '<%= mensaje %>', 'success');
+</script>
+<%
+        session.removeAttribute("mensajeExito"); // Limpiar después de mostrar
+    }
+%>
+
+<!-- MENSAJE DE EDITAR SOLICITUD -->
+<%
+    String mensajeEditar = (String) session.getAttribute("mensajeExito");
+    if (mensajeEditar != null) {
+%>
+<script>
+    Swal.fire('Éxito', '<%= mensajeEditar %>', 'success');
+</script>
+<%
+        session.removeAttribute("mensajeExito"); // Limpiar después de mostrar
+    }
+%>
+
+<!-- MENSAJE PARA ANULAR SOLICITUD -->
+<%
+    String mensajeAnulado = (String) session.getAttribute("mensaje");
+    if (mensajeAnulado != null) {
+%>
+<script>
+    Swal.fire('Éxito', '<%= mensajeAnulado %>', 'success');
+</script>
+<%
+        session.removeAttribute("mensaje"); // Limpiar después de mostrar
+    }
+%>
+
+
 <div class="content-container">
     <h3>Órdenes de Compra Pendientes</h3>
     <button class="btn btn-primary mb-3" onclick="abrirModalSolicitud()">Nueva Solicitud</button>
@@ -22,7 +62,7 @@
         <select id="filtroEstado" class="form-select form-select-sm" onchange="filtrarPorEstado()">
             <option value="">-- Todos --</option>
             <option value="PENDIENTE">PENDIENTE</option>
-            <option value="ANULADO">ANULADO</option>
+            <option value="ANULADA">ANULADA</option>
         </select>
     </div>
 
@@ -50,7 +90,7 @@
                 <button class="btn btn-sm btn-primary" onclick="editarSolicitud(<%= orden.getIdCompra() %>)">Editar</button>
                 <button class="btn btn-sm btn-info" onclick="anularSolicitud(<%= orden.getIdCompra() %>)">Anular Solicitud</button>
                 <% } else { %>
-                Sin acciones
+                <button class="btn btn-sm btn-info" onclick="verSolicitud(<%= orden.getIdCompra() %>)">Ver Solicitud</button>
                 <% } %>
             </td>
         </tr>
@@ -176,6 +216,35 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Ver Solicitud -->
+    <div class="modal fade" id="modalVerSolicitud" tabindex="-1" aria-labelledby="modalVerSolicitudLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="modalVerSolicitudLabel">Detalles de la Solicitud</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Nombre del Insumo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaVerInsumos">
+                        <!-- Se rellenará con JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>

@@ -85,9 +85,12 @@ function editarSolicitud(idCompra) {
             const tbody = document.querySelector("#tablaEditarInsumos");
             tbody.innerHTML = "";
 
+            const originalData = [];
+
             data.insumos.forEach(insumo => {
                 const row = document.createElement("tr");
                 row.dataset.idinsumo = insumo.idInsumo;
+                row.dataset.db = "true"; // MARCA COMO DE BASE DE DATOS
                 row.innerHTML = `
                     <td>
                         ${insumo.nombre}
@@ -101,10 +104,19 @@ function editarSolicitud(idCompra) {
                     </td>
                 `;
                 tbody.appendChild(row);
+
+                // Guardar estado original
+                originalData.push({
+                    idInsumo: String(insumo.idInsumo),
+                    cantidad: String(insumo.cantidad).trim()
+                });
             });
 
             // Establecer el ID de la compra a editar
             document.querySelector("#formEditarSolicitud input[name='idCompra']").value = idCompra;
+
+            // Guardar datos originales como atributo en el formulario
+            document.getElementById("formEditarSolicitud").dataset.original = JSON.stringify(originalData);
 
             // Mostrar el modal
             const modal = new bootstrap.Modal(document.getElementById("modalEditarSolicitud"));
@@ -145,6 +157,7 @@ function agregarInsumoEditar() {
     // Crea una nueva fila
     const nuevaFila = document.createElement('tr');
     nuevaFila.dataset.idinsumo = idInsumo;
+    nuevaFila.dataset.nuevo = "true"; // MARCA COMO NUEVO
     nuevaFila.innerHTML = `
         <td>
             ${nombreInsumo}
@@ -166,11 +179,54 @@ function agregarInsumoEditar() {
     inputCantidad.value = "";
 }
 
+
+//-------------------------------------------------------------------------------------------------------
+// Función auxiliar para normalizar listas (convierte a string y elimina espacios)
+function normalizarLista(lista) {
+    return lista.map(item => ({
+        idInsumo: String(item.idInsumo).trim(),
+        cantidad: String(item.cantidad).trim()
+    }));
+}
+
+//-------------------------------------------------------------------------------------------------------
+// Validar cambios antes de enviar el formulario
+document.getElementById("formEditarSolicitud").addEventListener("submit", function (e) {
+    const form = e.target;
+    const original = normalizarLista(JSON.parse(form.dataset.original || "[]"));
+
+    const filas = form.querySelectorAll("#tablaEditarInsumos tr");
+    const actuales = normalizarLista(Array.from(filas).map(fila => {
+        const inputCantidad = fila.querySelector("input[name='cantidad[]']");
+        const idInsumo = fila.dataset.idinsumo;
+        return {
+            idInsumo: idInsumo,
+            cantidad: inputCantidad ? inputCantidad.value : ""
+        };
+    }));
+
+    const sonIguales = (a, b) => {
+        if (a.length !== b.length) return false;
+        const ordenadosA = [...a].sort((x, y) => x.idInsumo - y.idInsumo);
+        const ordenadosB = [...b].sort((x, y) => x.idInsumo - y.idInsumo);
+        return ordenadosA.every((val, i) =>
+            val.idInsumo === ordenadosB[i].idInsumo &&
+            val.cantidad === ordenadosB[i].cantidad
+        );
+    };
+
+    if (sonIguales(original, actuales)) {
+        e.preventDefault();
+        Swal.fire("Advertencia", "No se realizaron cambios en la solicitud.", "warning");
+    }
+});
+
 //-------------------------------------------------------------------------------------------------------
 // Función para eliminar una fila del modal y en BD si ya existe
 function eliminarFila(btn) {
     const row = btn.closest('tr');
     const idInsumo = row.dataset.idinsumo;
+    const esNuevo = row.dataset.nuevo === "true";
     const idCompra = document.querySelector("#formEditarSolicitud input[name='idCompra']").value;
 
     Swal.fire({
@@ -181,7 +237,13 @@ function eliminarFila(btn) {
         confirmButtonText: "Sí, eliminar",
         cancelButtonText: "Cancelar"
     }).then(result => {
-        if (result.isConfirmed) {
+        if (!result.isConfirmed) return;
+
+        if (esNuevo) {
+            row.remove();
+            Swal.fire("Eliminado", "El insumo nuevo fue eliminado del formulario.", "success");
+        } else {
+            // Eliminar en la BD
             fetch(`${BASE_URL}/OrdenDeCompraServlet?accion=eliminarInsumo&idCompra=${idCompra}&idInsumo=${idInsumo}`, {
                 method: "POST"
             })
@@ -201,6 +263,7 @@ function eliminarFila(btn) {
         }
     });
 }
+
 
 // ---------------------------------------------------------------------------------------------------------------
 // Funcion anular compra
@@ -235,5 +298,38 @@ function filtrarPorEstado() {
         }
     });
 }
+
+// ----------------------------------------------------------------------------------------------------------------
+function verSolicitud(idCompra) {
+    fetch(BASE_URL + "/OrdenDeCompraServlet?accion=obtenerDetalles&idCompra=" + idCompra)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById("tablaVerInsumos");
+            tbody.innerHTML = "";
+
+            if (!data.insumos || data.insumos.length === 0) {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="2" class="text-center">No hay insumos registrados.</td>`;
+                tbody.appendChild(row);
+            } else {
+                data.insumos.forEach(insumo => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${insumo.nombre}</td>
+                        <td>${insumo.cantidad}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById("modalVerSolicitud"));
+            modal.show();
+        })
+        .catch(error => {
+            console.error("Error al obtener detalles de la solicitud:", error);
+            Swal.fire("Error", "No se pudieron cargar los detalles de la solicitud.", "error");
+        });
+}
+
 
 

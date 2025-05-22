@@ -90,7 +90,7 @@ public class OrdenDeCompraServlet extends HttpServlet {
                 }
             }
 
-
+            session.setAttribute("mensajeExito", "La solicitud fue registrada correctamente.");
             response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra");
 
         } catch (Exception e) {
@@ -140,6 +140,7 @@ public class OrdenDeCompraServlet extends HttpServlet {
                 }
             }
 
+            request.getSession().setAttribute("mensajeExito", "La solicitud fue editada correctamente.");
             response.sendRedirect(request.getContextPath() + "/app/solicitudDeCompra");
 
         } catch (Exception e) {
