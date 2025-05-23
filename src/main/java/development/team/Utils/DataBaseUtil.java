@@ -37,7 +37,7 @@ public class DataBaseUtil {
             String DB_NAME = "dbBeltcoreCG";
             String DB_USERNAME = "admon";
             String DB_PASSWORD = "integrador2";
-            String DB_URL = String.format("jdbc:mysql://%s:%s/%s?serverTimezone=UTC", DB_HOST, DB_PORT, DB_NAME);
+            String DB_URL = String.format("jdbc:mysql://%s:%s/%s?serverTimezone=America/Lima", DB_HOST, DB_PORT, DB_NAME);
 
 
             // ================================

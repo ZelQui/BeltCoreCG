@@ -15,6 +15,15 @@ public class Producto {
     public Producto() {
     }
 
+    public Producto(int idProducto, String nombre, String descripcion, BigDecimal precioVenta, int cantidadStock, int stockMinimo) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precioVenta = precioVenta;
+        this.cantidadStock = cantidadStock;
+        this.stockMinimo = stockMinimo;
+    }
+
     public Producto(int idProducto, String nombre, String descripcion, BigDecimal precioVenta, int cantidadStock, int stockMinimo, Categoria categoria, EstadoProducto estadoProducto) {
         this.idProducto = idProducto;
         this.nombre = nombre;

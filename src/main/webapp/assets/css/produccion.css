@@ -1,263 +1,260 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f6f8fa;
-    margin: 0;
-    padding: 2rem;
-    color: #333;
-  }
-  
-  .produccion-container {
-    max-width: 1200px;
-    margin: auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    padding: 2rem;
-  }
-  
-  .produccion-container h1 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 2rem;
-    color: #222;
-  }
-  
-  .acciones {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-  
-  .acciones button {
-    margin-bottom: 15px;
-    background-color: #22c55e;
-    color: white;
-    border: none;
-    padding: 0.7rem 1.2rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  .acciones button:hover {
-    background-color: #16a34a;
-  }
-  
-  /* Filtros */
-  .filter-container {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-    align-items: center;
-  }
-  
-  .search-container input,
-  #filtro-nombre,
-  #roleFilter,
-  #statusFilter,
-  #filtro-usuario {
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 250px;
-  }
-  
-  .badge {
-    display: inline-block;
-    padding: 0.35em 0.6em;
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0.35rem;
-  }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f6f8fa;
+  margin: 0;
+  padding: 2rem;
+  color: #333;
+}
 
-  .badge-info {
-    background-color: #d02424ec; /* celeste */
-  }
+.produccion-container {
+  max-width: 1200px;
+  margin: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
 
-  /* Botón aplicar filtros */
-  .btn.primary {
-    background-color: #292929;
-    padding: 8px 12px;
-    font-weight: bold;
-    color: white;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .btn.primary:hover {
-    background-color: #0e0d0d;
-  }
-  
-  /* styles de imagen */
-  
-  .product-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 6px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Contenedor general */
-  .table-container {
-  /*   margin-top: 20px;
-    background: #fff;*/
-    border-radius: 12px;
-    overflow-x: auto;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  }
-  
-  /* Tabla principal */
-  .user-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 8px;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  /* Encabezado de la tabla */
-  .user-table thead {
-    background-color: #1f2b37;
-    color: white;
-  }
-  
-  .user-table th {
-    background-color: #1f2937;
-    color: white;
-    padding: 12px;
-    text-align: left;
-  }
-  
-  /* Cuerpo de la tabla */
-  .user-table td {
-    padding: 12px;
-    border-bottom: 1px solid #e0e0e0;
-    vertical-align: middle;
-    
-  }
-  .user-table tbody tr {
-    background-color: white;
-    border-bottom: 1px solid #e5e7eb;
-    transition: background-color 0.2s;
-  }
-  
-  .user-table tbody tr:hover {
-    background-color: #f9fafb;
-  }
-  
-  /* Badges reutilizados para estado */
-  .role-badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    color: white;
-    display: inline-block;
-  }
+.produccion-container h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: #222;
+}
 
-  .role-green {
-    background-color: #4CAF50;
-  }
+.acciones {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
 
-  .role-red {
-    background-color: #F44336;
-  }
+.acciones button {
+  margin-bottom: 15px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
 
-  .role-orange {
-    background-color: #FF9800; /* un naranja estándar */
-  }
+.acciones button:hover {
+  background-color: #16a34a;
+}
 
-  
-  /* Botones de acciones */
-  .user-table .btn {
-    border: none;
-    padding: 8px;
-    margin: 0 2px;
-    border-radius: 6px;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .user-table .btn i {
-    pointer-events: none;
-  }
-  
-  /* Colores de botones */
-  .user-table  .btn.view {
-    background-color: #0ea5e9;
-  }
-  
-  .user-table .btn.edit {
-    background-color: #facc15; /* amarillo */
-    color: #1f2937;
-  }
-  
-  .user-table .btn.delete{
-    background-color: #ef4444;
-  }
-  
-  .user-table .btn.finalize {
-    background-color: #22c55e; /* verde */
-  }
-  
-  .user-table .btn:hover {
-    opacity: 0.85;
-  }
-  
-  .btn i {
-    pointer-events: none;
-  }
-  
-  /* Modal */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-  
-  .modal.oculto {
-    display: none;
-  }
-  
-  .modal-contenido {
-    background: white;
-    border-radius: 10px;
-    width: auto;
-    max-width: 90vw;
-    max-height: 350px;
-    padding: 2rem;
-    box-sizing: border-box; /*  */
+/* Filtros */
+.filter-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+  align-items: center;
+}
 
+.search-container input,
+#filtro-nombre,
+#roleFilter,
+#statusFilter,
+#filtro-usuario {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 250px;
+}
 
-  /*   position: relative; */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    transition: width 0.3s ease;
-    max-height: 80vh;  /* antes tenías 350px, ahora se adapta más al viewport */
-    overflow-y: auto;  /* scroll vertical interno si se excede el alto */
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.35rem;
+}
+
+.badge-info {
+  background-color: #d02424ec; /* celeste */
+}
+
+/* Botón aplicar filtros */
+.btn.primary {
+  background-color: #292929;
+  padding: 8px 12px;
+  font-weight: bold;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn.primary:hover {
+  background-color: #0e0d0d;
+}
+
+/* styles de imagen */
+
+.product-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor general */
+.table-container {
+/*   margin-top: 20px;
+  background: #fff;*/
+  border-radius: 12px;
+  overflow-x: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Tabla principal */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Encabezado de la tabla */
+.user-table thead {
+  background-color: #1f2b37;
+  color: white;
+}
+
+.user-table th {
+  background-color: #1f2937;
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+
+/* Cuerpo de la tabla */
+.user-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: middle;
+
+}
+.user-table tbody tr {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s;
+}
+
+.user-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Badges reutilizados para estado */
+.role-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  display: inline-block;
+}
+
+.role-green {
+  background-color: #4CAF50;
+}
+
+.role-red {
+  background-color: #F44336;
+}
+
+.role-orange {
+  background-color: #FF9800; /* un naranja estándar */
 }
 
 
-/*  */
+/* Botones de acciones */
+.user-table .btn {
+  border: none;
+  padding: 8px;
+  margin: 0 2px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.user-table .btn i {
+  pointer-events: none;
+}
+
+/* Colores de botones */
+.user-table  .btn.view {
+  background-color: #0ea5e9;
+}
+
+.user-table .btn.edit {
+  background-color: #facc15; /* amarillo */
+  color: #1f2937;
+}
+
+.user-table .btn.delete{
+  background-color: #ef4444;
+}
+
+.user-table .btn.finalize {
+  background-color: #22c55e; /* verde */
+}
+
+.user-table .btn:hover {
+  opacity: 0.85;
+}
+
+.btn i {
+  pointer-events: none;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.oculto {
+  display: none;
+}
+
+.modal-contenido {
+  background: white;
+  border-radius: 10px;
+  width: auto;
+  max-width: 90vw;
+  max-height: 350px;
+  padding: 2rem;
+  box-sizing: border-box; /*  */
+
+
+/*   position: relative; */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease;
+  max-height: 80vh;  /* antes tenías 350px, ahora se adapta más al viewport */
+  overflow-y: auto;  /* scroll vertical interno si se excede el alto */
+}
 
 /* Asegúrate de tener esto ya */
 
@@ -276,44 +273,80 @@ body {
   margin-bottom: 0.5rem;
 }
 
-  /* agregue */
-        .checkbox-group {
-            margin: 15px 0;
-        }
-        
-        .checkbox-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            margin-right: 20px;
-        }
-        
-        .checkbox-item input {
-            margin-right: 8px;
-        }
+/* agregue */
+.checkbox-group {
+    margin: 15px 0;
+}
 
-        /* Fija el ancho del modal de finalización */
-        #modalFinalizar .modal-contenido {
-          width: 800px;             /* o el ancho que prefieras */
-          max-width: 100%;           /* opcional, para que en pantallas muy estrechas se adapte */
-          box-sizing: border-box;   /* que incluya padding/bordes en el cálculo del ancho */
-          transition: none;         /* opcional: quita cualquier transición de ancho */
-        }
+.checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
 
-        /* Asegúrate de que expandido no cambie el width */
-        #modalFinalizar .modal-contenido.expandido {
-          width: 800px;             /* el mismo valor */
-        }
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
 
-    /* agregue */
+.checkbox-item input {
+    margin-right: 8px;
+}
+
+/* Fija el ancho del modal de finalización */
+#modalFinalizar .modal-contenido {
+  width: 800px;             /* o el ancho que prefieras */
+  max-width: 100%;           /* opcional, para que en pantallas muy estrechas se adapte */
+  box-sizing: border-box;   /* que incluya padding/bordes en el cálculo del ancho */
+  transition: none;         /* opcional: quita cualquier transición de ancho */
+}
+
+/* Asegúrate de que expandido no cambie el width */
+#modalFinalizar .modal-contenido.expandido {
+  width: 800px;             /* el mismo valor */
+}
 
 
+/* Modal amplio para ver (fija ancho y alto) */
+#modal-ver .modal-contenido {
+  width: 900px;
+  height: 850px;       /* altura fija */
+  max-width: 95vw;
+  max-height: 95vh;    /* impide que crezca más allá de la ventana */
+  overflow-y: auto;    /* scroll vertical si hace falta */
+  box-sizing: border-box;
+}
+
+/* Contenedor de dos columnas */
+#modal-ver .modal-cuerpo-dos-columnas {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+/* Cada columna */
+#modal-ver .columna-modal {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Anular reglas de otros modales */
+#modal-ver .formulario-doble-columna {
+  display: flex !important;
+  width: auto !important;
+  flex-wrap: wrap !important;
+  gap: 2rem !important;
+}
+
+#modal-ver .formulario-derecha {
+  display: block !important;
+}
 
   @keyframes modalFade {
     from {
@@ -357,7 +390,7 @@ body {
   .formulario {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
   }
   
   .formulario label {
@@ -392,7 +425,6 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    margin-top: 20px;
   }
   
   .botones button {
@@ -446,7 +478,6 @@ body {
   flex: 1;
   display: none;
   padding-left: 10px;
-  border-left: 1px solid #ccc;
 }
 
 /* Cuando el modal está expandido, muestra la columna derecha y expande el contenedor */
@@ -461,17 +492,6 @@ body {
 #mensaje-insumos {
   margin-bottom: 1rem;
 }
-/* .formulario-doble-columna {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.formulario-izquierda,
-.formulario-derecha {
-  flex: 1;
-  min-width: 250px;
-} */
 
 #tabla-insumos-container {
   min-width: 200px; /* evita que la columna derecha se haga muy pequeña */
@@ -507,4 +527,44 @@ body {
 
 #tabla-insumos tbody tr:hover {
   background-color: #e6f7ff;
+}
+
+/* Estilos para la tabla de insumos en el modal “Ver Detalle” */
+#verTablaInsumos {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+#verTablaInsumos th,
+#verTablaInsumos td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+#verTablaInsumos thead {
+  background-color: #f4f4f4;
+}
+
+#verTablaInsumos tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+#verTablaInsumos tbody tr:hover {
+  background-color: #e9f5ff;
+}
+
+#verTablaInsumos th {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+#btn-Generar[disabled] {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transition: 0.3s ease;
 }

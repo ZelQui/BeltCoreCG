@@ -4,13 +4,15 @@ import development.team.Utils.DataBaseUtil;
 import development.team.Models.Insumo;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
 public class InsumoDAO {
     private static final DataSource dataSource = DataBaseUtil.getDataSource();
-    
+
     public boolean agregarInsumo(Insumo insumo) {
         String sql = "INSERT INTO insumos (nombre, descripcion, cantidad_stock, precio_unitario, unidad_medida) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = dataSource.getConnection();
@@ -98,17 +100,25 @@ public class InsumoDAO {
         }
     }
 
-    /*public boolean eliminarInsumo(int id) {
-        String sql = "DELETE FROM insumos WHERE id_insumo = ?";
+    public static Map<String, Double> obtenerStockInsumos() {
+        Map<String, Double> stockMap = new HashMap<>();
+
+        String sql = "SELECT nombre, cantidad_stock FROM insumos";
         try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+            PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                double cantidad = rs.getDouble("cantidad_stock");
+                stockMap.put(nombre, cantidad);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-    }*/
+        return stockMap;
+    }
+
     private Insumo mapearInsumo(ResultSet rs) throws SQLException {
         Insumo insumo = new Insumo();
         insumo.setIdInsumo(rs.getInt("id_insumo"));

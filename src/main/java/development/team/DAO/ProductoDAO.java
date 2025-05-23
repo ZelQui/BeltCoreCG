@@ -48,8 +48,8 @@ public class ProductoDAO {
 
         String sql = "SELECT p.id_producto, p.nombre, p.descripcion, p.precio_venta, p.cantidad_stock, p.stock_minimo, c.nombre, e.nombre " +
                 "FROM productos as p " +
-                "JOIN categorias AS c ON p.id_categoria = c.id_categoria" +
-                "JOIN estadosproducto AS e ON p.estado_producto = e.id_estado_producto";
+                "JOIN categorias AS c ON p.id_categoria = c.id_categoria " +
+                "JOIN estadosproducto AS e ON p.id_estado_producto = e.id_estado_producto";
         List<ProductoCategoriaEstadoDTO> productosList = new ArrayList<>();
 
         try (Connection con = dataSource.getConnection();
@@ -74,6 +74,33 @@ public class ProductoDAO {
         }
 
         return productosList;
+    }
+
+    // Obtener producto por ID (solo datos de Producto)
+    public static Producto obtenerProductoPorId(int idProducto, Connection con) {
+        String sql = "SELECT id_producto, nombre, descripcion, precio_venta, cantidad_stock, stock_minimo, " +
+                "id_categoria, id_estado_producto FROM productos WHERE id_producto = ?";
+        Producto producto = null;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idProducto);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    producto = new Producto();
+                    producto.setIdProducto(rs.getInt("id_producto"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setPrecioVenta(rs.getBigDecimal("precio_venta"));
+                    producto.setCantidadStock(rs.getInt("cantidad_stock"));
+                    producto.setStockMinimo(rs.getInt("stock_minimo"));
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error SQLException al obtener producto por ID: " + e.getMessage());
+        }
+        return producto;
     }
 
     // UPDATE

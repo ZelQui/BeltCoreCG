@@ -1,22 +1,42 @@
 package development.team.Models;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Produccion {
     private int idProduccion;
     private Producto producto;
     private LocalDateTime fechaProduccion;
+    private LocalDateTime fechaCierre;
+    private int cantidadPlaneada;
     private int cantidadProducida;
+    private int cantidadDefectuosa;
+    private BigDecimal rendimiento;
+    private int estado;
     private Usuario usuario;
 
     public Produccion() {
     }
 
-    public Produccion(int idProduccion, Producto producto, LocalDateTime fechaProduccion, int cantidadProducida, Usuario usuario) {
+    public Produccion(int idProduccion, Producto producto, LocalDateTime fechaProduccion, int cantidadPlaneada, int estado, Usuario usuario) {
         this.idProduccion = idProduccion;
         this.producto = producto;
         this.fechaProduccion = fechaProduccion;
+        this.cantidadPlaneada = cantidadPlaneada;
+        this.estado = estado;
+        this.usuario = usuario;
+    }
+
+    public Produccion(int idProduccion, Producto producto, LocalDateTime fechaProduccion, LocalDateTime fechaCierre, int cantidadPlaneada, int cantidadProducida, int cantidadDefectuosa, BigDecimal rendimiento, int estado, Usuario usuario) {
+        this.idProduccion = idProduccion;
+        this.producto = producto;
+        this.fechaProduccion = fechaProduccion;
+        this.fechaCierre = fechaCierre;
+        this.cantidadPlaneada = cantidadPlaneada;
         this.cantidadProducida = cantidadProducida;
+        this.cantidadDefectuosa = cantidadDefectuosa;
+        this.rendimiento = rendimiento;
+        this.estado = estado;
         this.usuario = usuario;
     }
 
@@ -44,6 +64,22 @@ public class Produccion {
         this.fechaProduccion = fechaProduccion;
     }
 
+    public LocalDateTime getFechaCierre() {
+        return fechaCierre;
+    }
+
+    public void setFechaCierre(LocalDateTime fechaCierre) {
+        this.fechaCierre = fechaCierre;
+    }
+
+    public int getCantidadPlaneada() {
+        return cantidadPlaneada;
+    }
+
+    public void setCantidadPlaneada(int cantidadPlaneada) {
+        this.cantidadPlaneada = cantidadPlaneada;
+    }
+
     public int getCantidadProducida() {
         return cantidadProducida;
     }
@@ -52,23 +88,36 @@ public class Produccion {
         this.cantidadProducida = cantidadProducida;
     }
 
+    public int getCantidadDefectuosa() {
+        return cantidadDefectuosa;
+    }
+
+    public void setCantidadDefectuosa(int cantidadDefectuosa) {
+        this.cantidadDefectuosa = cantidadDefectuosa;
+    }
+
+    public BigDecimal getRendimiento() {
+        return rendimiento;
+    }
+
+    public void setRendimiento(BigDecimal rendimiento) {
+        this.rendimiento = rendimiento;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    @Override
-    public String toString() {
-        return "Produccion{" +
-                "idProduccion=" + idProduccion +
-                ", producto=" + producto +
-                ", fechaProduccion=" + fechaProduccion +
-                ", cantidadProducida=" + cantidadProducida +
-                ", usuario=" + usuario +
-                '}';
     }
 }
 

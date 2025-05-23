@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 
 public class Receta {
     private int idReceta;
+    private Producto producto;
     private Insumo insumo;
     private BigDecimal cantidadRequerida;
-    private Producto producto;
 
     public Receta() {
     }
 
-    public Receta(int idReceta, Insumo insumo, BigDecimal cantidadRequerida, Producto producto) {
+    public Receta(int idReceta, Producto producto, Insumo insumo, BigDecimal cantidadRequerida) {
         this.idReceta = idReceta;
+        this.producto = producto;
         this.insumo = insumo;
         this.cantidadRequerida = cantidadRequerida;
-        this.producto = producto;
     }
 
     public int getIdReceta() {
@@ -24,6 +24,14 @@ public class Receta {
 
     public void setIdReceta(int idReceta) {
         this.idReceta = idReceta;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public Insumo getInsumo() {
@@ -42,21 +50,13 @@ public class Receta {
         this.cantidadRequerida = cantidadRequerida;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
     @Override
     public String toString() {
         return "Receta{" +
                 "idReceta=" + idReceta +
+                ", producto=" + producto +
                 ", insumo=" + insumo +
                 ", cantidadRequerida=" + cantidadRequerida +
-                ", producto=" + producto +
                 '}';
     }
 }

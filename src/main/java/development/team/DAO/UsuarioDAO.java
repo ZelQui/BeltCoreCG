@@ -222,6 +222,34 @@ public class UsuarioDAO {
         return usuarioDTO;
     }
 
+    // Obtener usuario por ID (solo datos de Usuario)
+    public static Usuario obtenerUsuarioPorId(int usuarioId, Connection con) {
+        String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, correo, estado FROM usuarios WHERE id_usuario = ?";
+        Usuario usuario = null;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, usuarioId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setDni(rs.getString("dni"));
+                usuario.setNombres(rs.getString("nombres"));
+                usuario.setApellidoPaterno(rs.getString("apellido_paterno"));
+                usuario.setApellidoMaterno(rs.getString("apellido_materno"));
+                usuario.setTelefono(rs.getString("telefono"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setEstado(rs.getInt("estado"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener usuario por ID (" + usuarioId + "): " + e.getMessage());
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
     public static boolean existeUsuarioPorDni(String dni) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE dni = ?";
         boolean existe = false;
