@@ -26,11 +26,6 @@
 </div>
 
 <div class="login-container">
-<%--    <div class="login-image">
-        <div class="brand-overlay">
-            <img src="<%=request.getContextPath()%>/assets/img/ImagenCorreas.png" alt="Correas de cuero" class="product-image">
-        </div>
-    </div>--%>
     <div class="login-form">
         <div class="login-header">
             <div class="logo-container">
@@ -58,6 +53,9 @@
                 </div>
             </div>
 
+            <div class="link-container">
+                <a href="resetpass.jsp" class="link-reset">¿Olvidaste tu contraseña?</a>
+            </div>
 
             <button  type="submit" class="login-button" >
                 Iniciar Sesión
@@ -95,9 +93,6 @@
     });
 </script>
 <% } %>
-
-
-</body>
 
 </body>
 </html>

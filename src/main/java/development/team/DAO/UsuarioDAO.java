@@ -250,6 +250,35 @@ public class UsuarioDAO {
         return usuario;
     }
 
+    // Obtener usuario por DNI (solo datos de Usuario)
+    public static Usuario obtenerUsuarioPorDni(String dni) {
+        String sql = "SELECT id_usuario, dni, nombres, apellido_paterno, apellido_materno, telefono, correo, estado FROM usuarios WHERE dni = ?";
+        Usuario usuario = null;
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, dni);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setDni(rs.getString("dni"));
+                usuario.setNombres(rs.getString("nombres"));
+                usuario.setApellidoPaterno(rs.getString("apellido_paterno"));
+                usuario.setApellidoMaterno(rs.getString("apellido_materno"));
+                usuario.setTelefono(rs.getString("telefono"));
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setEstado(rs.getInt("estado"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al obtener usuario por DNI (" + dni + "): " + e.getMessage());
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
     public static boolean existeUsuarioPorDni(String dni) {
         String sql = "SELECT COUNT(*) FROM usuarios WHERE dni = ?";
         boolean existe = false;
@@ -348,30 +377,38 @@ public class UsuarioDAO {
         return false;
     }
 
-    public static Usuario actualizarContrasena(Usuario usuario, String nuevaContrasena) {
-        String sql = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
+    public static boolean actualizarContrasena(Usuario usuario, String nuevaContrasena) {
+        String sqlSet = "SET @usuario_id = ?";
+        String sqlUpdate = "UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?";
 
-        Usuario usuarioActualizado = usuario;
+        try (Connection con = dataSource.getConnection()) {
 
-        try (Connection con = dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            String hashPassword = BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt());
-            ps.setString(1, hashPassword);
-            ps.setInt(2, usuario.getIdUsuario());
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Usuario " + usuario.getIdUsuario() + " actualizado correctamente.");
-                usuarioActualizado.setContrasena(hashPassword);
-            } else {
-                System.err.println("Error al actualizar usuario con ID: " + usuario.getIdUsuario());
+            // 1. Ejecutar SET @usuario_id = ?
+            try (PreparedStatement psSet = con.prepareStatement(sqlSet)) {
+                psSet.setInt(1, usuario.getIdUsuario());
+                psSet.execute();
             }
-        } catch (SQLException e) {
-            System.err.println("Error SQLException al actualizar usuario " + usuario.getIdUsuario() + ": " + e.getMessage());
-        }
 
-        return usuarioActualizado;
+            // 2. Ejecutar UPDATE
+            try (PreparedStatement psUpdate = con.prepareStatement(sqlUpdate)) {
+                String hashPassword = BCrypt.hashpw(nuevaContrasena, BCrypt.gensalt());
+                psUpdate.setString(1, hashPassword);
+                psUpdate.setInt(2, usuario.getIdUsuario());
+
+                int rowsAffected = psUpdate.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Usuario " + usuario.getIdUsuario() + " actualizado correctamente.");
+                    return true;
+                } else {
+                    System.err.println("No se encontró el usuario con ID: " + usuario.getIdUsuario());
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error al actualizar contraseña para usuario " + usuario.getIdUsuario() + ": " + e.getMessage());
+        }
+        return false;
     }
 
     public static boolean activarUsuario(int usuarioId) {
@@ -414,6 +451,26 @@ public class UsuarioDAO {
             System.err.println("Error SQLException al bloquear usuario " + usuarioId + ": " + e.getMessage());
             return false;
         }
+    }
+
+    public boolean validarCorreoYDni(String correo, String dni) {
+        boolean existe = false;
+        String sql = "SELECT COUNT(*) FROM usuarios WHERE correo = ? AND dni = ?";
+
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, correo);
+            ps.setString(2, dni);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                existe = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return existe;
     }
 }
 

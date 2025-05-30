@@ -180,6 +180,24 @@ input[type="password"]::-ms-clear {
     color: var(--primary-color);
 }
 
+/* Olvidé mi contraseña*/
+.link-container {
+    display: flex;
+    justify-content: flex-end; /* equivalente a justify-content-end */
+    margin-bottom: 1rem; /* mb-3 equivale a 16px o 1rem */
+}
+
+.link-reset {
+    color: #6c757d; /* text-muted color de Bootstrap */
+    font-size: 0.875rem; /* small = 14px aproximadamente */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.link-reset:hover {
+    color: #0d6efd; /* hover-primary: color azul bootstrap */
+}
+
 /* Botón de inicio de sesión */
 .login-button {
     padding: 15px;
@@ -227,7 +245,6 @@ input[type="password"]::-ms-clear {
 
 /* Footer */
 .login-footer {
-    margin-top: 50px;
     text-align: center;
     color: var(--text-secondary);
     font-size: 13px;
